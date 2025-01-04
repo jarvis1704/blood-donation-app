@@ -1,4 +1,4 @@
-package com.example.blooddonationapp
+package com.example.blooddonationapp.auth.interfaces
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,6 +13,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.blooddonationapp.ui.theme.BloodDonationAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,8 +26,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BloodDonationAppTheme {
+                val navCtrl = rememberNavController()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MainScreen(Modifier.padding(innerPadding))
+                    appNav(navCtrl)
                 }
             }
         }
@@ -30,18 +36,15 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainScreen(modifier: Modifier = Modifier) {
-    Card {
-        Row {
-            Text("This is a sample text")
-        }
-    }
-}
+fun appNav(navController: NavHostController){
+    val navController = navController
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    BloodDonationAppTheme {
-        MainScreen()
+    NavHost(
+        navController = navController,
+        startDestination = "loadingpage") {
+
+        composable("loadingpage"){
+            loadingpage()
+        }
     }
 }
