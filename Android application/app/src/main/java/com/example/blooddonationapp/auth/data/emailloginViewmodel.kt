@@ -31,13 +31,14 @@ open class emailLoginViewmodel(): ViewModel() {
         }
     }
 
-    fun signup(email:String, password:String, confirmpassword:String){
+    fun signup(email:String, password:String, confirmpassword:String, goto_loadingpage: () -> Unit){
         if (email.isNotEmpty() && password.isNotEmpty()){
             if (password == confirmpassword){
                 try {
                     _auth.createUserWithEmailAndPassword(email,password)
                         .addOnSuccessListener {
-                            //todo go to homepage
+                            currentUser.isSearching=true
+                            goto_loadingpage()
                         }.addOnFailureListener {
                             errorMessage = it.message.toString()
                         }
@@ -71,6 +72,7 @@ open class emailLoginViewmodel(): ViewModel() {
 
     fun signout(goto_loadingpage:()->Unit){
         _auth.signOut()
+        currentUser.isLoggedIn = false
         goto_loadingpage()
         //todo clear temp user data
     }

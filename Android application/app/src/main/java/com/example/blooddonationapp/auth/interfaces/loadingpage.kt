@@ -15,6 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.blooddonationapp.global.data.currentUser
+import com.example.blooddonationapp.registration.data.registrationViewmodel
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -27,36 +30,38 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 @Composable
-fun loadingpage(goto_loginpage:()->Unit, goto_homepage:()->Unit) {
+fun loadingpage(
+    goto_loginpage:()->Unit,
+    goto_homepage:()->Unit,
+    goto_ageverification:()->Unit){
     /*this page will check whether the user is logged in or not
     * and based on that, we will navigate to homepage or loginpage */
 
-    //checks if current user logged in
-//    LaunchedEffect(key1 = Unit) {
-//        while (currentUser.isSearching){
-//            delay(200)
-//        }
-//        if (currentUser.isLoggedIn){
-//            delay(1000)
-//            goto_homepage()
-//        }else{
-//            delay(1000)
-//            goto_loginpage()
-//        }
-//    }
+    var registrationViewmodel: registrationViewmodel = viewModel()
+
     LaunchedEffect(key1 = Unit) {
         // Move to a background dispatcher for the polling
         withContext(Dispatchers.Default) {
             while (currentUser.isSearching) {
                 delay(200)
             }
+            if (currentUser.isLoggedIn){
+           delay(1000)
+           goto_homepage()
+       }else{
+           delay(1000)
+           goto_loginpage()
+       }
         }
-        // After polling is done, handle navigation
-        if (currentUser.isLoggedIn) {
-            delay(1000)
-            goto_homepage()
-        } else {
-            delay(1000)
+        if (currentUser.isLoggedIn){
+            currentUser.registrationType = registrationViewmodel.getRegistrationType() //todo potential error, might not wait
+            if (currentUser.registrationType.isEmpty() || currentUser.registrationType=="signup"){
+                goto_ageverification()
+            }else if (currentUser.registrationType == "registered"){
+                goto_homepage()
+            }
+        }else{
+          delay(1000)
             goto_loginpage()
         }
     }

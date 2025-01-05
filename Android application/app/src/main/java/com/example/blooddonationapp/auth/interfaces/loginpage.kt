@@ -233,6 +233,12 @@ fun loginpage(
                 }
 
             }
+            Text(text = "Or")
+            Button(onClick = {
+                onSignInClick()
+            }) {
+                Text(text = "Continue with Google")
+            }
             Spacer(modifier = Modifier.weight(0.75f))
 
             // Create Account Link
@@ -240,14 +246,13 @@ fun loginpage(
                 text = "New here? Create an Account",
                 color = Color.White,
                 fontSize = 16.sp,
+                modifier = Modifier.clickable {
+                goto_signuppage()
                 textDecoration = TextDecoration.Underline,
                 modifier = Modifier.clickable(onClick = {goto_signuppage()})
             )
 
             Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
 }
-}
-}
-
-
-
