@@ -66,6 +66,7 @@ import com.example.blooddonationapp.auth.data.tempUserObj.password
 fun loginpage(
     goto_homepage:()->Unit,
     goto_signuppage:()->Unit,
+    goto_loadingpage:()->Unit,
     state: SignInState,
     onSignInClick:()->Unit
 ){
@@ -83,9 +84,13 @@ fun loginpage(
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize().background(color = Color(0xFFEB4335))){ //Red BackGround
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(color = Color(0xFFEB4335))){ //Red BackGround
         Column(
-            modifier = Modifier.fillMaxSize().padding(vertical = 32.dp, horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(vertical = 32.dp, horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(60.dp))
             Text(
@@ -181,7 +186,7 @@ fun loginpage(
                         )
                     }
                     Button(onClick = {
-                        viewmodel.login(email, password, goto_homepage)
+                        viewmodel.login(email, password, goto_loadingpage)
                     },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -198,61 +203,52 @@ fun loginpage(
 
                 //Google SignUp
                 // Google Sign In Button
-                Card(
+
+                Text(text = "Or", color = Color.Black)
+                Spacer(modifier = Modifier.height(16.dp))
+                // Create Account Link
+                Text(text = "New here? Create an Account",
+                    color = Color.Black,
+                    fontSize = 16.sp,
+                    textDecoration = TextDecoration.Underline,
+                    modifier = Modifier.clickable {
+                        goto_signuppage()
+                    })
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .clickable(onClick = { onSignInClick() }),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White
+                ),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 6.dp
+                )
+            ) {
+                Row(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .clickable(onClick = { onSignInClick() }),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color.White
-                    ),
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 6.dp
-                    )
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.google_icon),
-                            contentDescription = "Google Icon",
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "Sign in with Google",
-                            fontSize = 16.sp,
-                            color = Color.Black
-                        )
-                    }
-
+                    Image(
+                        painter = painterResource(id = R.drawable.google_icon),
+                        contentDescription = "Google Icon",
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Continue with Google",
+                        fontSize = 16.sp,
+                        color = Color.Black
+                    )
                 }
-
             }
-            Text(text = "Or")
-            Button(onClick = {
-                onSignInClick()
-            }) {
-                Text(text = "Continue with Google")
-            }
-            Spacer(modifier = Modifier.weight(0.75f))
 
-            // Create Account Link
-            Text(
-                text = "New here? Create an Account",
-                color = Color.White,
-                fontSize = 16.sp,
-                modifier = Modifier.clickable {
-                goto_signuppage()
-                textDecoration = TextDecoration.Underline,
-                modifier = Modifier.clickable(onClick = {goto_signuppage()})
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }

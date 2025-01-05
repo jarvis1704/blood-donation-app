@@ -85,7 +85,7 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                     popUpTo("loginpage") { inclusive = true }
                 } },
                 goto_signuppage = {navController.navigate("signuppage")},
-
+                goto_loadingpage = {navController.navigate("loadingpage")},
                 //for login with google
                 state = state,
                 onSignInClick = {

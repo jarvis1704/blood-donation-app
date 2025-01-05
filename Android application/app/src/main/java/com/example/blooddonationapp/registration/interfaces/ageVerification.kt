@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ageVerification(goto_donordetails:()->Unit){
     Box(modifier = Modifier.fillMaxSize()){
-
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
