@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.example.blooddonationapp.auth.data.currentUser
+import com.example.blooddonationapp.global.data.currentUser
 import kotlinx.coroutines.delay
 
 @Composable

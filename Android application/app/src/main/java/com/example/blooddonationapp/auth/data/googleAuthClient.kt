@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import com.example.blooddonationapp.R
+import com.example.blooddonationapp.global.data.errorMessage
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.Firebase
@@ -25,7 +26,7 @@ class googleAuthClient(
                 buildSignInRequest()
             ).await()
         }catch (e:Exception){
-            //todo handle error
+            errorMessage = e.message.toString()
             if (e is CancellationException) throw e
             null
         }
@@ -49,7 +50,7 @@ class googleAuthClient(
                 errorMessage = null
             )
         }catch (e:Exception){
-            //todo handle error
+            errorMessage = e.message.toString()
             if (e is CancellationException) throw e
             return SignInResult(
                 data = null,
@@ -63,7 +64,7 @@ class googleAuthClient(
             oneTapClient.signOut().await()
             auth.signOut()
         }catch (e:Exception){
-            //todo handle error
+            errorMessage = e.message.toString()
             if (e is CancellationException) throw e
         }
     }
