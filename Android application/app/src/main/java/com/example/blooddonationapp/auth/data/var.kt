@@ -18,9 +18,3 @@ data class UserData(
     val userId: String,
     val username: String?
 )
-
-//to keep track of the current user logged in
-object currentUser{
-    var isSearching by mutableStateOf(true)
-    var isLoggedIn by mutableStateOf(false)
-}

@@ -1,6 +1,8 @@
 package com.example.blooddonationapp.auth.data
 
 import androidx.lifecycle.ViewModel
+import com.example.blooddonationapp.global.data.currentUser
+import com.example.blooddonationapp.global.data.errorMessage
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,16 +39,16 @@ class emailLoginViewmodel(): ViewModel() {
                         .addOnSuccessListener {
                             //todo go to homepage
                         }.addOnFailureListener {
-                            //todo handle error
+                            errorMessage = it.message.toString()
                         }
                 }catch (e:Exception){
-                    //todo handle error
+                    errorMessage = e.message.toString()
                 }
             }else{
-                //todo handle error
+                errorMessage = "Passwords do not match!"
             }
         }else{
-            //todo handle error
+            errorMessage = "One or more entries are empty!"
         }
     }
 
@@ -57,13 +59,13 @@ class emailLoginViewmodel(): ViewModel() {
                     .addOnSuccessListener {
                         //todo go to homepage
                     }.addOnFailureListener {
-                        //todo handle error
+                        errorMessage = it.message.toString()
                     }
             }catch (e:Exception){
-                //todo handle error
+                errorMessage = e.message.toString()
             }
         }else{
-            //todo handle error
+            errorMessage = "One or more entries are empty!"
         }
     }
 
