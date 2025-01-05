@@ -19,12 +19,14 @@ data class UserData(
 )
 
 
-//to temporarily store the data in login and signup page
+//to temporarily store the data in login, registration etc
 object tempUserObj{
     var email by mutableStateOf("")
     var password by mutableStateOf("")
     var name by mutableStateOf("")
     var confirmpassword by mutableStateOf("")
+
+    var age by mutableStateOf("")
 }
 
 

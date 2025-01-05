@@ -116,7 +116,7 @@ fun loginpage(
             Button(onClick = {
                 onSignInClick()
             }) {
-                Text(text = "Google")
+                Text(text = "Continue with Google")
             }
             Text(text = "Create an account",
                 modifier = Modifier.clickable {

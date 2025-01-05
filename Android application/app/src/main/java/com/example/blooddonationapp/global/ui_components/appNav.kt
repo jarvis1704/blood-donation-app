@@ -16,11 +16,16 @@ import androidx.navigation.compose.composable
 import com.example.blooddonationapp.auth.data.emailLoginViewmodel
 import com.example.blooddonationapp.auth.data.googleAuthClient
 import com.example.blooddonationapp.auth.data.googleAuthViewmodel
-import com.example.blooddonationapp.auth.interfaces.homepage
+import com.example.blooddonationapp.home.interfaces.homepage
 import com.example.blooddonationapp.auth.interfaces.loadingpage
 import com.example.blooddonationapp.auth.interfaces.loginpage
 import com.example.blooddonationapp.auth.interfaces.signuppage
+import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.global.data.errorMessage
+import com.example.blooddonationapp.registration.interfaces.ageVerification
+import com.example.blooddonationapp.registration.interfaces.bloodGroup
+import com.example.blooddonationapp.registration.interfaces.donorDetails
+import com.example.blooddonationapp.registration.interfaces.verifyAdhaar
 import kotlinx.coroutines.launch
 
 
@@ -37,7 +42,8 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         composable("loadingpage"){
             loadingpage(
                 goto_homepage = {navController.navigate("homepage")},
-                goto_loginpage = {navController.navigate("loginpage")}
+                goto_loginpage = {navController.navigate("loginpage")},
+                goto_ageverification = {navController.navigate("ageverification")}
             )
         }
         composable("loginpage"){
@@ -45,11 +51,12 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
             val viewModel = viewModel<googleAuthViewmodel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
 
-            //checks if signin successful, then goes to homepage
+            //checks if signin successful, then goes to loading page to check registration
             LaunchedEffect(state.isSignInSuccessful) {
                 if (state.isSignInSuccessful) {
-                    navController.navigate("homepage") {
-                        popUpTo("loginpage") { inclusive = true }
+                    currentUser.isSearching = true
+                    navController.navigate("loadingpage") {
+//                        popUpTo("loginpage") { inclusive = true }
                     }
                 }
             }
@@ -106,7 +113,25 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         composable("signuppage"){
             signuppage(
                 goto_homepage = {navController.navigate("homepage")},
-                goto_loginpage = {navController.navigate("loginpage")})
+                goto_loginpage = {navController.navigate("loginpage")},
+                goto_loadingpage = {navController.navigate("loadingpage")})
+        }
+        composable("ageverification"){
+            ageVerification(
+                goto_donordetails = {navController.navigate("donordetails")})
+        }
+        composable("donordetails"){
+            donorDetails(
+                goto_bloodgroup = {navController.navigate("bloodgroup")})
+        }
+        composable("bloodgroup"){
+            bloodGroup(
+                goto_verifyadhaar = {navController.navigate("verifyadhaar")})
+        }
+        composable("verifyadhaar"){
+            verifyAdhaar(
+                goto_homepage = {navController.navigate("homepage")}
+            )
         }
     }
 }

@@ -29,7 +29,8 @@ import com.example.blooddonationapp.auth.data.tempUserObj
 @Composable
 fun signuppage(
     goto_homepage:()->Unit,
-    goto_loginpage:()->Unit
+    goto_loginpage:()->Unit,
+    goto_loadingpage:()->Unit
 ){
     var viewmodel: emailLoginViewmodel = viewModel()
 
@@ -103,7 +104,7 @@ fun signuppage(
                     }
 
                     Button(onClick = {
-                        //todo next
+                        viewmodel.signup(tempUserObj.email, tempUserObj.password, tempUserObj.confirmpassword, goto_loadingpage)
                     }) {
                         Text(text = "Next")
                     }
@@ -118,7 +119,6 @@ fun signuppage(
                             modifier = Modifier.clickable {
                                 goto_loginpage()
                             })
-
                     }
                 }
             }
