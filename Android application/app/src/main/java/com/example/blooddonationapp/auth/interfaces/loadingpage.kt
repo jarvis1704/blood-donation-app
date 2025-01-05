@@ -1,5 +1,6 @@
 package com.example.blooddonationapp.auth.interfaces
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,10 +22,9 @@ import com.example.blooddonationapp.registration.data.registrationViewmodel
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.blooddonationapp.R
-import com.example.blooddonationapp.global.data.currentUser
+import com.example.blooddonationapp.auth.data.emailLoginViewmodel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -37,28 +37,22 @@ fun loadingpage(
     /*this page will check whether the user is logged in or not
     * and based on that, we will navigate to homepage or loginpage */
 
+    var emailLoginViewmodel:emailLoginViewmodel = viewModel()
     var registrationViewmodel: registrationViewmodel = viewModel()
 
-    LaunchedEffect(key1 = Unit) {
-        // Move to a background dispatcher for the polling
-        withContext(Dispatchers.Default) {
-            while (currentUser.isSearching) {
-                delay(200)
-            }
-            if (currentUser.isLoggedIn){
-           delay(1000)
-           goto_homepage()
-       }else{
-           delay(1000)
-           goto_loginpage()
-       }
+    LaunchedEffect(currentUser.isSearching) {
+        while (currentUser.isSearching){
+            emailLoginViewmodel.checkLoginStatus()
+            delay(200)
         }
         if (currentUser.isLoggedIn){
             currentUser.registrationType = registrationViewmodel.getRegistrationType() //todo potential error, might not wait
-            if (currentUser.registrationType.isEmpty() || currentUser.registrationType=="signup"){
-                goto_ageverification()
-            }else if (currentUser.registrationType == "registered"){
+            Log.d("checkLogin", "returned from getRegis, registrationtype="+currentUser.registrationType)
+            if (currentUser.registrationType == "registered"){
+                delay(300)
                 goto_homepage()
+            }else{
+                goto_ageverification()
             }
         }else{
           delay(1000)
@@ -69,11 +63,15 @@ fun loadingpage(
 
     Box(modifier = Modifier.fillMaxSize()){
         Column(
-            modifier = Modifier.fillMaxSize().background(Color.White),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Image(painter = painterResource(R.drawable.red_cross_logo), contentDescription = "Red Cross Logo", modifier = Modifier.height(120.dp).width(120.dp))
+            Image(painter = painterResource(R.drawable.red_cross_logo), contentDescription = "Red Cross Logo", modifier = Modifier
+                .height(120.dp)
+                .width(120.dp))
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = "Red Cross Society", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold, color = Color.Black)
             Spacer(modifier = Modifier.height(8.dp))
@@ -81,9 +79,9 @@ fun loadingpage(
         }
     }
 }
-
-@Preview
-@Composable
-private fun LoadingPagePreview() {
-    loadingpage({}) { }
-}
+//
+//@Preview
+//@Composable
+//private fun LoadingPagePreview() {
+//    loadingpage({}) { }
+//}

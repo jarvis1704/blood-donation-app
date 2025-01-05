@@ -1,5 +1,6 @@
 package com.example.blooddonationapp.registration.data
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.blooddonationapp.global.data.errorMessage
 import com.google.firebase.auth.FirebaseAuth
@@ -28,10 +29,12 @@ class registrationViewmodel : ViewModel(){
     }
 
     suspend fun getRegistrationType():String{
+        Log.d("checkLogin", "inside getRegis")
         try {
             val document = _auth.currentUser?.let { _db.collection("userdetails").document(it.uid) }
                 ?.get()?.await()
             if (document != null){
+                Log.d("checkLogin", "doc is not null!!!!")
                 return document.getString("registration_type").toString()
             }
             else return ""
