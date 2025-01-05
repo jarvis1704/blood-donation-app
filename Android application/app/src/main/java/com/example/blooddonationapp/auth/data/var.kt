@@ -23,6 +23,8 @@ data class UserData(
 object tempUserObj{
     var email by mutableStateOf("")
     var password by mutableStateOf("")
+    var name by mutableStateOf("")
+    var confirmpassword by mutableStateOf("")
 }
 
 

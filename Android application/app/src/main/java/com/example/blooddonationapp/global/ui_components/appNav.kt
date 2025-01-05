@@ -19,6 +19,7 @@ import com.example.blooddonationapp.auth.data.googleAuthViewmodel
 import com.example.blooddonationapp.auth.interfaces.homepage
 import com.example.blooddonationapp.auth.interfaces.loadingpage
 import com.example.blooddonationapp.auth.interfaces.loginpage
+import com.example.blooddonationapp.auth.interfaces.signuppage
 import com.example.blooddonationapp.global.data.errorMessage
 import kotlinx.coroutines.launch
 
@@ -101,6 +102,11 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
             homepage(
                 goto_loadingpage = {navController.navigate("loadingpage")}
             )
+        }
+        composable("signuppage"){
+            signuppage(
+                goto_homepage = {navController.navigate("homepage")},
+                goto_loginpage = {navController.navigate("loginpage")})
         }
     }
 }
