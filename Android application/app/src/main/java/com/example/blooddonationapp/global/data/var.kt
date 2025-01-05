@@ -10,6 +10,6 @@ object currentUser{
     var isLoggedIn by mutableStateOf(false)
 }
 
-//this var stores errors, just change it to push an error dialogue containing the message
-var errorMessage by mutableStateOf("")
-var isErrorDialogue by mutableStateOf(false)
+//for global error dialogue
+var errorMessage by mutableStateOf("")         //just change value to push an alert
+var isErrorDialogue by mutableStateOf(false)   //no need to change value, launchedAffect takes care of it

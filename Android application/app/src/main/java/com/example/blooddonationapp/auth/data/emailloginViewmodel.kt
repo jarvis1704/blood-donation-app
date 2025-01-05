@@ -52,12 +52,12 @@ class emailLoginViewmodel(): ViewModel() {
         }
     }
 
-    fun login(email: String, password: String){
+    fun login(email: String, password: String, goto_homepage:()->Unit){
         if (email.isNotEmpty() && password.isNotEmpty()){
             try {
                 _auth.signInWithEmailAndPassword(email,password)
                     .addOnSuccessListener {
-                        //todo go to homepage
+                        goto_homepage()
                     }.addOnFailureListener {
                         errorMessage = it.message.toString()
                     }
