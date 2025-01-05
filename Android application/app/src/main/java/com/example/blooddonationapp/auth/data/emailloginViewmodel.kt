@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class emailLoginViewmodel(): ViewModel() {
+open class emailLoginViewmodel(): ViewModel() {
     private val _auth : FirebaseAuth = FirebaseAuth.getInstance()
 
     //on initialization, checks if logged in
@@ -52,7 +52,7 @@ class emailLoginViewmodel(): ViewModel() {
         }
     }
 
-    fun login(email: String, password: String, goto_homepage:()->Unit){
+    open fun login(email: String, password: String, goto_homepage:()->Unit){
         if (email.isNotEmpty() && password.isNotEmpty()){
             try {
                 _auth.signInWithEmailAndPassword(email,password)
