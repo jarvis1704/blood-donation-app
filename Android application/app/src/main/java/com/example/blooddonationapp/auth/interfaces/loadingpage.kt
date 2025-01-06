@@ -46,7 +46,7 @@ fun loadingpage(
             delay(200)
         }
         if (currentUser.isLoggedIn){
-            currentUser.registrationType = registrationViewmodel.getRegistrationType() //todo potential error, might not wait
+            currentUser.registrationType = registrationViewmodel.getRegistrationType()
             Log.d("checkLogin", "returned from getRegis, registrationtype="+currentUser.registrationType)
             if (currentUser.registrationType == "registered"){
                 delay(300)
