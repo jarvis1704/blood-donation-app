@@ -1,9 +1,11 @@
 package com.example.blooddonationapp.global.ui_components
 
 import android.app.Activity
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,10 +27,11 @@ import com.example.blooddonationapp.global.data.errorMessage
 import com.example.blooddonationapp.registration.interfaces.ageVerification
 import com.example.blooddonationapp.registration.interfaces.bloodGroup
 import com.example.blooddonationapp.registration.interfaces.donorDetails
-import com.example.blooddonationapp.registration.interfaces.verifyAdhaar
+import com.example.blooddonationapp.registration.interfaces.verifyAadhar
 import kotlinx.coroutines.launch
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient){
     val navController = navController
@@ -124,10 +127,10 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         }
         composable("bloodgroup"){
             bloodGroup(
-                goto_verifyadhaar = {navController.navigate("verifyadhaar")})
+                goto_verifyadhaar = {navController.navigate("verifyaadhar")})
         }
-        composable("verifyadhaar"){
-            verifyAdhaar(
+        composable("verifyaadhar"){
+            verifyAadhar(
                 goto_homepage = {navController.navigate("homepage")}
             )
         }
