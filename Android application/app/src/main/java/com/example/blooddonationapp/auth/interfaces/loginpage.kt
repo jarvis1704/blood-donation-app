@@ -84,13 +84,10 @@ fun loginpage(
         }
     }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(color = Color(0xFFEB4335))){ //Red BackGround
+    Box(modifier = Modifier.fillMaxSize().background(color = Color(0xFFEB4335))){ //Red BackGround
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(vertical = 32.dp, horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally
+             horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp, horizontal = 8.dp)
         ) {
             Spacer(modifier = Modifier.height(60.dp))
             Text(
@@ -121,7 +118,6 @@ fun loginpage(
                 ) {
                     //Email Feild
                     Text(text = "Email", color = Color.DarkGray, fontSize = 16.sp)
-                    Spacer(modifier = Modifier.height(8.dp))
                     TextField(
                         value = email,
                         onValueChange = { email = it },
@@ -186,7 +182,7 @@ fun loginpage(
                         )
                     }
                     Button(onClick = {
-                        viewmodel.login(email, password, goto_loadingpage)
+                        viewmodel.login(email, password, goto_homepage)
                     },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -200,25 +196,30 @@ fun loginpage(
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.Center
+                ) {
+                    // Create Account Link
+                    Text(text = "New here? Create an Account",
+                        color = Color.Black,
+                        fontSize = 16.sp,
+                        textDecoration = TextDecoration.Underline,
+                        modifier = Modifier.clickable {
+                            goto_signuppage()
+                        }
+                    )
+                }
 
-                //Google SignUp
-                // Google Sign In Button
 
-                Text(text = "Or", color = Color.Black)
-                Spacer(modifier = Modifier.height(16.dp))
-                // Create Account Link
-                Text(text = "New here? Create an Account",
-                    color = Color.Black,
-                    fontSize = 16.sp,
-                    textDecoration = TextDecoration.Underline,
-                    modifier = Modifier.clickable {
-                        goto_signuppage()
-                    })
                 Spacer(modifier = Modifier.height(16.dp))
             }
+            Text(text = "Or", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+            //Google SignUp
+            // Google Sign In Button
+            Spacer(modifier = Modifier.height(16.dp))
             Card(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(0.95f)
                     .height(50.dp)
                     .clickable(onClick = { onSignInClick() }),
                 colors = CardDefaults.cardColors(

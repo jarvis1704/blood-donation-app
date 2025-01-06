@@ -55,7 +55,7 @@ fun loadingpage(
                 goto_ageverification()
             }
         }else{
-          delay(1000)
+            delay(1000)
             goto_loginpage()
         }
     }
