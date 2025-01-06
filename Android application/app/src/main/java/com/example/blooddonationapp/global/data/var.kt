@@ -14,6 +14,18 @@ object currentUser{
      null = not registered, so goto registration page
      "signup" = only email and password is registered, other data need to be uploaded
      "registered" = goto homepage directly */
+
+    //below data will be fetched from either email or registration pages
+    var birthDate by mutableStateOf("")
+    var username by mutableStateOf("")
+    var gender by mutableStateOf("")
+    var area by mutableStateOf("")
+    var phoneNo by mutableStateOf(0)
+    var lastDonationDate by mutableStateOf("")
+    var locationSelected by mutableStateOf("")
+    var bloodGroup by mutableStateOf("")
+    var adhaarNo by mutableStateOf(0)
+    var adhaarDOB by mutableStateOf("")
 }
 
 //for global error dialogue
