@@ -75,8 +75,6 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                             errorMessage = e.message.toString()
                         }
                     }
-                }else{
-                    errorMessage = "appNav.launcher: Result code not OK"
                 }
             }
 
