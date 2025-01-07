@@ -60,6 +60,8 @@ fun ageVerification(goto_donordetails:()->Unit){
                 onDateSelected = {})
             Spacer(Modifier.height(8.dp))
             Button(onClick = {
+                //todo save date
+
                 goto_donordetails()
             },
                 colors = ButtonDefaults.buttonColors(

@@ -28,6 +28,23 @@ class registrationViewmodel : ViewModel(){
         }
     }
 
+    fun saveRegistrationEntryByString(entry:String, data:String){
+        if (entry == "birthdate"){
+            val datamap = mapOf(entry to data)
+            if (_auth.currentUser != null){
+                _db.collection("userdetails").document(_auth.currentUser!!.uid)
+                    .set(datamap, SetOptions.merge())
+                    .addOnSuccessListener {
+                        //todo
+                    }.addOnFailureListener {
+                        errorMessage = it.message.toString()
+                    }
+            }
+        }else{
+            //todo
+        }
+    }
+
     suspend fun getRegistrationType():String{
         Log.d("checkLogin", "inside getRegis")
         try {
