@@ -1,5 +1,7 @@
 package com.example.blooddonationapp.registration.interfaces
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.blooddonationapp.registration.data.registrationViewmodel
 import com.example.blooddonationapp.registration.data.tempRegistrationDetails
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun verifyAadhar(goto_homepage:()->Unit){
@@ -44,9 +47,9 @@ fun verifyAadhar(goto_homepage:()->Unit){
                 ) {
                     Text(text = "Aadhar Number")
                     TextField(
-                        value = tempRegistrationDetails.aadharNo.toString(),
+                        value = tempRegistrationDetails.aadharNo?.toString()?:"",
                         onValueChange = {
-                            tempRegistrationDetails.aadharNo = it.toInt()
+                            tempRegistrationDetails.aadharNo = it.toLongOrNull()
                         }, placeholder = {
                             Text(text = "XXXX XXXX XXXX XXXX")
                         }, keyboardOptions = KeyboardOptions(

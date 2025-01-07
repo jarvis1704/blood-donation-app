@@ -1,5 +1,7 @@
 package com.example.blooddonationapp.registration.interfaces
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -31,11 +33,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.blooddonationapp.registration.data.registrationViewmodel
 import com.example.blooddonationapp.registration.data.tempRegistrationDetails
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun bloodGroup(goto_verifyadhaar:()->Unit){
+
+    var viewmodel: registrationViewmodel = viewModel()
 
     //variable for each blood group
     val positiveBloodGroups = listOf("A+", "B+", "AB+", "O+")
@@ -45,13 +52,17 @@ fun bloodGroup(goto_verifyadhaar:()->Unit){
 
         Column(modifier = Modifier.fillMaxSize()) {
             Box(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .weight(0.5f)
                     .background(Color(0xFFEB4335))
 
             ){
                 Column(
-                    modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(top = 100.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .statusBarsPadding()
+                        .padding(top = 100.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(text = "Blood Group", fontSize = 32.sp, fontWeight = FontWeight.Bold, color = Color.White)
@@ -60,14 +71,19 @@ fun bloodGroup(goto_verifyadhaar:()->Unit){
                 }
             }
             Box(
-                modifier = Modifier.fillMaxWidth().weight(0.5f).background(Color.White)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.5f)
+                    .background(Color.White)
             ){
 
             }
         }
 
         Column(
-            modifier = Modifier.fillMaxSize().padding(8.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -81,7 +97,8 @@ fun bloodGroup(goto_verifyadhaar:()->Unit){
                 )
             {
                 Column(modifier = Modifier
-                    .fillMaxWidth().padding(vertical = 16.dp),
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(16.dp))
                 {
@@ -120,9 +137,13 @@ fun bloodGroup(goto_verifyadhaar:()->Unit){
             Spacer(Modifier.height(32.dp))
             //next button
             Button(onClick = {
-                goto_verifyadhaar()
+                if (tempRegistrationDetails.bloodGroup!=""){
+                    viewmodel.saveRegistrationEntryByString("bloodGroup", tempRegistrationDetails.bloodGroup, goto_verifyadhaar)
+                }
             },
-                modifier = Modifier.width(160.dp).height(45.dp),
+                modifier = Modifier
+                    .width(160.dp)
+                    .height(45.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFEB4335)
                 )
@@ -130,7 +151,6 @@ fun bloodGroup(goto_verifyadhaar:()->Unit){
                 Text(text = "Next", fontSize = 16.sp, fontWeight = FontWeight.Medium)
             }
         }
-
     }
 }
 
@@ -166,12 +186,6 @@ fun AnimatedBloodGroupButton(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun BloodGroupPreview() {
-    bloodGroup {  }
-
-}
 
 //Original code to recover if anything goes wrong
 // Button(modifier = Modifier,
