@@ -28,9 +28,10 @@ fun ageVerification(goto_donordetails:()->Unit){
             Text(text = "Age verification")
             Text(text = "Please enter your birth date")
             dateYearSelector(
-                selectedDate = LocalDate.now(),
-                onDateSelected = {})
+                selectedDate = LocalDate.now())
             Button(onClick = {
+                //todo save date
+
                 goto_donordetails()
             }) {
                 Text(text = "Next")
