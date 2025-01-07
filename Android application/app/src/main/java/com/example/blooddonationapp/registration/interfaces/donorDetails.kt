@@ -1,5 +1,7 @@
 package com.example.blooddonationapp.registration.interfaces
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,11 +23,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.blooddonationapp.global.data.errorMessage
+import com.example.blooddonationapp.registration.data.registrationViewmodel
 import com.example.blooddonationapp.registration.data.tempRegistrationDetails
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun donorDetails(goto_bloodgroup:()->Unit){
+
+    //todo get already existing user details here
+    var viewmodel:registrationViewmodel = viewModel()
     Box(modifier = Modifier.fillMaxSize()){
 
         Column(
@@ -88,23 +97,40 @@ fun donorDetails(goto_bloodgroup:()->Unit){
                         Text(text = "Enter area")
                     })
                 Text(text = "Phone")
-                TextField(
-                    value = tempRegistrationDetails.phoneNo.toString(),
-                    onValueChange = {
-                        tempRegistrationDetails.phoneNo = it.toInt()
-                    }, placeholder = {
-                        Text(text = "Username")
-                    }, keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number
+
+                Row (
+                    modifier = Modifier.fillMaxWidth()
+                ){
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(0.15f),
+                        value = "+91",
+                        onValueChange = {
+
+                        })
+                    TextField(
+                        value = tempRegistrationDetails.phoneNo,
+                        onValueChange = {
+                            val digitsOnly = it.filter { char -> char.isDigit() }  //filters only numerical digits
+                            val limitedDigits = if(digitsOnly.length > 10){        //limited to 10 digits
+                                digitsOnly.substring(0, 10)
+                            }else{
+                                digitsOnly
+                            }
+                            tempRegistrationDetails.phoneNo = limitedDigits
+                        }, placeholder = {
+                            Text(text = "XXX XXX XXXX")
+                        }, keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number
+                        )
                     )
-                )
+                }
                 Text(text = "Last Donation Date, if any")
                 TextField(
-                    value = tempRegistrationDetails.lastDonationDate,
+                    value = "",
                     onValueChange = {
-                        tempRegistrationDetails.lastDonationDate = it
+//todo
                     }, placeholder = {
-                        Text(text = "Username")
+                        Text(text = "DD MM YYYY")
                     }, keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number
                     )
@@ -116,7 +142,22 @@ fun donorDetails(goto_bloodgroup:()->Unit){
             
             //next button
             Button(onClick = {
-                goto_bloodgroup()
+                //todo check if all entries non empty
+                if (tempRegistrationDetails.username == ""
+                    || tempRegistrationDetails.gender == ""
+                    || tempRegistrationDetails.area == ""
+                    ){
+                    errorMessage = "Error: Required entries are empty"
+                }else if(tempRegistrationDetails.phoneNo.toLong() < 1000000000){
+                    errorMessage = "Error: Enter a valid phone number"
+                }else if(tempRegistrationDetails.phoneNo.toLong() > 9999999999){
+                    errorMessage = "Error: Enter a valid phone number"
+                }else{
+                    viewmodel.saveRegistrationEntryByString("username", tempRegistrationDetails.username)
+                    viewmodel.saveRegistrationEntryByString("gender", tempRegistrationDetails.gender)
+                    viewmodel.saveRegistrationEntryByString("area", tempRegistrationDetails.area)
+                    viewmodel.saveRegistrationEntryByString("phoneNo", tempRegistrationDetails.phoneNo, goto_bloodgroup)
+                }
             }) {
                 Text(text = "Next")
             }

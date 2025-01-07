@@ -23,21 +23,32 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.blooddonationapp.registration.data.registrationViewmodel
 import com.example.blooddonationapp.registration.ui_components.dateYearSelector
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ageVerification(goto_donordetails:()->Unit){
+    var viewmodel: registrationViewmodel = viewModel()
     Box(modifier = Modifier.fillMaxSize()){
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
             Box(
-                modifier = Modifier.fillMaxWidth().weight(0.5f).background(Color(0xFFEB4335))
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.5f)
+                    .background(Color(0xFFEB4335))
             ){
                 Column(
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 100.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 100.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
@@ -46,7 +57,10 @@ fun ageVerification(goto_donordetails:()->Unit){
                 }
             }
             Box(
-                modifier = Modifier.fillMaxWidth().weight(0.5f).background(Color.White)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.5f)
+                    .background(Color.White)
             )
         }
         Column(
@@ -54,29 +68,23 @@ fun ageVerification(goto_donordetails:()->Unit){
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-
             dateYearSelector(
-                selectedDate = LocalDate.now(),
-                onDateSelected = {})
+                selectedDate = LocalDate.now())
             Spacer(Modifier.height(8.dp))
             Button(onClick = {
-                //todo save date
-
-                goto_donordetails()
+                CoroutineScope(Dispatchers.IO).launch {
+                    viewmodel.saveBirthdate { goto_donordetails() }
+                }
             },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFEB4335)
                 ),
-                modifier = Modifier.width(160.dp).height(45.dp)
+                modifier = Modifier
+                    .width(160.dp)
+                    .height(45.dp)
                 ) {
                 Text(text = "Next", fontSize = 16.sp, fontWeight = FontWeight.Medium)
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun AgeVerificationPreview() {
-    ageVerification {  }
 }
