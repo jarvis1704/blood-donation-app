@@ -166,7 +166,7 @@ fun donorDetails(goto_bloodgroup:()->Unit){
                 }else if (
                     tempRegistrationDetails.lastDonationDate != "" && !checkCorrectDateStringEntered(tempRegistrationDetails.lastDonationDate)
                 ){
-                    //error
+                    //error is handled automatically in func
                 }
                 else{
                     if (tempRegistrationDetails.lastDonationDate != ""){
