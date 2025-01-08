@@ -6,6 +6,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,6 +19,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.blooddonationapp.home.data.homeViewmodel
@@ -21,29 +28,56 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun userProfile(){
+    /*note to Biprangshu:
+    *  you can access any user data using 'viewmodel.getRegistrationEntryByString("") '
+    *  this will return a string
+    *  strings include: username, profilepic, birthdate, bloodgroup etc
+    * */
 
-    //do not edit userprofile, yet to source data
     var viewmodel: homeViewmodel = viewModel()
-    var temp: String by remember {
-        mutableStateOf("")
-    }
+
+    //these are temp var to get the data from firebase
+    var username by remember { mutableStateOf("") }
+    var profilepic by remember { mutableStateOf("") }
+    var bloodgroup by remember { mutableStateOf("") }
+    var area by remember { mutableStateOf("") }
+
     CoroutineScope(Dispatchers.IO).launch {
-        temp = viewmodel.getRegistrationEntryByString("profilepic")
+        username = viewmodel.getRegistrationEntryByString("username")
+        profilepic = viewmodel.getRegistrationEntryByString("profilepic")
+        bloodgroup = viewmodel.getRegistrationEntryByString("bloodGroup")
+        area = viewmodel.getRegistrationEntryByString("area")
     }
+
     Box(modifier = Modifier.fillMaxSize()){
-        Image(
-            painter = rememberAsyncImagePainter(model = temp),
-            contentDescription = null)
-        
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "this is user profile page")
+            Text(text = "Donor Profile")
+            Image(
+                painter = rememberAsyncImagePainter(model = profilepic),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(200.dp)
+                    .clip(CircleShape))
+            Text(text = username)
+            Card(modifier = Modifier
+                .fillMaxWidth(0.8f),
+                onClick = { /*TODO*/ }) {
+                Column(modifier = Modifier
+                    .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(text = "Blood Group:" + bloodgroup)
+                    Text(text = area)
+                }
+            }
         }
     }
 }
