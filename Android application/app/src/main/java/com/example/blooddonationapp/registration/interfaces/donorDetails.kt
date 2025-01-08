@@ -91,6 +91,7 @@ fun donorDetails(goto_bloodgroup:()->Unit){
                 Column(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp, horizontal = 16.dp)
                 ) {
+
                     Text(text = "Full Name", fontWeight = FontWeight.Medium, fontSize = 16.sp)
                     TextField(
                         value = tempRegistrationDetails.username,
@@ -216,7 +217,13 @@ fun donorDetails(goto_bloodgroup:()->Unit){
                     TextField(
                         value = "",
                         onValueChange = {
-//todo
+                            val digitsOnly = it.filter { char -> char.isDigit() }
+                            val limitedDigits = if(digitsOnly.length > 8){
+                                digitsOnly.substring(0,8)
+                            }else{
+                                digitsOnly
+                            }
+                            tempRegistrationDetails.lastDonationDate = limitedDigits
                         }, placeholder = {
                             Text(text = "DD MM YYYY")
                         }, keyboardOptions = KeyboardOptions(
@@ -234,60 +241,40 @@ fun donorDetails(goto_bloodgroup:()->Unit){
                         modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
                     )
                 }
-                }
-
-
-                Text(text = "Last Donation Date, if any")
-                TextField(
-                    value = tempRegistrationDetails.lastDonationDate,
-                    onValueChange = {
-                        val digitsOnly = it.filter { char -> char.isDigit() }
-                        val limitedDigits = if(digitsOnly.length > 8){
-                            digitsOnly.substring(0,8)
-                        }else{
-                            digitsOnly
-                        }
-                        tempRegistrationDetails.lastDonationDate = limitedDigits
-                    }, placeholder = {
-                        Text(text = "DD MM YYYY")
-                    }, keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number
-                    )
-                )
             }
             //location from google maps
             Text(text = "Location")
             //todo location
-            
+
             //next button
             Button(onClick = {
                 //todo check if all entries non empty
-                if (tempRegistrationDetails.username == ""
-                    || tempRegistrationDetails.gender == ""
-                    || tempRegistrationDetails.area == ""
+                    if (tempRegistrationDetails.username == ""
+                        || tempRegistrationDetails.gender == ""
+                        || tempRegistrationDetails.area == ""
                     ){
-                    errorMessage = "Error: Required entries are empty"
-                }else if(tempRegistrationDetails.phoneNo.toLong() < 1000000000){
-                    errorMessage = "Error: Enter a valid phone number"
-                }else if(tempRegistrationDetails.phoneNo.toLong() > 9999999999){
-                    errorMessage = "Error: Enter a valid phone number"
-                }else if (
-                    tempRegistrationDetails.lastDonationDate != "" && !checkCorrectDateStringEntered(tempRegistrationDetails.lastDonationDate)
-                ){
-                    //error
-                }
-                else{
-                    if (tempRegistrationDetails.lastDonationDate != ""){
-                        CoroutineScope(Dispatchers.IO).launch {
-                            viewmodel.saveLastDonationDate(stringToTimestamp(tempRegistrationDetails.lastDonationDate))
-                        }
+                        errorMessage = "Error: Required entries are empty"
+                    }else if(tempRegistrationDetails.phoneNo.toLong() < 1000000000){
+                        errorMessage = "Error: Enter a valid phone number"
+                    }else if(tempRegistrationDetails.phoneNo.toLong() > 9999999999){
+                        errorMessage = "Error: Enter a valid phone number"
+                    }else if (
+                        tempRegistrationDetails.lastDonationDate != "" && !checkCorrectDateStringEntered(tempRegistrationDetails.lastDonationDate)
+                    ){
+                        //error
                     }
+                    else{
+                        if (tempRegistrationDetails.lastDonationDate != ""){
+                            CoroutineScope(Dispatchers.IO).launch {
+                                viewmodel.saveLastDonationDate(stringToTimestamp(tempRegistrationDetails.lastDonationDate))
+                            }
+                        }
 
-                    viewmodel.saveRegistrationEntryByString("username", tempRegistrationDetails.username)
-                    viewmodel.saveRegistrationEntryByString("gender", tempRegistrationDetails.gender)
-                    viewmodel.saveRegistrationEntryByString("area", tempRegistrationDetails.area)
-                    viewmodel.saveRegistrationEntryByString("phoneNo", tempRegistrationDetails.phoneNo, goto_bloodgroup)
-                }
+                        viewmodel.saveRegistrationEntryByString("username", tempRegistrationDetails.username)
+                        viewmodel.saveRegistrationEntryByString("gender", tempRegistrationDetails.gender)
+                        viewmodel.saveRegistrationEntryByString("area", tempRegistrationDetails.area)
+                        viewmodel.saveRegistrationEntryByString("phoneNo", tempRegistrationDetails.phoneNo, goto_bloodgroup)
+                    }
             },
                 modifier = Modifier.fillMaxWidth(0.6f),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEB4335))) {
