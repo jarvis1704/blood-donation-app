@@ -31,3 +31,8 @@ object tempUserObj{
 
 
 var isPasswordShown by mutableStateOf(false)  //toggles on "show password click"
+
+
+//to temporarily store username and profile pic from google
+var googleUsername :String? by mutableStateOf(null)
+var googleProfilePic :String? by mutableStateOf(null)

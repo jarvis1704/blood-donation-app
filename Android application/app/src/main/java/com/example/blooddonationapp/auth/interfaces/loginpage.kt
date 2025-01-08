@@ -215,11 +215,10 @@ fun loginpage(
             }
             Text(text = "Or", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
             //Google SignUp
-            // Google Sign In Button
             Spacer(modifier = Modifier.height(16.dp))
             Card(
                 modifier = Modifier
-                    .fillMaxWidth(0.95f)
+                    .fillMaxWidth(0.75f)
                     .height(50.dp)
                     .clickable(onClick = { onSignInClick() }),
                 colors = CardDefaults.cardColors(
