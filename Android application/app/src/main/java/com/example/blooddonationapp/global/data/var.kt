@@ -39,6 +39,8 @@ object currentUser{
 var errorMessage by mutableStateOf("")         //just change value to push an alert
 var isErrorDialogue by mutableStateOf(false)   //no need to change value, launchedAffect takes care of it
 
+var currentPage by mutableStateOf("")  //universal, handled inside appNav
+
 
 //change string to timestamp to store in firebase
 @RequiresApi(Build.VERSION_CODES.O)

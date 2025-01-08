@@ -22,8 +22,12 @@ import com.example.blooddonationapp.home.interfaces.homepage
 import com.example.blooddonationapp.auth.interfaces.loadingpage
 import com.example.blooddonationapp.auth.interfaces.loginpage
 import com.example.blooddonationapp.auth.interfaces.signuppage
+import com.example.blooddonationapp.global.data.currentPage
 import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.global.data.errorMessage
+import com.example.blooddonationapp.home.interfaces.bloodRequests
+import com.example.blooddonationapp.home.interfaces.notificationsPage
+import com.example.blooddonationapp.home.interfaces.userProfile
 import com.example.blooddonationapp.registration.interfaces.ageVerification
 import com.example.blooddonationapp.registration.interfaces.bloodGroup
 import com.example.blooddonationapp.registration.interfaces.donorDetails
@@ -43,6 +47,7 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         startDestination = "loadingpage") {
 
         composable("loadingpage"){
+            currentPage = "loadingpage"
             loadingpage(
                 goto_homepage = {navController.navigate("homepage")},
                 goto_loginpage = {navController.navigate("loginpage")},
@@ -50,6 +55,7 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
             )
         }
         composable("loginpage"){
+            currentPage = "loginpage"
 
             val viewModel = viewModel<googleAuthViewmodel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
@@ -107,32 +113,51 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
             )
         }
         composable("homepage"){
+            currentPage = "homepage"
             homepage(
                 goto_loadingpage = {navController.navigate("loadingpage")}
             )
         }
         composable("signuppage"){
+            currentPage = "signuppage"
             signuppage(
                 goto_homepage = {navController.navigate("homepage")},
                 goto_loginpage = {navController.navigate("loginpage")},
                 goto_loadingpage = {navController.navigate("loadingpage")})
         }
         composable("ageverification"){
+            currentPage = "ageverification"
             ageVerification(
                 goto_donordetails = {navController.navigate("donordetails")})
         }
         composable("donordetails"){
+            currentPage = "donordetails"
             donorDetails(
                 goto_bloodgroup = {navController.navigate("bloodgroup")})
         }
         composable("bloodgroup"){
+            currentPage = "bloodgroup"
             bloodGroup(
                 goto_verifyadhaar = {navController.navigate("verifyaadhar")})
         }
         composable("verifyaadhar"){
+            currentPage = "verifyaadhar"
             verifyAadhar(
                 goto_homepage = {navController.navigate("homepage")}
             )
         }
+        composable("bloodrequests"){
+            currentPage="bloodrequests"
+            bloodRequests()
+        }
+        composable("userprofile"){
+            currentPage="userprofile"
+            userProfile()
+        }
+        composable("notificationspage"){
+            currentPage="notificationspage"
+            notificationsPage()
+        }
+
     }
 }

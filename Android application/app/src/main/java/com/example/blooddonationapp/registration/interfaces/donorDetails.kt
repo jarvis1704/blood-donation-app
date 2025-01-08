@@ -253,15 +253,21 @@ fun donorDetails(goto_bloodgroup:()->Unit){
                         || tempRegistrationDetails.gender == ""
                         || tempRegistrationDetails.area == ""
                     ){
-                        errorMessage = "Error: Required entries are empty"
-                    }else if(tempRegistrationDetails.phoneNo.toLong() < 1000000000){
-                        errorMessage = "Error: Enter a valid phone number"
-                    }else if(tempRegistrationDetails.phoneNo.toLong() > 9999999999){
-                        errorMessage = "Error: Enter a valid phone number"
-                    }else if (
-                        tempRegistrationDetails.lastDonationDate != "" && !checkCorrectDateStringEntered(tempRegistrationDetails.lastDonationDate)
-                    ){
-                        //error
+                    errorMessage = "Error: Required entries are empty"
+                }else if(tempRegistrationDetails.phoneNo.toLong() < 1000000000){
+                    errorMessage = "Error: Enter a valid phone number"
+                }else if(tempRegistrationDetails.phoneNo.toLong() > 9999999999){
+                    errorMessage = "Error: Enter a valid phone number"
+                }else if (
+                    tempRegistrationDetails.lastDonationDate != "" && !checkCorrectDateStringEntered(tempRegistrationDetails.lastDonationDate)
+                ){
+                    //error is handled automatically in func
+                }
+                else{
+                    if (tempRegistrationDetails.lastDonationDate != ""){
+                        CoroutineScope(Dispatchers.IO).launch {
+                            viewmodel.saveLastDonationDate(stringToTimestamp(tempRegistrationDetails.lastDonationDate))
+                        }
                     }
                     else{
                         if (tempRegistrationDetails.lastDonationDate != ""){
