@@ -37,9 +37,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.blooddonationapp.auth.data.tempUserObj
+import com.example.blooddonationapp.global.data.checkCorrectDateStringEntered
 import com.example.blooddonationapp.global.data.errorMessage
+import com.example.blooddonationapp.global.data.stringToTimestamp
 import com.example.blooddonationapp.registration.data.registrationViewmodel
 import com.example.blooddonationapp.registration.data.tempRegistrationDetails
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -232,11 +237,24 @@ fun donorDetails(goto_bloodgroup:()->Unit){
                 }
 
 
-
-
-
-
-
+                Text(text = "Last Donation Date, if any")
+                TextField(
+                    value = tempRegistrationDetails.lastDonationDate,
+                    onValueChange = {
+                        val digitsOnly = it.filter { char -> char.isDigit() }
+                        val limitedDigits = if(digitsOnly.length > 8){
+                            digitsOnly.substring(0,8)
+                        }else{
+                            digitsOnly
+                        }
+                        tempRegistrationDetails.lastDonationDate = limitedDigits
+                    }, placeholder = {
+                        Text(text = "DD MM YYYY")
+                    }, keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number
+                    )
+                )
+            }
             //location from google maps
             Text(text = "Location")
             //todo location
@@ -253,7 +271,18 @@ fun donorDetails(goto_bloodgroup:()->Unit){
                     errorMessage = "Error: Enter a valid phone number"
                 }else if(tempRegistrationDetails.phoneNo.toLong() > 9999999999){
                     errorMessage = "Error: Enter a valid phone number"
-                }else{
+                }else if (
+                    tempRegistrationDetails.lastDonationDate != "" && !checkCorrectDateStringEntered(tempRegistrationDetails.lastDonationDate)
+                ){
+                    //error
+                }
+                else{
+                    if (tempRegistrationDetails.lastDonationDate != ""){
+                        CoroutineScope(Dispatchers.IO).launch {
+                            viewmodel.saveLastDonationDate(stringToTimestamp(tempRegistrationDetails.lastDonationDate))
+                        }
+                    }
+
                     viewmodel.saveRegistrationEntryByString("username", tempRegistrationDetails.username)
                     viewmodel.saveRegistrationEntryByString("gender", tempRegistrationDetails.gender)
                     viewmodel.saveRegistrationEntryByString("area", tempRegistrationDetails.area)
