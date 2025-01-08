@@ -3,6 +3,7 @@ package com.example.blooddonationapp.auth.data
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
+import android.util.Log
 import com.example.blooddonationapp.R
 import com.example.blooddonationapp.global.data.errorMessage
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
@@ -36,6 +37,8 @@ class googleAuthClient(
     suspend fun getSignInResultFromIntent(intent: Intent):SignInResult{
         try {
             val credential = oneTapClient.getSignInCredentialFromIntent(intent)
+            googleUsername = credential.displayName?.toString()
+            googleProfilePic = credential.profilePictureUri?.toString()
             val googleIdToken = credential.googleIdToken
             val googleCredentials = GoogleAuthProvider.getCredential(googleIdToken,null)
             val user = auth.signInWithCredential(googleCredentials).await().user

@@ -62,6 +62,7 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
 
             //checks if signin successful, then goes to loading page to check registration
             LaunchedEffect(state.isSignInSuccessful) {
+                viewmodel.saveGoogleCredential()
                 if (state.isSignInSuccessful) {
                     currentUser.isSearching = true
                     navController.navigate("loadingpage") {

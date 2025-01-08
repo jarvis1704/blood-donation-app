@@ -3,22 +3,59 @@ package com.example.blooddonationapp.auth.data
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.global.data.errorMessage
+import com.example.blooddonationapp.registration.data.registrationViewmodel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 open class emailLoginViewmodel(): ViewModel() {
     private val _auth : FirebaseAuth = FirebaseAuth.getInstance()
-
     //on initialization, checks if logged in
-
     init {
         checkLoginStatus()
+    }
+
+    //when logged in, for the first time, save username and profile pic from google to database
+    suspend fun saveGoogleCredential(){
+        val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+        if (_auth.currentUser != null){
+            //first check if the user is already registered, if already registered, do not change values
+            try {
+                val document = _auth.currentUser?.let { db.collection("userdetails").document(it.uid) }
+                    ?.get()?.await()
+                if (document != null){
+                    val registrationType = document.getString("registration_type")
+                    if (registrationType == "registered"){
+                        //do not update values
+                    }else{
+                        //upload username and profile pic
+                        val datamap = mapOf("username" to googleUsername)
+                        db.collection("userdetails").document(_auth.currentUser!!.uid)
+                            .set(datamap, SetOptions.merge())
+                            .addOnFailureListener {
+                                errorMessage = it.message.toString()
+                            }
+                        val datamap2 = mapOf("profilepic" to googleProfilePic)
+                        db.collection("userdetails").document(_auth.currentUser!!.uid)
+                            .set(datamap2, SetOptions.merge())
+                            .addOnFailureListener {
+                                errorMessage = it.message.toString()
+                            }
+                    }
+                }
+            }catch (e:Exception){
+                errorMessage = e.message.toString()
+            }
+        }
     }
 
     fun checkLoginStatus(){

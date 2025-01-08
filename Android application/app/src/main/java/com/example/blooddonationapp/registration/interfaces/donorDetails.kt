@@ -1,5 +1,6 @@
 package com.example.blooddonationapp.registration.interfaces
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateColorAsState
@@ -40,29 +41,42 @@ import com.example.blooddonationapp.auth.data.tempUserObj
 import com.example.blooddonationapp.global.data.checkCorrectDateStringEntered
 import com.example.blooddonationapp.global.data.errorMessage
 import com.example.blooddonationapp.global.data.stringToTimestamp
+import com.example.blooddonationapp.home.data.homeViewmodel
 import com.example.blooddonationapp.registration.data.registrationViewmodel
 import com.example.blooddonationapp.registration.data.tempRegistrationDetails
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun donorDetails(goto_bloodgroup:()->Unit) {
 
     //todo get already existing user details here
+    var dataviewmodel: homeViewmodel = viewModel()
     var viewmodel: registrationViewmodel = viewModel()
+
+    CoroutineScope(Dispatchers.IO).launch {
+        tempRegistrationDetails.username = dataviewmodel.getRegistrationEntryByString("username")
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
 
         Column(
             Modifier.fillMaxSize()
         ) {
             Box(
-                modifier = Modifier.fillMaxWidth().weight(0.5f).background(Color(0xFFEB4335))
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.5f)
+                    .background(Color(0xFFEB4335))
             ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth().statusBarsPadding()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .statusBarsPadding()
                         .padding(vertical = 30.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -81,7 +95,10 @@ fun donorDetails(goto_bloodgroup:()->Unit) {
                     )
                 }
             }
-            Box(modifier = Modifier.fillMaxWidth().weight(0.5f).background(Color.White))
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .weight(0.5f)
+                .background(Color.White))
         }
 
         Column(
@@ -104,7 +121,9 @@ fun donorDetails(goto_bloodgroup:()->Unit) {
                 )
             ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp, horizontal = 16.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp, horizontal = 16.dp)
                 ) {
 
                     Text(text = "Full Name", fontWeight = FontWeight.Medium, fontSize = 16.sp)
@@ -174,7 +193,9 @@ fun donorDetails(goto_bloodgroup:()->Unit) {
                         disabledPlaceholderColor = Color.LightGray
 
                     ),
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = "Phone", fontWeight = FontWeight.Medium, fontSize = 16.sp)
@@ -227,7 +248,9 @@ fun donorDetails(goto_bloodgroup:()->Unit) {
                             disabledPlaceholderColor = Color.LightGray
 
                         ),
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
@@ -260,7 +283,9 @@ fun donorDetails(goto_bloodgroup:()->Unit) {
                         disabledPlaceholderColor = Color.LightGray
 
                     ),
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
                 )
             }
 
@@ -292,26 +317,25 @@ fun donorDetails(goto_bloodgroup:()->Unit) {
                                     )
                                 )
                             }
-                            viewmodel.saveRegistrationEntryByString(
-                                "username",
-                                tempRegistrationDetails.username
-                            )
-                            viewmodel.saveRegistrationEntryByString(
-                                "gender",
-                                tempRegistrationDetails.gender
-                            )
-                            viewmodel.saveRegistrationEntryByString(
-                                "area",
-                                tempRegistrationDetails.area
-                            )
-                            viewmodel.saveRegistrationEntryByString(
-                                "phoneNo",
-                                tempRegistrationDetails.phoneNo,
-                                goto_bloodgroup
-                            )
                         }
+                        viewmodel.saveRegistrationEntryByString(
+                            "username",
+                            tempRegistrationDetails.username
+                        )
+                        viewmodel.saveRegistrationEntryByString(
+                            "gender",
+                            tempRegistrationDetails.gender
+                        )
+                        viewmodel.saveRegistrationEntryByString(
+                            "area",
+                            tempRegistrationDetails.area
+                        )
+                        viewmodel.saveRegistrationEntryByString(
+                            "phoneNo",
+                            tempRegistrationDetails.phoneNo,
+                            goto_bloodgroup
+                        )
                     }
-
                 },
                 modifier = Modifier.fillMaxWidth(0.6f),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEB4335))

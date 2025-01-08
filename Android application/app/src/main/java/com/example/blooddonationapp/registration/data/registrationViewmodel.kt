@@ -24,7 +24,6 @@ class registrationViewmodel : ViewModel(){
             _db.collection("userdetails").document(_auth.currentUser!!.uid)
                 .set(datamap, SetOptions.merge())
                 .addOnSuccessListener {
-                    //todo
                     goto_homepage()
                 }.addOnFailureListener {
                     errorMessage = it.message.toString()
