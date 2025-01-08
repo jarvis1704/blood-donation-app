@@ -15,7 +15,7 @@ object tempRegistrationDetails{
     var gender by mutableStateOf("")
     var area by mutableStateOf("")
     var phoneNo by mutableStateOf("")
-    var lastDonationDate : LocalDate? by mutableStateOf(null)
+    var lastDonationDate by mutableStateOf("")
     var locationSelected by mutableStateOf("")
     var bloodGroup by mutableStateOf("")
     var aadharNo : Long? by mutableStateOf(null)
