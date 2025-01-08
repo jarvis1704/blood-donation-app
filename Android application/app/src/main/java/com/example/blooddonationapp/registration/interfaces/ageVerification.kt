@@ -34,6 +34,7 @@ import java.time.LocalDate
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ageVerification(goto_donordetails:()->Unit){
+    //todo get birthdate if already available
     var viewmodel: registrationViewmodel = viewModel()
     Box(modifier = Modifier.fillMaxSize()){
         Column(

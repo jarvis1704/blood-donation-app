@@ -74,6 +74,48 @@ class registrationViewmodel : ViewModel(){
         }
     }
 
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun saveLastDonationDate(
+        timestamp: Timestamp?,
+        goto_nextpage:()->Unit={}){
+        val date = mapOf(
+            "lastDonationDate" to timestamp
+        )
+        if (_auth.currentUser != null){
+            //first check if last donation date already exists
+            try {
+                val document = _auth.currentUser?.let { _db.collection("userdetails").document(it.uid) }
+                    ?.get()?.await()
+                if (document != null){
+                    val previousLastDate = document.getDate("lastDonationDate")
+                    if (previousLastDate != null){
+                        //update the existing last date
+                        _db.collection("userdetails").document(_auth.currentUser!!.uid)
+                            .update("lastDonationDate", timestamp)
+                            .addOnSuccessListener {
+                                goto_nextpage()
+                            }.addOnFailureListener {
+                                errorMessage = it.message.toString()
+                            }
+                    }
+                    else{
+                        //add new last date
+                        _db.collection("userdetails").document(_auth.currentUser!!.uid)
+                            .set(date, SetOptions.merge())
+                            .addOnSuccessListener {
+                                goto_nextpage()
+                            }.addOnFailureListener {
+                                errorMessage = it.message.toString()
+                            }
+                    }
+                }
+            }catch (e:Exception){
+                errorMessage = e.message.toString()
+            }
+        }
+    }
+
     fun saveRegistrationEntryByString(
         entry:String,                                 //what type of entry we want to store, username, gender, area etc
         data:String,                                  //value of the entry
