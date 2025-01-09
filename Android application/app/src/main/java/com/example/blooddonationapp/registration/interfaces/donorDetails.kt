@@ -61,6 +61,7 @@ fun donorDetails(goto_bloodgroup:()->Unit) {
         tempRegistrationDetails.username = dataviewmodel.getRegistrationEntryByString("username")
     }
 
+    //main container
     Box(modifier = Modifier.fillMaxSize()) {
 
         Column(
@@ -72,6 +73,7 @@ fun donorDetails(goto_bloodgroup:()->Unit) {
                     .weight(0.5f)
                     .background(Color(0xFFEB4335))
             ) {
+                //headline Text
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -100,6 +102,7 @@ fun donorDetails(goto_bloodgroup:()->Unit) {
                 .background(Color.White))
         }
 
+        //main form area
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -174,37 +177,36 @@ fun donorDetails(goto_bloodgroup:()->Unit) {
                             },
                         )
                     }
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("Area", fontWeight = FontWeight.Medium, fontSize = 16.sp)
-                TextField(
-                    value = tempRegistrationDetails.area,
-                    onValueChange = {
-                        tempRegistrationDetails.area = it
-                    }, placeholder = {
-                        Text(text = "Enter area")
-                    },
-                    colors = TextFieldDefaults.colors(
-                        unfocusedContainerColor = Color(0xFFF5F5F5),
-                        focusedContainerColor = Color(0xFFF5F5F5),
-                        unfocusedIndicatorColor = Color.Transparent,
-                        focusedIndicatorColor = Color(0xFFEB4335),
-                        focusedTextColor = Color.Black,
-                        unfocusedTextColor = Color.Black,
-                        disabledPlaceholderColor = Color.LightGray
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("Area", fontWeight = FontWeight.Medium, fontSize = 16.sp)
+                    TextField(
+                        value = tempRegistrationDetails.area,
+                        onValueChange = {
+                            tempRegistrationDetails.area = it
+                        }, placeholder = {
+                            Text(text = "Enter area")
+                        },
+                        colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = Color(0xFFF5F5F5),
+                            focusedContainerColor = Color(0xFFF5F5F5),
+                            unfocusedIndicatorColor = Color.Transparent,
+                            focusedIndicatorColor = Color(0xFFEB4335),
+                            focusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black,
+                            disabledPlaceholderColor = Color.LightGray
 
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Phone", fontWeight = FontWeight.Medium, fontSize = 16.sp)
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    //if not necessary please remove it
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = "Phone", fontWeight = FontWeight.Medium, fontSize = 16.sp)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        //if not necessary please remove it
 //                        TextField(
 //                            modifier = Modifier.fillMaxWidth(0.15f),
 //                            value = "+91",
@@ -222,21 +224,57 @@ fun donorDetails(goto_bloodgroup:()->Unit) {
 //                            ),
 //                            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
 //                            )
-                    Text("+91", Modifier.padding(horizontal = 8.dp), fontWeight = FontWeight.Medium)
+                        Text("+91", Modifier.padding(horizontal = 8.dp), fontWeight = FontWeight.Medium)
+                        TextField(
+                            value = tempRegistrationDetails.phoneNo,
+                            onValueChange = {
+                                val digitsOnly =
+                                    it.filter { char -> char.isDigit() }  //filters only numerical digits
+                                val limitedDigits =
+                                    if (digitsOnly.length > 10) {        //limited to 10 digits
+                                        digitsOnly.substring(0, 10)
+                                    } else {
+                                        digitsOnly
+                                    }
+                                tempRegistrationDetails.phoneNo = limitedDigits
+                            }, placeholder = {
+                                Text(text = "XXX XXX XXXX")
+                            }, keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Number
+                            ),
+                            colors = TextFieldDefaults.colors(
+                                unfocusedContainerColor = Color(0xFFF5F5F5),
+                                focusedContainerColor = Color(0xFFF5F5F5),
+                                unfocusedIndicatorColor = Color.Transparent,
+                                focusedIndicatorColor = Color(0xFFEB4335),
+                                focusedTextColor = Color.Black,
+                                unfocusedTextColor = Color.Black,
+                                disabledPlaceholderColor = Color.LightGray
+
+                            ),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Last Donation Date, if any",
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 16.sp
+                    )
                     TextField(
-                        value = tempRegistrationDetails.phoneNo,
+                        value = tempRegistrationDetails.lastDonationDate,
                         onValueChange = {
-                            val digitsOnly =
-                                it.filter { char -> char.isDigit() }  //filters only numerical digits
-                            val limitedDigits =
-                                if (digitsOnly.length > 10) {        //limited to 10 digits
-                                    digitsOnly.substring(0, 10)
-                                } else {
-                                    digitsOnly
-                                }
-                            tempRegistrationDetails.phoneNo = limitedDigits
+                            val digitsOnly = it.filter { char -> char.isDigit() }
+                            val limitedDigits = if (digitsOnly.length > 8) {
+                                digitsOnly.substring(0, 8)
+                            } else {
+                                digitsOnly
+                            }
+                            tempRegistrationDetails.lastDonationDate = limitedDigits
                         }, placeholder = {
-                            Text(text = "XXX XXX XXXX")
+                            Text(text = "DD MM YYYY")
                         }, keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number
                         ),
@@ -255,41 +293,7 @@ fun donorDetails(goto_bloodgroup:()->Unit) {
                             .padding(vertical = 8.dp)
                     )
                 }
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Last Donation Date, if any",
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 16.sp
-                )
-                TextField(
-                    value = tempRegistrationDetails.lastDonationDate,
-                    onValueChange = {
-                        val digitsOnly = it.filter { char -> char.isDigit() }
-                        val limitedDigits = if (digitsOnly.length > 8) {
-                            digitsOnly.substring(0, 8)
-                        } else {
-                            digitsOnly
-                        }
-                        tempRegistrationDetails.lastDonationDate = limitedDigits
-                    }, placeholder = {
-                        Text(text = "DD MM YYYY")
-                    }, keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number
-                    ),
-                    colors = TextFieldDefaults.colors(
-                        unfocusedContainerColor = Color(0xFFF5F5F5),
-                        focusedContainerColor = Color(0xFFF5F5F5),
-                        unfocusedIndicatorColor = Color.Transparent,
-                        focusedIndicatorColor = Color(0xFFEB4335),
-                        focusedTextColor = Color.Black,
-                        unfocusedTextColor = Color.Black,
-                        disabledPlaceholderColor = Color.LightGray
 
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                )
             }
 
             //location from google maps
