@@ -192,8 +192,7 @@ fun signuppage(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .statusBarsPadding()
-                        .padding(top = 40.dp),
+                        .statusBarsPadding(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
@@ -222,7 +221,7 @@ fun signuppage(
         Card(
             modifier = Modifier
                 .fillMaxWidth(0.9f)
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 8.dp)
                 .align(Alignment.Center),
             elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White, contentColor = Color.Black)
