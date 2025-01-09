@@ -15,9 +15,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.blooddonationapp.auth.data.emailLoginViewmodel
 import com.example.blooddonationapp.global.data.currentUser
+import com.example.blooddonationapp.global.data.updateCurrentUser
 
 @Composable
 fun bloodRequests(){
+    updateCurrentUser()
     Box(modifier = Modifier.fillMaxSize().padding(50.dp)){
         Column(
             modifier = Modifier.fillMaxSize().padding(top = 100.dp),
