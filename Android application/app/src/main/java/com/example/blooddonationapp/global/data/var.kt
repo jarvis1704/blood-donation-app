@@ -1,11 +1,18 @@
 package com.example.blooddonationapp.global.data
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.blooddonationapp.home.data.homeViewmodel
 import com.google.firebase.Timestamp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -24,7 +31,7 @@ object currentUser{
 
     //below data will be fetched from either email or registration pages
     var birthDate by mutableStateOf("")
-    var username by mutableStateOf("")
+    var username by mutableStateOf("Username")
     var gender by mutableStateOf("")
     var area by mutableStateOf("")
     var phoneNo by mutableStateOf(0)
@@ -33,6 +40,20 @@ object currentUser{
     var bloodGroup by mutableStateOf("")
     var adhaarNo by mutableStateOf(0)
     var adhaarDOB by mutableStateOf("")
+    var profilePic by mutableStateOf("")
+}
+
+@SuppressLint("CoroutineCreationDuringComposition")
+@Composable
+fun updateCurrentUser(){
+    var viewmodel: homeViewmodel = viewModel()
+    CoroutineScope(Dispatchers.IO).launch {
+        currentUser.username = viewmodel.getRegistrationEntryByString("username")
+        currentUser.gender = viewmodel.getRegistrationEntryByString("gender")
+        currentUser.area = viewmodel.getRegistrationEntryByString("area")
+        currentUser.profilePic = viewmodel.getRegistrationEntryByString("profilepic")
+        currentUser.bloodGroup = viewmodel.getRegistrationEntryByString("bloodGroup")
+    }
 }
 
 //for global error dialogue
