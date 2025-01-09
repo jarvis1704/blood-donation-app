@@ -67,6 +67,14 @@
           }
         },
         {
+          "client_id": "456169908751-v6pdd2n202r88c5pd55p11emarh61mnq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.blooddonationapp.debug",
+            "certificate_hash": "14fa4283d5753ed084612fe99df06abbf31bd9ed"
+          }
+        },
+        {
           "client_id": "456169908751-ll8g9u2ru3fucekhq86chgsnn2ua8q73.apps.googleusercontent.com",
           "client_type": 3
         }
