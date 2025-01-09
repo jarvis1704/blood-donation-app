@@ -17,7 +17,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -33,7 +32,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.blooddonationapp.registration.data.registrationViewmodel
 import com.example.blooddonationapp.registration.data.tempRegistrationDetails
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun verifyAadhar(goto_homepage:()->Unit){
@@ -91,8 +90,9 @@ fun verifyAadhar(goto_homepage:()->Unit){
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp),
-                        colors = TextFieldDefaults.textFieldColors(
-                            containerColor = Color(0xFFF5F5F5),
+                        colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = Color(0xFFF5F5F5),
+                            focusedContainerColor = Color(0xFFF5F5F5),
                             unfocusedIndicatorColor = Color.Transparent,
                             focusedIndicatorColor = Color(0xFFEB4335),
                             focusedTextColor = Color.Black,
@@ -115,8 +115,9 @@ fun verifyAadhar(goto_homepage:()->Unit){
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp),
-                        colors = TextFieldDefaults.textFieldColors(
-                            containerColor = Color(0xFFF5F5F5),
+                        colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = Color(0xFFF5F5F5),
+                            focusedContainerColor = Color(0xFFF5F5F5),
                             unfocusedIndicatorColor = Color.Transparent,
                             focusedIndicatorColor = Color(0xFFEB4335),
                             focusedTextColor = Color.Black,

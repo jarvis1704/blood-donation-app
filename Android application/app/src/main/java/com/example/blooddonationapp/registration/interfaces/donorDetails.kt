@@ -50,7 +50,6 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun donorDetails(goto_bloodgroup:()->Unit) {
 
@@ -134,8 +133,9 @@ fun donorDetails(goto_bloodgroup:()->Unit) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp),
-                        colors = TextFieldDefaults.textFieldColors(
-                            containerColor = Color(0xFFF5F5F5),
+                        colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = Color(0xFFF5F5F5),
+                            focusedContainerColor = Color(0xFFF5F5F5),
                             unfocusedIndicatorColor = Color.Transparent,
                             focusedIndicatorColor = Color(0xFFEB4335),
                             focusedTextColor = Color.Black,
@@ -184,8 +184,9 @@ fun donorDetails(goto_bloodgroup:()->Unit) {
                     }, placeholder = {
                         Text(text = "Enter area")
                     },
-                    colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color(0xFFF5F5F5),
+                    colors = TextFieldDefaults.colors(
+                        unfocusedContainerColor = Color(0xFFF5F5F5),
+                        focusedContainerColor = Color(0xFFF5F5F5),
                         unfocusedIndicatorColor = Color.Transparent,
                         focusedIndicatorColor = Color(0xFFEB4335),
                         focusedTextColor = Color.Black,
@@ -239,8 +240,9 @@ fun donorDetails(goto_bloodgroup:()->Unit) {
                         }, keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number
                         ),
-                        colors = TextFieldDefaults.textFieldColors(
-                            containerColor = Color(0xFFF5F5F5),
+                        colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = Color(0xFFF5F5F5),
+                            focusedContainerColor = Color(0xFFF5F5F5),
                             unfocusedIndicatorColor = Color.Transparent,
                             focusedIndicatorColor = Color(0xFFEB4335),
                             focusedTextColor = Color.Black,
@@ -274,8 +276,9 @@ fun donorDetails(goto_bloodgroup:()->Unit) {
                     }, keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number
                     ),
-                    colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color(0xFFF5F5F5),
+                    colors = TextFieldDefaults.colors(
+                        unfocusedContainerColor = Color(0xFFF5F5F5),
+                        focusedContainerColor = Color(0xFFF5F5F5),
                         unfocusedIndicatorColor = Color.Transparent,
                         focusedIndicatorColor = Color(0xFFEB4335),
                         focusedTextColor = Color.Black,
