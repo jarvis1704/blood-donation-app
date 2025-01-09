@@ -36,7 +36,9 @@ class MainActivity : ComponentActivity() {
                 val navCtrl = rememberNavController()
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    floatingActionButton = { notifButton() },
+                    floatingActionButton = { notifButton(
+                        goto_notifications = {navCtrl.navigate("notificationspage")}
+                    ) },
                     bottomBar = { bottomBar(
                         goto_homepage = {navCtrl.navigate("homepage")},
                         goto_bloodrequests = {navCtrl.navigate("bloodrequests")},
