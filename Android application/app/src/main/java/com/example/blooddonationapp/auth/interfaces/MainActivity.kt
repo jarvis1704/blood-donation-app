@@ -15,6 +15,7 @@ import com.example.blooddonationapp.global.ui_components.appNav
 import com.example.blooddonationapp.global.ui_components.errorAlert
 import com.example.blooddonationapp.home.ui_components.bottomBar
 import com.example.blooddonationapp.home.ui_components.notifButton
+import com.example.blooddonationapp.tempAdminEntry.adminPage
 import com.example.blooddonationapp.ui.theme.BloodDonationAppTheme
 import com.google.android.gms.auth.api.identity.Identity
 
@@ -36,7 +37,9 @@ class MainActivity : ComponentActivity() {
                 val navCtrl = rememberNavController()
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    floatingActionButton = { notifButton() },
+                    floatingActionButton = { notifButton(
+                        goto_notifications = {navCtrl.navigate("notificationspage")}
+                    ) },
                     bottomBar = { bottomBar(
                         goto_homepage = {navCtrl.navigate("homepage")},
                         goto_bloodrequests = {navCtrl.navigate("bloodrequests")},
@@ -44,6 +47,7 @@ class MainActivity : ComponentActivity() {
                     )}) { innerPadding ->
                     errorAlert()
                     appNav(navCtrl, googleAuthUiClient)
+//                    adminPage()   //for testing
                 }
             }
         }

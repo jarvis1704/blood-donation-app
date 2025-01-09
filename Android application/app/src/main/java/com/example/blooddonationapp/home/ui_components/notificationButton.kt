@@ -11,13 +11,13 @@ import androidx.compose.ui.unit.dp
 import com.example.blooddonationapp.global.data.currentPage
 
 @Composable
-fun notifButton(){
+fun notifButton(goto_notifications:()->Unit){
     when(currentPage){
         "homepage", "bloodrequests", "userprofile"->{
             Button(modifier = Modifier.offset(
                 x= (-10).dp, y= (-700).dp
             ),
-                onClick = { /*TODO*/ }) {
+                onClick = { goto_notifications() }) {
                 Icon(
                     imageVector = Icons.Default.Notifications,
                     contentDescription = null)
