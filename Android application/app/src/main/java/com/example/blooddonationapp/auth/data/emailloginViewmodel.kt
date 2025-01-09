@@ -2,41 +2,36 @@ package com.example.blooddonationapp.auth.data
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.global.data.errorMessage
-import com.example.blooddonationapp.registration.data.registrationViewmodel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
-open class emailLoginViewmodel(): ViewModel() {
-    private val _auth : FirebaseAuth = FirebaseAuth.getInstance()
+open class emailLoginViewmodel() : ViewModel() {
+    private val _auth: FirebaseAuth = FirebaseAuth.getInstance()
+
     //on initialization, checks if logged in
     init {
         checkLoginStatus()
     }
 
     //when logged in, for the first time, save username and profile pic from google to database
-    suspend fun saveGoogleCredential(){
+    suspend fun saveGoogleCredential() {
         val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-        if (_auth.currentUser != null){
+        if (_auth.currentUser != null) {
             //first check if the user is already registered, if already registered, do not change values
             try {
-                val document = _auth.currentUser?.let { db.collection("userdetails").document(it.uid) }
-                    ?.get()?.await()
-                if (document != null){
+                val document =
+                    _auth.currentUser?.let { db.collection("userdetails").document(it.uid) }
+                        ?.get()?.await()
+                if (document != null) {
                     val registrationType = document.getString("registration_type")
-                    if (registrationType == "registered"){
+                    if (registrationType == "registered") {
                         //do not update values
-                    }else{
+                    } else {
                         //upload username and profile pic
                         val datamap = mapOf("username" to googleUsername)
                         db.collection("userdetails").document(_auth.currentUser!!.uid)
@@ -52,37 +47,36 @@ open class emailLoginViewmodel(): ViewModel() {
                             }
                     }
                 }
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 errorMessage = e.message.toString()
             }
         }
     }
 
-    fun checkLoginStatus(){
+    fun checkLoginStatus() {
         val auth = FirebaseAuth.getInstance()
         Log.d("checkLogin", auth.currentUser?.displayName.toString())
-        if (auth != null){
+        if (auth != null) {
             Log.d("checkLogin", "auth is not null")
-            if(auth.currentUser==null){
+            if (auth.currentUser == null) {
                 Log.d("checkLogin", "not logged in")
                 //not logged in, go to login page
-                currentUser.isSearching=false
-                currentUser.isLoggedIn=false
-            }else{
+                currentUser.isSearching = false
+                currentUser.isLoggedIn = false
+            } else {
                 Log.d("checkLogin", "yessss, logged in")
                 //logged in, goto registration or homepage
-                currentUser.isSearching=false
-                currentUser.isLoggedIn=true
+                currentUser.isSearching = false
+                currentUser.isLoggedIn = true
             }
-        }else{
+        } else {
             Log.d("checkLogin", "auth is null")
             errorMessage = "Error: Could not get FirebaseAuth"
         }
     }
 
 
-
-    suspend fun returnAuth(scope: CoroutineScope):FirebaseAuth?{
+    suspend fun returnAuth(scope: CoroutineScope): FirebaseAuth? {
         var tempauth: FirebaseAuth? = null
 //        scope.launch {
 //            try {
@@ -95,46 +89,51 @@ open class emailLoginViewmodel(): ViewModel() {
         return tempauth
     }
 
-    fun signup(email:String, password:String, confirmpassword:String, goto_loadingpage: () -> Unit){
-        if (email.isNotEmpty() && password.isNotEmpty()){
-            if (password == confirmpassword){
+    fun signup(
+        email: String,
+        password: String,
+        confirmpassword: String,
+        goto_loadingpage: () -> Unit
+    ) {
+        if (email.isNotEmpty() && password.isNotEmpty()) {
+            if (password == confirmpassword) {
                 try {
-                    _auth.createUserWithEmailAndPassword(email,password)
+                    _auth.createUserWithEmailAndPassword(email, password)
                         .addOnSuccessListener {
                             currentUser.isSearching = true
                             goto_loadingpage()
                         }.addOnFailureListener {
                             errorMessage = it.message.toString()
                         }
-                }catch (e:Exception){
+                } catch (e: Exception) {
                     errorMessage = e.message.toString()
                 }
-            }else{
+            } else {
                 errorMessage = "Passwords do not match!"
             }
-        }else{
+        } else {
             errorMessage = "One or more entries are empty!"
         }
     }
 
-    open fun login(email: String, password: String, goto_loadingpage:()->Unit){
-        if (email.isNotEmpty() && password.isNotEmpty()){
+    open fun login(email: String, password: String, goto_loadingpage: () -> Unit) {
+        if (email.isNotEmpty() && password.isNotEmpty()) {
             try {
-                _auth.signInWithEmailAndPassword(email,password)
+                _auth.signInWithEmailAndPassword(email, password)
                     .addOnSuccessListener {
                         goto_loadingpage()
                     }.addOnFailureListener {
                         errorMessage = it.message.toString()
                     }
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 errorMessage = e.message.toString()
             }
-        }else{
+        } else {
             errorMessage = "One or more entries are empty!"
         }
     }
 
-    fun signout(goto_loadingpage:()->Unit){
+    fun signout(goto_loadingpage: () -> Unit) {
         _auth.signOut()
         currentUser.isLoggedIn = false
         goto_loadingpage()
