@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -78,7 +79,7 @@ fun homepage(goto_loadingpage:()->Unit){
                     .background(Color.White)
             ){
                 Column(
-                    modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)
+                    modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp).navigationBarsPadding()
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth().offset(y = (-50).dp),

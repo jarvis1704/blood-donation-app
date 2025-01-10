@@ -35,18 +35,16 @@ class MainActivity : ComponentActivity() {
         setContent {
             BloodDonationAppTheme {
                 val navCtrl = rememberNavController()
-//                Scaffold(
-//                    modifier = Modifier.fillMaxSize(),
-//                    floatingActionButton = { notifButton() },
-//                    bottomBar = { bottomBar(
-//                        goto_homepage = {navCtrl.navigate("homepage")},
-//                        goto_bloodrequests = {navCtrl.navigate("bloodrequests")},
-//                        goto_userprofile = {navCtrl.navigate("userprofile")}
-//                    )}) { innerPadding ->
-//                    errorAlert()
-//                    appNav(navCtrl, googleAuthUiClient)
-//                }
-                homepage {  }
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    bottomBar = { bottomBar(
+                        goto_homepage = {navCtrl.navigate("homepage")},
+                        goto_bloodrequests = {navCtrl.navigate("bloodrequests")},
+                        goto_userprofile = {navCtrl.navigate("userprofile")}
+                    )}) { innerPadding ->
+                    errorAlert()
+                    appNav(navCtrl, googleAuthUiClient)
+                }
             }
         }
     }
