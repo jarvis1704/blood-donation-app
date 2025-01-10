@@ -39,6 +39,9 @@ class MainActivity : ComponentActivity() {
             BloodDonationAppTheme {
                 val navCtrl = rememberNavController()
                 Scaffold(
+                    floatingActionButton = { notifButton(
+                        goto_notifications = {navCtrl.navigate("notificationspage")}
+                    )},
                     modifier = Modifier.fillMaxSize(),
                     bottomBar = { bottomBar(
                         goto_homepage = {navCtrl.navigate("homepage")},
