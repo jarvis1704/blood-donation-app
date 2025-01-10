@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.blooddonationapp.auth.data.googleAuthClient
 import com.example.blooddonationapp.global.ui_components.appNav
 import com.example.blooddonationapp.global.ui_components.errorAlert
+import com.example.blooddonationapp.home.interfaces.homepage
 import com.example.blooddonationapp.home.ui_components.bottomBar
 import com.example.blooddonationapp.home.ui_components.notifButton
 import com.example.blooddonationapp.ui.theme.BloodDonationAppTheme
@@ -34,17 +35,18 @@ class MainActivity : ComponentActivity() {
         setContent {
             BloodDonationAppTheme {
                 val navCtrl = rememberNavController()
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    floatingActionButton = { notifButton() },
-                    bottomBar = { bottomBar(
-                        goto_homepage = {navCtrl.navigate("homepage")},
-                        goto_bloodrequests = {navCtrl.navigate("bloodrequests")},
-                        goto_userprofile = {navCtrl.navigate("userprofile")}
-                    )}) { innerPadding ->
-                    errorAlert()
-                    appNav(navCtrl, googleAuthUiClient)
-                }
+//                Scaffold(
+//                    modifier = Modifier.fillMaxSize(),
+//                    floatingActionButton = { notifButton() },
+//                    bottomBar = { bottomBar(
+//                        goto_homepage = {navCtrl.navigate("homepage")},
+//                        goto_bloodrequests = {navCtrl.navigate("bloodrequests")},
+//                        goto_userprofile = {navCtrl.navigate("userprofile")}
+//                    )}) { innerPadding ->
+//                    errorAlert()
+//                    appNav(navCtrl, googleAuthUiClient)
+//                }
+                homepage {  }
             }
         }
     }
