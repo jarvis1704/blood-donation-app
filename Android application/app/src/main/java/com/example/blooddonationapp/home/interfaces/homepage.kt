@@ -38,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.blooddonationapp.R
 import com.example.blooddonationapp.auth.data.EmailLoginViewModel
+import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.global.data.updateCurrentUser
 import com.example.blooddonationapp.home.ui_components.AnnouncementCard
 
@@ -67,11 +68,11 @@ fun homepage(goto_loadingpage:()->Unit, viewModel: EmailLoginViewModel = hiltVie
                             Text("Welcome", fontSize = 32.sp, fontWeight = FontWeight.Medium, color = Color.White)
                             Spacer(Modifier.height(8.dp))
                             //replace it with user name variable
-                            Text("User!", fontSize = 40.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
+                            Text(currentUser.username, fontSize = 40.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
                         }
-                        IconButton({/*todo Notification inplementation*/}) {
-                            Icon(imageVector = Icons.Filled.Notifications, contentDescription = "Notification Icon", tint = Color.White)
-                        }
+//                        IconButton({/*todo Notification inplementation*/}) {
+//                            Icon(imageVector = Icons.Filled.Notifications, contentDescription = "Notification Icon", tint = Color.White)
+//                        }
                     }
                 }
             }

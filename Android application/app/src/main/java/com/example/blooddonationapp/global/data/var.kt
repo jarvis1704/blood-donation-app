@@ -31,7 +31,7 @@ object currentUser{
 
     //below data will be fetched from either email or registration pages
     var birthDate by mutableStateOf("")
-    var username by mutableStateOf("Username")
+    var username by mutableStateOf("User!")
     var gender by mutableStateOf("")
     var area by mutableStateOf("")
     var phoneNo by mutableStateOf(0)
@@ -53,6 +53,7 @@ fun updateCurrentUser(){
         currentUser.area = viewmodel.getRegistrationEntryByString("area")
         currentUser.profilePic = viewmodel.getRegistrationEntryByString("profilepic")
         currentUser.bloodGroup = viewmodel.getRegistrationEntryByString("bloodGroup")
+        viewmodel.FetchNotifications()
     }
 }
 

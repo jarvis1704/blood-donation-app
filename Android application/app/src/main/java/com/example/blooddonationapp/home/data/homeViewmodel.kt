@@ -2,9 +2,9 @@ package com.example.blooddonationapp.home.data
 
 import androidx.lifecycle.ViewModel
 import com.example.blooddonationapp.global.data.errorMessage
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.tasks.await
 
 class homeViewmodel:ViewModel() {
@@ -28,4 +28,26 @@ class homeViewmodel:ViewModel() {
         return ""
     }
 
+    suspend fun FetchNotifications(){
+        try {
+            val list = _db.collection("blood_requests").get().await()
+            if (list != null){
+                val notificationList = list.documents.mapNotNull { doc->
+                    val data = doc.data
+                    data?.let {
+                        notification(
+                            bloodtype = it["bloodtype"].toString(),
+                            hospital = it["hospital"].toString(),
+                            date = (it["date"] as? Timestamp)?.let { timestamp ->
+                                TimestampToLocalDate(timestamp)
+                            }
+                        )
+                    }
+                }
+                globalNotificationList = notificationList
+            }
+        }catch (e:Exception){
+            errorMessage=e.message.toString()
+        }
+    }
 }
