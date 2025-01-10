@@ -5,7 +5,6 @@ import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,7 +21,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,25 +28,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.blooddonationapp.registration.data.registrationViewmodel
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.blooddonationapp.registration.data.RegistrationViewModel
 import com.example.blooddonationapp.registration.data.tempRegistrationDetails
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun bloodGroup(goto_verifyadhaar:()->Unit){
+fun bloodGroup(
+    goto_verifyadhaar: () -> Unit,
+    viewModel: RegistrationViewModel = hiltViewModel()
+) {
 
-    var viewmodel: registrationViewmodel = viewModel()
+//    var viewModel: RegistrationViewModel = viewModel()
 
     //variable for each blood group
     val positiveBloodGroups = listOf("A+", "B+", "AB+", "O+")
     val negativeBloodGroups = listOf("A-", "B-", "AB-", "O-")
 
-    Box(modifier = Modifier.fillMaxSize()){
+    Box(modifier = Modifier.fillMaxSize()) {
 
         Column(modifier = Modifier.fillMaxSize()) {
             Box(
@@ -57,7 +56,7 @@ fun bloodGroup(goto_verifyadhaar:()->Unit){
                     .weight(0.5f)
                     .background(Color(0xFFEB4335))
 
-            ){
+            ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -65,9 +64,19 @@ fun bloodGroup(goto_verifyadhaar:()->Unit){
                         .padding(top = 100.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Text(text = "Blood Group", fontSize = 32.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                    Text(
+                        text = "Blood Group",
+                        fontSize = 32.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
                     Spacer(Modifier.height(16.dp))
-                    Text(text = "Please select your blood group", fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color.White)
+                    Text(
+                        text = "Please select your blood group",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.White
+                    )
                 }
             }
             Box(
@@ -75,7 +84,7 @@ fun bloodGroup(goto_verifyadhaar:()->Unit){
                     .fillMaxWidth()
                     .weight(0.5f)
                     .background(Color.White)
-            ){
+            ) {
 
             }
         }
@@ -89,20 +98,28 @@ fun bloodGroup(goto_verifyadhaar:()->Unit){
         ) {
 
             //Blood Group Selector
-            Card(modifier = Modifier.fillMaxWidth(0.95f),
+            Card(
+                modifier = Modifier.fillMaxWidth(0.95f),
                 colors = CardDefaults.cardColors(
                     containerColor = Color.White
                 ),
                 elevation = CardDefaults.cardElevation(8.dp)
-                )
+            )
             {
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp),
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp))
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                )
                 {
-                    Text(text = "Blood Group", fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color.DarkGray)
+                    Text(
+                        text = "Blood Group",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.DarkGray
+                    )
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -123,12 +140,11 @@ fun bloodGroup(goto_verifyadhaar:()->Unit){
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 //                        Similarly here
-                        negativeBloodGroups.forEach {
-                                bloodgroup->
+                        negativeBloodGroups.forEach { bloodgroup ->
                             AnimatedBloodGroupButton(
                                 bloodType = bloodgroup,
-                                isSelected = tempRegistrationDetails.bloodGroup==bloodgroup,
-                                onClick = {tempRegistrationDetails.bloodGroup=bloodgroup}
+                                isSelected = tempRegistrationDetails.bloodGroup == bloodgroup,
+                                onClick = { tempRegistrationDetails.bloodGroup = bloodgroup }
                             )
                         }
                     }
@@ -136,18 +152,23 @@ fun bloodGroup(goto_verifyadhaar:()->Unit){
             }
             Spacer(Modifier.height(32.dp))
             //next button
-            Button(onClick = {
-                if (tempRegistrationDetails.bloodGroup!=""){
-                    viewmodel.saveRegistrationEntryByString("bloodGroup", tempRegistrationDetails.bloodGroup, goto_verifyadhaar)
-                }
-            },
+            Button(
+                onClick = {
+                    if (tempRegistrationDetails.bloodGroup != "") {
+                        viewModel.saveRegistrationEntryByString(
+                            "bloodGroup",
+                            tempRegistrationDetails.bloodGroup,
+                            goto_verifyadhaar
+                        )
+                    }
+                },
                 modifier = Modifier
                     .width(160.dp)
                     .height(45.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFEB4335)
                 )
-                ) {
+            ) {
                 Text(text = "Next", fontSize = 16.sp, fontWeight = FontWeight.Medium)
             }
         }

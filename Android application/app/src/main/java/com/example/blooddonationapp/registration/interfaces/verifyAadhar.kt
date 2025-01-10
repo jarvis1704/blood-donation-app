@@ -28,15 +28,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.blooddonationapp.registration.data.registrationViewmodel
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.blooddonationapp.registration.data.RegistrationViewModel
 import com.example.blooddonationapp.registration.data.tempRegistrationDetails
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun verifyAadhar(goto_homepage:()->Unit){
-    var registrationViewmodel: registrationViewmodel = viewModel()
+fun verifyAadhar(
+    goto_homepage: () -> Unit,
+    registrationViewModel: RegistrationViewModel = hiltViewModel()
+) {
+//    var registrationViewModel: RegistrationViewModel = viewModel()
 
     Box(modifier = Modifier.fillMaxSize())
     {
@@ -44,18 +47,37 @@ fun verifyAadhar(goto_homepage:()->Unit){
             Modifier.fillMaxSize()
         ) {
             Box(
-                modifier = Modifier.fillMaxWidth().weight(0.5f).background(Color(0xFFEB4335))
-            ){
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.5f)
+                    .background(Color(0xFFEB4335))
+            ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(vertical = 80.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .statusBarsPadding()
+                        .padding(vertical = 80.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Text("Verify Aadhar", fontSize = 32.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                    Text("Please Enter your Aadhar Details for verification", fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color.White)
+                    Text(
+                        "Verify Aadhar",
+                        fontSize = 32.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                    Text(
+                        "Please Enter your Aadhar Details for verification",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.White
+                    )
                 }
             }
-            Box(modifier = Modifier.fillMaxWidth().weight(0.5f).background(Color.White))
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .weight(0.5f)
+                .background(Color.White))
         }
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -69,7 +91,10 @@ fun verifyAadhar(goto_homepage:()->Unit){
                     .padding(horizontal = 16.dp)
                     .align(Alignment.CenterHorizontally),
                 elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White, contentColor = Color.Black)
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White,
+                    contentColor = Color.Black
+                )
 
             ) {
                 Column(
@@ -79,7 +104,7 @@ fun verifyAadhar(goto_homepage:()->Unit){
                 ) {
                     Text(text = "Aadhar Number", fontWeight = FontWeight.Medium)
                     TextField(
-                        value = tempRegistrationDetails.aadharNo?.toString()?:"",
+                        value = tempRegistrationDetails.aadharNo?.toString() ?: "",
                         onValueChange = {
                             tempRegistrationDetails.aadharNo = it.toLongOrNull()
                         }, placeholder = {
@@ -130,15 +155,20 @@ fun verifyAadhar(goto_homepage:()->Unit){
             }
             Spacer(Modifier.height(16.dp))
             //upload photo
-            Text(text = "Upload Photo of your Aadhaar", fontSize = 16.sp, fontWeight = FontWeight.Medium)
+            Text(
+                text = "Upload Photo of your Aadhaar",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium
+            )
             //todo
 
             Spacer(Modifier.height(60.dp))
             //save button
-            Button(onClick = {
-                //todo
-                registrationViewmodel.saveRegistrationType("registered", goto_homepage)
-            },
+            Button(
+                onClick = {
+                    //todo
+                    registrationViewModel.saveRegistrationType("registered", goto_homepage)
+                },
                 modifier = Modifier.fillMaxWidth(0.5f),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEB4335))
             ) {
@@ -146,10 +176,11 @@ fun verifyAadhar(goto_homepage:()->Unit){
             }
             Spacer(Modifier.height(8.dp))
             //skip for now button
-            Button(onClick = {
-                //tod
-                registrationViewmodel.saveRegistrationType("registered", goto_homepage)
-            },
+            Button(
+                onClick = {
+                    //tod
+                    registrationViewModel.saveRegistrationType("registered", goto_homepage)
+                },
                 modifier = Modifier.fillMaxWidth(0.5f),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEB4335))
             ) {
