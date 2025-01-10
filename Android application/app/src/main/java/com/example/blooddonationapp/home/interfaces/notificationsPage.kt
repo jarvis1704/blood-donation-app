@@ -1,5 +1,6 @@
 package com.example.blooddonationapp.home.interfaces
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.blooddonationapp.home.data.TimestampToLocalDate
 import com.example.blooddonationapp.home.data.globalNotificationList
 import com.example.blooddonationapp.home.data.notification
 
@@ -52,6 +54,7 @@ fun notificationsPage(){
     // i think a filter option will be nice for blood type of user
 }
 
+@SuppressLint("NewApi")
 @Composable
 fun showNotification(data:notification){
     Box(modifier = Modifier.fillMaxWidth()){
@@ -60,6 +63,7 @@ fun showNotification(data:notification){
         ){
             Text("Blood group:"+data.bloodtype)
             Text("hospital:"+data.hospital)
+            Text("${data.date?.dayOfMonth}, ${data.date?.month}")
         }
     }
 }

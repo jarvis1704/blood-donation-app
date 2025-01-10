@@ -16,6 +16,7 @@ import com.example.blooddonationapp.global.ui_components.appNav
 import com.example.blooddonationapp.global.ui_components.errorAlert
 import com.example.blooddonationapp.home.ui_components.bottomBar
 import com.example.blooddonationapp.home.ui_components.notifButton
+import com.example.blooddonationapp.tempAdminEntry.adminPage
 import com.example.blooddonationapp.ui.theme.BloodDonationAppTheme
 import com.google.android.gms.auth.api.identity.Identity
 import dagger.hilt.android.AndroidEntryPoint

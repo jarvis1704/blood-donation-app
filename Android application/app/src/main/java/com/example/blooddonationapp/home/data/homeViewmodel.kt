@@ -1,11 +1,10 @@
 package com.example.blooddonationapp.home.data
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.blooddonationapp.global.data.errorMessage
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.tasks.await
 
 class homeViewmodel:ViewModel() {
@@ -39,7 +38,9 @@ class homeViewmodel:ViewModel() {
                         notification(
                             bloodtype = it["bloodtype"].toString(),
                             hospital = it["hospital"].toString(),
-                            date = null
+                            date = (it["date"] as? Timestamp)?.let { timestamp ->
+                                TimestampToLocalDate(timestamp)
+                            }
                         )
                     }
                 }
