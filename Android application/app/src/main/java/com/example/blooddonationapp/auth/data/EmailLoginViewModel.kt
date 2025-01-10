@@ -7,10 +7,13 @@ import com.example.blooddonationapp.global.data.errorMessage
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
-open class emailLoginViewmodel() : ViewModel() {
+@HiltViewModel
+class EmailLoginViewModel @Inject constructor() : ViewModel() {
     private val _auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     //on initialization, checks if logged in
@@ -116,7 +119,7 @@ open class emailLoginViewmodel() : ViewModel() {
         }
     }
 
-    open fun login(email: String, password: String, goto_loadingpage: () -> Unit) {
+    fun login(email: String, password: String, goto_loadingpage: () -> Unit) {
         if (email.isNotEmpty() && password.isNotEmpty()) {
             try {
                 _auth.signInWithEmailAndPassword(email, password)

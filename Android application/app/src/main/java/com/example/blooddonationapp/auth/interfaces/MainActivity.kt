@@ -1,5 +1,6 @@
 package com.example.blooddonationapp.auth.interfaces
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -15,10 +16,11 @@ import com.example.blooddonationapp.global.ui_components.appNav
 import com.example.blooddonationapp.global.ui_components.errorAlert
 import com.example.blooddonationapp.home.ui_components.bottomBar
 import com.example.blooddonationapp.home.ui_components.notifButton
-import com.example.blooddonationapp.tempAdminEntry.adminPage
 import com.example.blooddonationapp.ui.theme.BloodDonationAppTheme
 import com.google.android.gms.auth.api.identity.Identity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     //for google auth
@@ -28,6 +30,7 @@ class MainActivity : ComponentActivity() {
             oneTapClient = Identity.getSignInClient(applicationContext)
         )
     }
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +47,7 @@ class MainActivity : ComponentActivity() {
                         goto_homepage = {navCtrl.navigate("homepage")},
                         goto_bloodrequests = {navCtrl.navigate("bloodrequests")},
                         goto_userprofile = {navCtrl.navigate("userprofile")}
-                    )}) { innerPadding ->
+                    )}) { _ ->
                     errorAlert()
                     appNav(navCtrl, googleAuthUiClient)
 //                    adminPage()   //for testing

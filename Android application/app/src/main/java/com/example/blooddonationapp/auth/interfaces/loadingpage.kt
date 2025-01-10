@@ -16,33 +16,34 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.blooddonationapp.global.data.currentUser
-import com.example.blooddonationapp.registration.data.registrationViewmodel
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.blooddonationapp.R
-import com.example.blooddonationapp.auth.data.emailLoginViewmodel
-import kotlinx.coroutines.Dispatchers
+import com.example.blooddonationapp.auth.data.EmailLoginViewModel
+import com.example.blooddonationapp.global.data.currentUser
+import com.example.blooddonationapp.registration.data.RegistrationViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
 
 @Composable
 fun loadingpage(
     goto_loginpage:()->Unit,
     goto_homepage:()->Unit,
-    goto_ageverification:()->Unit){
+    goto_ageverification:()->Unit,
+    emailLoginViewModel: EmailLoginViewModel = hiltViewModel(),
+    registrationViewmodel: RegistrationViewModel = hiltViewModel()
+){
     /*this page will check whether the user is logged in or not
     * and based on that, we will navigate to homepage or loginpage */
 
-    var emailLoginViewmodel:emailLoginViewmodel = viewModel()
-    var registrationViewmodel: registrationViewmodel = viewModel()
+//    var emailLoginViewmodel:EmailLoginViewModel = viewModel()
+//    var registrationViewmodel: RegistrationViewModel = viewModel()
 
     LaunchedEffect(currentUser.isSearching) {
         while (currentUser.isSearching){
-            emailLoginViewmodel.checkLoginStatus()
+            emailLoginViewModel.checkLoginStatus()
             delay(200)
         }
         if (currentUser.isLoggedIn){

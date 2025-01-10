@@ -32,8 +32,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.blooddonationapp.auth.data.emailLoginViewmodel
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.blooddonationapp.auth.data.EmailLoginViewModel
 import com.example.blooddonationapp.auth.data.isPasswordShown
 import com.example.blooddonationapp.auth.data.tempUserObj
 
@@ -177,9 +177,10 @@ import com.example.blooddonationapp.auth.data.tempUserObj
 fun signuppage(
     goto_homepage: () -> Unit,
     goto_loginpage: () -> Unit,
-    goto_loadingpage: () -> Unit
+    goto_loadingpage: () -> Unit,
+    viewModel: EmailLoginViewModel = hiltViewModel()
 ) {
-    var viewmodel: emailLoginViewmodel = viewModel()
+//    var viewModel: EmailLoginViewModel = viewModel()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -335,7 +336,7 @@ fun signuppage(
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
                     onClick = {
-                        viewmodel.signup(tempUserObj.email, tempUserObj.password, tempUserObj.confirmpassword, goto_loadingpage)
+                        viewModel.signup(tempUserObj.email, tempUserObj.password, tempUserObj.confirmpassword, goto_loadingpage)
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEB4335))
