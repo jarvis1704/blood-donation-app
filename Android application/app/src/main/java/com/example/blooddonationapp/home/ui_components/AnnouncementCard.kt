@@ -34,10 +34,11 @@ fun AnnouncementCard(modifier: Modifier = Modifier) {
         ),
         elevation = CardDefaults.elevatedCardElevation(
             8.dp
-        )
+        ),
+        onClick = {/*todo AnnounmentCard implementation*/}
     ) {
         Column(
-            modifier = Modifier.padding(vertical = 24.dp, horizontal = 16.dp)
+            modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)
         ) {
             Text("BLOOD DONATION CAMP", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.White)
             Spacer(Modifier.height(8.dp))

@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.blooddonationapp.R
 import com.example.blooddonationapp.auth.data.emailLoginViewmodel
+import com.example.blooddonationapp.home.ui_components.AnnouncementCard
 
 @Composable
 fun homepage(goto_loadingpage:()->Unit){
@@ -122,10 +123,16 @@ fun homepage(goto_loadingpage:()->Unit){
                             }
                         }
                     }
-                    Text("See What's new")
+                    Text("See What's new!", fontSize = 32.sp, modifier = Modifier.padding(vertical = 16.dp), fontWeight = FontWeight.Bold)
                     //vertical scrollable column
-                    LazyColumn() {
-
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        //this is for demonstration purposes, change the function and count variable as needed according to the number of announcements
+                        //todo Announcement card implementation
+                        items(5){
+                            AnnouncementCard()
+                        }
                     }
                 }
             }
