@@ -34,14 +34,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.blooddonationapp.R
-import com.example.blooddonationapp.auth.data.emailLoginViewmodel
+import com.example.blooddonationapp.auth.data.EmailLoginViewModel
+import com.example.blooddonationapp.global.data.updateCurrentUser
 import com.example.blooddonationapp.home.ui_components.AnnouncementCard
 
 @Composable
-fun homepage(goto_loadingpage:()->Unit){
-    var viewmodel: emailLoginViewmodel = viewModel()
+fun homepage(goto_loadingpage:()->Unit, viewModel: EmailLoginViewModel = hiltViewModel()){
+//    var viewmodel: emailLoginViewmodel = viewModel()
+    updateCurrentUser()
     Box(modifier = Modifier.fillMaxSize()){
 
         Column(modifier = Modifier.fillMaxSize()) {
