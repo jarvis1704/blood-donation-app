@@ -1,20 +1,15 @@
 package com.example.blooddonationapp.home.ui_components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.blooddonationapp.R
 import com.example.blooddonationapp.global.data.currentPage
 
 @Composable
@@ -23,40 +18,63 @@ fun bottomBar(
     goto_bloodrequests:()->Unit,
     goto_userprofile:()->Unit,
 ){
-    when(currentPage){
-        "homepage", "bloodrequests", "userprofile", "notificationspage"->{
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp)
-            ){
-                Row (
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Button(onClick = {
-                        goto_homepage()
-                    }) {       //homepage
+    when (currentPage) {
+        "homepage", "bloodrequests", "userprofile", "notificationspage" -> {
+            NavigationBar(
+                modifier = Modifier.fillMaxWidth(),
+                containerColor = MaterialTheme.colorScheme.surface,
+                tonalElevation = 3.dp
+            ) {
+                // Home Item
+                NavigationBarItem(
+                    selected = currentPage == "homepage",
+                    onClick = goto_homepage,
+                    icon = {
                         Icon(
                             imageVector = Icons.Default.Home,
-                            contentDescription = null)
-                    }
-                    Button(onClick = {
-                        goto_bloodrequests()
-                    }) {       //blood req
+                            contentDescription = "Home"
+                        )
+                    },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = MaterialTheme.colorScheme.primary,
+                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        indicatorColor = MaterialTheme.colorScheme.secondaryContainer
+                    )
+                )
+
+                // Blood Requests Item
+                NavigationBarItem(
+                    selected = currentPage == "bloodrequests",
+                    onClick = goto_bloodrequests,
+                    icon = {
                         Icon(
-                            imageVector = Icons.Default.Star,
-                            contentDescription = null)
-                    }
-                    Button(onClick = {
-                        goto_userprofile()
-                    }) {       //profile
+                            painter = painterResource(id = R.drawable.ic_blood_drop),
+                            contentDescription = "Blood Requests"
+                        )
+                    },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = MaterialTheme.colorScheme.primary,
+                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        indicatorColor = MaterialTheme.colorScheme.secondaryContainer
+                    )
+                )
+
+                // Profile Item
+                NavigationBarItem(
+                    selected = currentPage == "userprofile",
+                    onClick = goto_userprofile,
+                    icon = {
                         Icon(
-                            imageVector = Icons.Default.AccountCircle,
-                            contentDescription = null)
-                    }
-                }
+                            imageVector = Icons.Default.Person,
+                            contentDescription = "Profile"
+                        )
+                    },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = MaterialTheme.colorScheme.primary,
+                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        indicatorColor = MaterialTheme.colorScheme.secondaryContainer
+                    )
+                )
             }
         }
     }
