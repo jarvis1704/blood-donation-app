@@ -7,14 +7,16 @@ import androidx.lifecycle.ViewModel
 import com.example.blooddonationapp.global.data.errorMessage
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.tasks.await
 import java.time.ZoneId
 import java.util.Date
+import javax.inject.Inject
 
-class registrationViewmodel : ViewModel(){
+@HiltViewModel
+class RegistrationViewModel @Inject constructor(): ViewModel(){
     private val _auth : FirebaseAuth = FirebaseAuth.getInstance()
     private val _db : FirebaseFirestore = FirebaseFirestore.getInstance()
 

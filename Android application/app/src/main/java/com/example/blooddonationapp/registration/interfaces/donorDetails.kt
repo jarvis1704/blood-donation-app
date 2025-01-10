@@ -22,7 +22,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -33,16 +32,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.blooddonationapp.auth.data.tempUserObj
 import com.example.blooddonationapp.global.data.checkCorrectDateStringEntered
 import com.example.blooddonationapp.global.data.errorMessage
 import com.example.blooddonationapp.global.data.stringToTimestamp
 import com.example.blooddonationapp.home.data.homeViewmodel
-import com.example.blooddonationapp.registration.data.registrationViewmodel
+import com.example.blooddonationapp.registration.data.RegistrationViewModel
 import com.example.blooddonationapp.registration.data.tempRegistrationDetails
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -51,11 +49,14 @@ import kotlinx.coroutines.launch
 @SuppressLint("CoroutineCreationDuringComposition")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun donorDetails(goto_bloodgroup:()->Unit) {
+fun donorDetails(
+    goto_bloodgroup: () -> Unit,
+    viewModel: RegistrationViewModel = hiltViewModel()
+) {
 
     //todo get already existing user details here
     var dataviewmodel: homeViewmodel = viewModel()
-    var viewmodel: registrationViewmodel = viewModel()
+//    var viewModel: RegistrationViewModel = viewModel()
 
     CoroutineScope(Dispatchers.IO).launch {
         tempRegistrationDetails.username = dataviewmodel.getRegistrationEntryByString("username")
@@ -96,10 +97,12 @@ fun donorDetails(goto_bloodgroup:()->Unit) {
                     )
                 }
             }
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.5f)
-                .background(Color.White))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.5f)
+                    .background(Color.White)
+            )
         }
 
         //main form area
@@ -224,7 +227,11 @@ fun donorDetails(goto_bloodgroup:()->Unit) {
 //                            ),
 //                            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
 //                            )
-                        Text("+91", Modifier.padding(horizontal = 8.dp), fontWeight = FontWeight.Medium)
+                        Text(
+                            "+91",
+                            Modifier.padding(horizontal = 8.dp),
+                            fontWeight = FontWeight.Medium
+                        )
                         TextField(
                             value = tempRegistrationDetails.phoneNo,
                             onValueChange = {
@@ -312,32 +319,34 @@ fun donorDetails(goto_bloodgroup:()->Unit) {
                         errorMessage = "Error: Enter a valid phone number"
                     } else if (tempRegistrationDetails.phoneNo.toLong() > 9999999999) {
                         errorMessage = "Error: Enter a valid phone number"
-                    } else if (tempRegistrationDetails.lastDonationDate != "" && !checkCorrectDateStringEntered(tempRegistrationDetails.lastDonationDate)
+                    } else if (tempRegistrationDetails.lastDonationDate != "" && !checkCorrectDateStringEntered(
+                            tempRegistrationDetails.lastDonationDate
+                        )
                     ) {
                         //error is handled automatically in func
                     } else {
                         if (tempRegistrationDetails.lastDonationDate != "") {
                             CoroutineScope(Dispatchers.IO).launch {
-                                viewmodel.saveLastDonationDate(
+                                viewModel.saveLastDonationDate(
                                     stringToTimestamp(
                                         tempRegistrationDetails.lastDonationDate
                                     )
                                 )
                             }
                         }
-                        viewmodel.saveRegistrationEntryByString(
+                        viewModel.saveRegistrationEntryByString(
                             "username",
                             tempRegistrationDetails.username
                         )
-                        viewmodel.saveRegistrationEntryByString(
+                        viewModel.saveRegistrationEntryByString(
                             "gender",
                             tempRegistrationDetails.gender
                         )
-                        viewmodel.saveRegistrationEntryByString(
+                        viewModel.saveRegistrationEntryByString(
                             "area",
                             tempRegistrationDetails.area
                         )
-                        viewmodel.saveRegistrationEntryByString(
+                        viewModel.saveRegistrationEntryByString(
                             "phoneNo",
                             tempRegistrationDetails.phoneNo,
                             goto_bloodgroup

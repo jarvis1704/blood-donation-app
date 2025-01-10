@@ -15,9 +15,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.blooddonationapp.auth.data.emailLoginViewmodel
+import com.example.blooddonationapp.auth.data.EmailLoginViewModel
 import com.example.blooddonationapp.auth.data.googleAuthClient
-import com.example.blooddonationapp.auth.data.googleAuthViewmodel
+import com.example.blooddonationapp.auth.data.GoogleAuthViewModel
 import com.example.blooddonationapp.home.interfaces.homepage
 import com.example.blooddonationapp.auth.interfaces.loadingpage
 import com.example.blooddonationapp.auth.interfaces.loginpage
@@ -40,7 +40,8 @@ import kotlinx.coroutines.launch
 fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient){
     val navController = navController
     val coroutineScope = rememberCoroutineScope()
-    val viewmodel: emailLoginViewmodel = viewModel() //this is required, do not remove ("init" is called in vm)
+    val viewmodel: EmailLoginViewModel = viewModel() //this is required, do not remove ("init" is called in vm)
+    // I am not removing the above line right now but we need to discuss on it.
 
     NavHost(
         navController = navController,
@@ -57,7 +58,7 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         composable("loginpage"){
             currentPage = "loginpage"
 
-            val viewModel = viewModel<googleAuthViewmodel>()
+            val viewModel = viewModel<GoogleAuthViewModel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
 
             //checks if signin successful, then goes to loading page to check registration

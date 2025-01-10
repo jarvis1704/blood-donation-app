@@ -20,38 +20,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
+import com.example.blooddonationapp.R
+import com.example.blooddonationapp.global.data.currentUser
+import com.example.blooddonationapp.global.data.updateCurrentUser
 import com.example.blooddonationapp.home.data.homeViewmodel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun userProfile(){
-    /*note to Biprangshu:
-    *  you can access any user data using 'viewmodel.getRegistrationEntryByString("") '
-    *  this will return a string
-    *  strings include: username, profilepic, birthdate, bloodgroup etc
-    * */
-
-    var viewmodel: homeViewmodel = viewModel()
-
-    //these are temp var to get the data from firebase
-    var username by remember { mutableStateOf("") }
-    var profilepic by remember { mutableStateOf("") }
-    var bloodgroup by remember { mutableStateOf("") }
-    var area by remember { mutableStateOf("") }
-
-    CoroutineScope(Dispatchers.IO).launch {
-        username = viewmodel.getRegistrationEntryByString("username")
-        profilepic = viewmodel.getRegistrationEntryByString("profilepic")
-        bloodgroup = viewmodel.getRegistrationEntryByString("bloodGroup")
-        area = viewmodel.getRegistrationEntryByString("area")
-    }
+    updateCurrentUser()
 
     Box(modifier = Modifier.fillMaxSize()){
         Column(
@@ -60,13 +44,25 @@ fun userProfile(){
             verticalArrangement = Arrangement.Center
         ) {
             Text(text = "Donor Profile")
-            Image(
-                painter = rememberAsyncImagePainter(model = profilepic),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(200.dp)
-                    .clip(CircleShape))
-            Text(text = username)
+            when(currentUser.profilePic){
+                ""->{
+                    Image(
+                        painterResource(id = R.drawable.default_user_icon),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(200.dp)
+                            .clip(CircleShape))
+                }
+                else->{
+                    Image(
+                        painter = rememberAsyncImagePainter(model = currentUser.profilePic),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(200.dp)
+                            .clip(CircleShape))
+                }
+            }
+            Text(text = currentUser.username)
             Card(modifier = Modifier
                 .fillMaxWidth(0.8f),
                 onClick = { /*TODO*/ }) {
@@ -74,8 +70,8 @@ fun userProfile(){
                     .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = "Blood Group:" + bloodgroup)
-                    Text(text = area)
+                    Text(text = "Blood Group:" + currentUser.bloodGroup)
+                    Text(text = currentUser.area)
                 }
             }
         }

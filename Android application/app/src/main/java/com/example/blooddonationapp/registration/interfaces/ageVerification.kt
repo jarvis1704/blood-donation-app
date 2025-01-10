@@ -20,11 +20,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.blooddonationapp.registration.data.registrationViewmodel
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.blooddonationapp.registration.data.RegistrationViewModel
 import com.example.blooddonationapp.registration.ui_components.dateYearSelector
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,10 +32,13 @@ import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ageVerification(goto_donordetails:()->Unit){
+fun ageVerification(
+    goto_donordetails: () -> Unit,
+    viewModel: RegistrationViewModel = hiltViewModel()
+) {
     //todo get birthdate if already available
-    var viewmodel: registrationViewmodel = viewModel()
-    Box(modifier = Modifier.fillMaxSize()){
+//    var viewModel: RegistrationViewModel = viewModel()
+    Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -45,7 +47,7 @@ fun ageVerification(goto_donordetails:()->Unit){
                     .fillMaxWidth()
                     .weight(0.5f)
                     .background(Color(0xFFEB4335))
-            ){
+            ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -53,8 +55,18 @@ fun ageVerification(goto_donordetails:()->Unit){
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text(text = "Age verification", fontWeight = FontWeight.Bold, fontSize = 32.sp, color = Color.White)
-                    Text(text = "Please enter your birth date", fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color.White)
+                    Text(
+                        text = "Age verification",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 32.sp,
+                        color = Color.White
+                    )
+                    Text(
+                        text = "Please enter your birth date",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.White
+                    )
                 }
             }
             Box(
@@ -70,20 +82,22 @@ fun ageVerification(goto_donordetails:()->Unit){
             verticalArrangement = Arrangement.Center
         ) {
             dateYearSelector(
-                selectedDate = LocalDate.now())
+                selectedDate = LocalDate.now()
+            )
             Spacer(Modifier.height(8.dp))
-            Button(onClick = {
-                CoroutineScope(Dispatchers.IO).launch {
-                    viewmodel.saveBirthdate { goto_donordetails() }
-                }
-            },
+            Button(
+                onClick = {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.saveBirthdate { goto_donordetails() }
+                    }
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFEB4335)
                 ),
                 modifier = Modifier
                     .width(160.dp)
                     .height(45.dp)
-                ) {
+            ) {
                 Text(text = "Next", fontSize = 16.sp, fontWeight = FontWeight.Medium)
             }
         }
