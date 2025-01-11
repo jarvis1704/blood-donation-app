@@ -54,6 +54,7 @@ fun updateCurrentUser(){
         currentUser.profilePic = viewmodel.getRegistrationEntryByString("profilepic")
         currentUser.bloodGroup = viewmodel.getRegistrationEntryByString("bloodGroup")
         viewmodel.FetchNotifications()
+        viewmodel.FetchAnnouncements()
     }
 }
 

@@ -50,4 +50,27 @@ class homeViewmodel:ViewModel() {
             errorMessage=e.message.toString()
         }
     }
+
+    suspend fun FetchAnnouncements(){
+        try {
+            val list = _db.collection("announcements").get().await()
+            if (list != null){
+                val announcementList = list.documents.mapNotNull { doc->
+                    val data = doc.data
+                    data?.let {
+                        announcement(
+                            title = it["title"].toString(),
+                            location = it["location"].toString(),
+                            dateAndTime = (it["date&time"] as? Timestamp)?.let {timestamp ->
+                                TimestampToLocalDateTime(timestamp)
+                            }
+                        )
+                    }
+                }
+                globalAnnouncementList = announcementList
+            }
+        }catch (e:Exception){
+            errorMessage=e.message.toString()
+        }
+    }
 }

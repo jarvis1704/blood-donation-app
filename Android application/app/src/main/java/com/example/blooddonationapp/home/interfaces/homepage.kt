@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
@@ -40,6 +41,9 @@ import com.example.blooddonationapp.R
 import com.example.blooddonationapp.auth.data.EmailLoginViewModel
 import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.global.data.updateCurrentUser
+import com.example.blooddonationapp.home.data.announcement
+import com.example.blooddonationapp.home.data.globalAnnouncementList
+import com.example.blooddonationapp.home.data.globalNotificationList
 import com.example.blooddonationapp.home.ui_components.AnnouncementCard
 
 @Composable
@@ -133,10 +137,10 @@ fun homepage(goto_loadingpage:()->Unit, viewModel: EmailLoginViewModel = hiltVie
                     LazyColumn(
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        //this is for demonstration purposes, change the function and count variable as needed according to the number of announcements
-                        //todo Announcement card implementation
-                        items(5){
-                            AnnouncementCard()
+                        globalAnnouncementList?.let {
+                            items(it.toList()){ item ->
+                                AnnouncementCard(item)
+                            }
                         }
                     }
                 }
