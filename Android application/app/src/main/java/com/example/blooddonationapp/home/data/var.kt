@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.google.firebase.Timestamp
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.ZoneId
 
 data class notification(
@@ -22,3 +23,10 @@ fun TimestampToLocalDate(timestamp: Timestamp):LocalDate{
         .atZone(ZoneId.systemDefault())
         .toLocalDate()
 }
+
+data class announcement(
+    var title:String,
+    var location: String,
+    var date: LocalDate?,
+    var time: LocalTime?
+)

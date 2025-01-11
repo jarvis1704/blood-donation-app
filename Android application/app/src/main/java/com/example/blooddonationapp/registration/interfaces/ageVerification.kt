@@ -16,6 +16,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.blooddonationapp.registration.data.RegistrationViewModel
+import com.example.blooddonationapp.registration.data.tempRegistrationDetails
 import com.example.blooddonationapp.registration.ui_components.dateYearSelector
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -81,7 +85,12 @@ fun ageVerification(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            var birthDateState = remember { mutableStateOf(tempRegistrationDetails.birthDate) }
+            LaunchedEffect(birthDateState.value) {
+                tempRegistrationDetails.birthDate = birthDateState.value
+            }
             dateYearSelector(
+                dateToBeUpdated = birthDateState,
                 selectedDate = LocalDate.now()
             )
             Spacer(Modifier.height(8.dp))

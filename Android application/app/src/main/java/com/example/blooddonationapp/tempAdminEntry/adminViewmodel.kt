@@ -45,4 +45,35 @@ class adminViewmodel:ViewModel() {
         }
 
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun newAnnouncement(){
+        val instant = newAnnouncement.date.atStartOfDay(ZoneId.systemDefault()).toInstant()
+        val theDate = Date.from(instant)
+        val timestamp = Timestamp(theDate)
+
+        val instant2 = newAnnouncement.time.atDate(LocalDate.now()).atZone(ZoneId.systemDefault()).toInstant()
+        val theTime = Date.from(instant2)
+        val timestamp2 = Timestamp(theTime)
+        try {
+            val datamap = mapOf(
+                "title" to newAnnouncement.title,
+                "location" to newAnnouncement.location,
+                "date" to timestamp,
+                "time" to timestamp2
+            )
+            if (true){
+                db.collection("announcements").document()
+                    .set(datamap, SetOptions.merge())
+                    .addOnSuccessListener {
+                        errorMessage="Just kidding, announcement pushed successfully"
+                    }
+                    .addOnFailureListener {
+                        errorMessage = it.message.toString()
+                    }
+            }
+        }catch (e:Exception){
+            errorMessage = e.message.toString()
+        }
+    }
 }
