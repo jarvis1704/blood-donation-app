@@ -1,5 +1,6 @@
 package com.example.blooddonationapp.home.ui_components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,9 +25,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.blooddonationapp.home.data.announcement
+import java.time.format.DateTimeFormatter
 
+@SuppressLint("NewApi")
 @Composable
-fun AnnouncementCard(modifier: Modifier = Modifier) {
+fun AnnouncementCard(announcement: announcement) {
+    val formatter = DateTimeFormatter.ofPattern("hh:mm a")
+    val formattedTime = announcement.dateAndTime?.format(formatter)
     Card(
         modifier= Modifier.height(187.dp).width(393.dp),
         colors = CardDefaults.cardColors(
@@ -40,25 +46,24 @@ fun AnnouncementCard(modifier: Modifier = Modifier) {
         Column(
             modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)
         ) {
-            Text("BLOOD DONATION CAMP", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.White)
+            Text(announcement.title, fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.White)
             Spacer(Modifier.height(8.dp))
             Row(
                 verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Icon(imageVector = Icons.Filled.LocationOn, contentDescription = "Location Icon", tint = Color.White)
-                Text("Tezpur University", fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color.White)
+                Text(announcement.location, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color.White)
             }
             Spacer(Modifier.height(8.dp))
-            Text("31 JULY", fontSize = 16.sp, fontWeight = FontWeight.Bold, modifier = Modifier.clip(RoundedCornerShape(8.dp)).background(
+            Text("${announcement.dateAndTime?.dayOfMonth} ${announcement.dateAndTime?.month}",
+                fontSize = 16.sp, fontWeight = FontWeight.Bold,
+                modifier = Modifier.clip(RoundedCornerShape(8.dp))
+                    .background(
                 Color.Black).padding(8.dp), color = Color.White)
             Spacer(Modifier.height(8.dp))
-            Text("10:00AM Onwards", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+
+            Text("$formattedTime Onwards",
+                fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
         }
     }
-}
-
-@Preview
-@Composable
-private fun AnnouncementCardPreview() {
-    AnnouncementCard()
 }

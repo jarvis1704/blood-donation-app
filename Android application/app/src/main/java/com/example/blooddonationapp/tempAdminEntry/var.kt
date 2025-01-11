@@ -1,5 +1,6 @@
 package com.example.blooddonationapp.tempAdminEntry
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
@@ -14,3 +15,12 @@ object newBloodRequest{
     var hospital by mutableStateOf("")
     var bloodgroup by mutableStateOf("")
 }
+
+@SuppressLint("NewApi")
+object newAnnouncement{
+    var title by mutableStateOf("")
+    var location by mutableStateOf("")
+    var date : LocalDate by mutableStateOf(LocalDate.now())
+    var time : LocalTime by mutableStateOf(LocalTime.now())
+}
+

@@ -26,6 +26,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,6 +49,7 @@ import java.util.Locale
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun dateYearSelector(
+    dateToBeUpdated: MutableState<LocalDate>,
     selectedDate: LocalDate) {
     var displayedMonth by remember { mutableStateOf(YearMonth.from(selectedDate)) }
 
@@ -150,7 +152,7 @@ fun dateYearSelector(
                 items(42) { index ->
                     val date = firstDayOfGrid.plusDays(index.toLong())
                     val isCurrentMonth = date.month == displayedMonth.month
-                    val isSelected = date == tempRegistrationDetails.birthDate
+                    val isSelected = date == dateToBeUpdated.value
 
                     Box(
                         modifier = Modifier
@@ -165,7 +167,7 @@ fun dateYearSelector(
                                 }
                             )
                             .clickable(enabled = isCurrentMonth) {
-                                tempRegistrationDetails.birthDate = date
+                                dateToBeUpdated.value = date
                             },
                         contentAlignment = Alignment.Center
                     ) {
@@ -183,5 +185,5 @@ fun dateYearSelector(
             }
         }
     }
-    Text(text = "Selected Date: ${tempRegistrationDetails.birthDate.dayOfMonth} ${tempRegistrationDetails.birthDate.month}, ${tempRegistrationDetails.birthDate.year}")
+    Text(text = "Selected Date: ${dateToBeUpdated.value.dayOfMonth} ${dateToBeUpdated.value.month}, ${dateToBeUpdated.value.year}")
 }
