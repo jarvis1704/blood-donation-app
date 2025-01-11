@@ -1,5 +1,6 @@
 package com.example.blooddonationapp.registration.data
 
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
@@ -20,4 +21,5 @@ object tempRegistrationDetails{
     var bloodGroup by mutableStateOf("")
     var aadharNo : Long? by mutableStateOf(null)
     var aadharDOB by mutableStateOf("")
+    var aadharPhotoUri : Uri? by mutableStateOf(null)
 }

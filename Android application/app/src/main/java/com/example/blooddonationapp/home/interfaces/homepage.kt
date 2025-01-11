@@ -141,6 +141,9 @@ fun homepage(goto_loadingpage:()->Unit, viewModel: EmailLoginViewModel = hiltVie
                             items(it.toList()){ item ->
                                 AnnouncementCard(item)
                             }
+                            item {
+                                Spacer(modifier = Modifier.fillMaxWidth().padding(25.dp))
+                            }
                         }
                     }
                 }

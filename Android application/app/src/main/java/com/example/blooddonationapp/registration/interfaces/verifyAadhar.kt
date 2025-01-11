@@ -24,13 +24,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.blooddonationapp.registration.data.ProcessImage
 import com.example.blooddonationapp.registration.data.RegistrationViewModel
 import com.example.blooddonationapp.registration.data.tempRegistrationDetails
+import com.example.blooddonationapp.registration.ui_components.imagePicker
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -155,13 +158,14 @@ fun verifyAadhar(
             }
             Spacer(Modifier.height(16.dp))
             //upload photo
+            imagePicker()
+
             Text(
                 text = "Upload Photo of your Aadhaar",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium
             )
-            //todo
-
+            tempRegistrationDetails.aadharPhotoUri?.let { ProcessImage(LocalContext.current, it) }
             Spacer(Modifier.height(60.dp))
             //save button
             Button(
