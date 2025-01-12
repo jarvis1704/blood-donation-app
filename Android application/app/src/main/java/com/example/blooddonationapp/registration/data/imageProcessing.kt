@@ -1,5 +1,6 @@
 package com.example.blooddonationapp.registration.data
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -40,7 +41,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class ImageProcessor(private val context: Context) {
+class ImageProcessor(private val context: Context){
     private val db = Firebase.firestore
 
     suspend fun processAndUploadGoogleIcon(imageUri: Uri): String = withContext(Dispatchers.IO) {
@@ -69,7 +70,6 @@ class ImageProcessor(private val context: Context) {
             // Check size
             val approximateBytes = base64String.length * 0.75
             if (approximateBytes > 1_000_000) {
-                throw Exception("Image too large after processing")
                 errorMessage = "Image too large after processing"
             }
 
@@ -84,9 +84,10 @@ class ImageProcessor(private val context: Context) {
             db.collection("aadhardetails").document(FirebaseAuth.getInstance().currentUser!!.uid)
                 .set(documentData, SetOptions.merge())
                 .addOnSuccessListener {
-                    //todo
+                    photoUploadStatus = "Uploaded Successfully"
                 }.addOnFailureListener {
                     errorMessage = it.message.toString()
+                    photoUploadStatus = "Upload failed, try again"
                 }
 
             return@withContext base64String
@@ -138,32 +139,33 @@ class ImageProcessor(private val context: Context) {
 }
 
 // Composable to display the image
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun ProcessImage(context: Context, imageUri: Uri) {
-    var imageBase64: String? by remember { mutableStateOf<String?>(null) }
     val imageProcessor = remember { ImageProcessor(context) }
     val scope = rememberCoroutineScope()
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        Button(
-            onClick = {
-                scope.launch {
-                    try {
-                        val result = imageProcessor.processAndUploadGoogleIcon(imageUri)
-                    } catch (e: Exception) {
-                        errorMessage = e.message.toString()
-                    }
-                }
-            }
-        ) {
-            Text("Process and Upload Image")
+    scope.launch {
+        try {
+            val result = imageProcessor.processAndUploadGoogleIcon(imageUri)
+        } catch (e: Exception) {
+            errorMessage = e.message.toString()
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
+    }
+//    Column(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(16.dp)
+//    ) {
+//        Button(
+//            onClick = {
+//
+//            }
+//        ) {
+//            Text("Process and Upload Image")
+//        }
+//
+//        Spacer(modifier = Modifier.height(16.dp))
 //        imageBase64?.let { base64String ->
 //            val bitmap = remember(base64String) {
 //                val decodedBytes = Base64.decode(base64String, Base64.DEFAULT)
@@ -178,5 +180,5 @@ fun ProcessImage(context: Context, imageUri: Uri) {
 //                    .clip(RoundedCornerShape(8.dp))
 //            )
 //        }
-    }
+
 }

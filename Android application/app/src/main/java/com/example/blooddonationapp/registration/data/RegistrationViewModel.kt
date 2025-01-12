@@ -6,12 +6,14 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import com.example.blooddonationapp.global.data.errorMessage
+import com.example.blooddonationapp.home.data.TimestampToLocalDate
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.tasks.await
+import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Date
 import javax.inject.Inject
@@ -74,6 +76,28 @@ class RegistrationViewModel @Inject constructor(): ViewModel(){
                 errorMessage = e.message.toString()
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun getBirthdate(): LocalDate?{
+        if (_auth.currentUser != null){
+            //first check if birthdate exists
+            try {
+                val document = _auth.currentUser?.let { _db.collection("userdetails").document(it.uid) }
+                    ?.get()?.await()
+                if (document != null){
+                    val previousBirthDate = document.getTimestamp("birthdate")
+                    return if (previousBirthDate != null){
+                        TimestampToLocalDate(previousBirthDate)
+                    } else{
+                        LocalDate.now()
+                    }
+                }
+            }catch (e:Exception){
+                errorMessage = e.message.toString()
+            }
+        }
+        return LocalDate.now()
     }
 
 

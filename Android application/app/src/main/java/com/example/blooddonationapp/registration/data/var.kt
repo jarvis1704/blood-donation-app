@@ -23,3 +23,5 @@ object tempRegistrationDetails{
     var aadharDOB by mutableStateOf("")
     var aadharPhotoUri : Uri? by mutableStateOf(null)
 }
+
+var photoUploadStatus by mutableStateOf("Upload") //used to check if photo is uploaded
