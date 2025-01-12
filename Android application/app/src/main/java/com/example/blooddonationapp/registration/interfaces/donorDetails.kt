@@ -53,13 +53,14 @@ fun donorDetails(
     goto_bloodgroup: () -> Unit,
     viewModel: RegistrationViewModel = hiltViewModel()
 ) {
-
     //todo get already existing user details here
     var dataviewmodel: homeViewmodel = viewModel()
-//    var viewModel: RegistrationViewModel = viewModel()
 
     CoroutineScope(Dispatchers.IO).launch {
         tempRegistrationDetails.username = dataviewmodel.getRegistrationEntryByString("username")
+        tempRegistrationDetails.gender = dataviewmodel.getRegistrationEntryByString("gender")
+        tempRegistrationDetails.area = dataviewmodel.getRegistrationEntryByString("area")
+        tempRegistrationDetails.phoneNo = dataviewmodel.getRegistrationEntryByString("phoneNo")
     }
 
     //main container

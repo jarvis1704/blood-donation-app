@@ -1,5 +1,6 @@
 package com.example.blooddonationapp.registration.data
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -154,5 +155,29 @@ class RegistrationViewModel @Inject constructor(): ViewModel(){
             errorMessage = e.message.toString()
         }
         return ""
+    }
+
+    @SuppressLint("NewApi")
+    fun saveAadharData(goto_nextpage: () -> Unit = {}){
+        val data1 = mapOf("aadharNo" to tempRegistrationDetails.aadharNo)
+        if (_auth.currentUser != null){
+            _db.collection("aadhardetails").document(_auth.currentUser!!.uid)
+                .set(data1, SetOptions.merge())
+                .addOnSuccessListener {
+                    goto_nextpage()
+                }.addOnFailureListener {
+                    errorMessage = it.message.toString()
+                }
+        }
+        val data2 = mapOf("aadharDOB" to tempRegistrationDetails.aadharDOB)
+        if (_auth.currentUser != null){
+            _db.collection("aadhardetails").document(_auth.currentUser!!.uid)
+                .set(data2, SetOptions.merge())
+                .addOnSuccessListener {
+                    goto_nextpage()
+                }.addOnFailureListener {
+                    errorMessage = it.message.toString()
+                }
+        }
     }
 }
