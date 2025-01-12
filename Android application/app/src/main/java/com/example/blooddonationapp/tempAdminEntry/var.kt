@@ -1,6 +1,7 @@
 package com.example.blooddonationapp.tempAdminEntry
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
@@ -24,3 +25,12 @@ object newAnnouncement{
     var time : LocalTime by mutableStateOf(LocalTime.now())
 }
 
+data class aadharUser(
+    var useremail:String,
+    var aadharStatus : String,
+    var aadharNo : Long?,
+    var aadharDOB: Long?,
+    var aadharPhotoString: String
+)
+
+var aadharPendingList : List<aadharUser>? by mutableStateOf(null)

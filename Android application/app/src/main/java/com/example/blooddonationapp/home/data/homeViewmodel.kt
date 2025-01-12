@@ -43,7 +43,7 @@ class homeViewmodel:ViewModel() {
                             }
                         )
                     }
-                }
+                }.sortedBy { it.date }
                 globalNotificationList = notificationList
             }
         }catch (e:Exception){
@@ -66,7 +66,7 @@ class homeViewmodel:ViewModel() {
                             }
                         )
                     }
-                }
+                }.sortedBy { it.dateAndTime }
                 globalAnnouncementList = announcementList
             }
         }catch (e:Exception){

@@ -20,6 +20,8 @@ object tempRegistrationDetails{
     var locationSelected by mutableStateOf("")
     var bloodGroup by mutableStateOf("")
     var aadharNo : Long? by mutableStateOf(null)
-    var aadharDOB by mutableStateOf("")
+    var aadharDOB : Long? by mutableStateOf(null)
     var aadharPhotoUri : Uri? by mutableStateOf(null)
 }
+
+var photoUploadStatus by mutableStateOf("Upload") //used to check if photo is uploaded

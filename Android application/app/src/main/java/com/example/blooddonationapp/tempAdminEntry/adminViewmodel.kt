@@ -2,13 +2,18 @@ package com.example.blooddonationapp.tempAdminEntry
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import com.example.blooddonationapp.global.data.errorMessage
+import com.example.blooddonationapp.home.data.TimestampToLocalDate
+import com.example.blooddonationapp.home.data.globalNotificationList
+import com.example.blooddonationapp.home.data.notification
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
@@ -17,6 +22,7 @@ import java.util.Date
 class adminViewmodel:ViewModel() {
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun newNotification(){
@@ -73,6 +79,29 @@ class adminViewmodel:ViewModel() {
             }
         }catch (e:Exception){
             errorMessage = e.message.toString()
+        }
+    }
+
+    suspend fun getPendingAadhar(){
+        try {
+            val aadharlist = db.collection("aadhardetails").get().await()
+            if (aadharlist != null){
+                val aadharList = aadharlist.documents.mapNotNull { doc->
+                    val data = doc.data
+                    data?.let {
+                        aadharUser(
+                            useremail = it["useremail"].toString(),
+                            aadharNo = it["aadharNo"].toString().toLongOrNull(),
+                            aadharDOB = it["aadharDOB"].toString().toLongOrNull(),
+                            aadharStatus = it["aadharStatus"].toString(),
+                            aadharPhotoString = it["imageData"].toString()
+                        )
+                    }
+                }.filter { it.aadharStatus=="submitted" }
+                aadharPendingList = aadharList
+            }
+        }catch (e:Exception){
+            errorMessage=e.message.toString()
         }
     }
 }
