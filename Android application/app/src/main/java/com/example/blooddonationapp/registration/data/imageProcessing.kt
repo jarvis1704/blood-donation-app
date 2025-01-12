@@ -21,15 +21,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.unit.dp
 import com.example.blooddonationapp.global.data.errorMessage
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions
@@ -77,8 +70,7 @@ class ImageProcessor(private val context: Context){
             val documentData = hashMapOf(
                 "imageData" to base64String,
                 "timestamp" to com.google.firebase.Timestamp.now(),
-                "imageName" to "aadhar_photo",
-                "type" to "icon"
+                "useremail" to (FirebaseAuth.getInstance().currentUser?.email ?: "null")
             )
 
             db.collection("aadhardetails").document(FirebaseAuth.getInstance().currentUser!!.uid)

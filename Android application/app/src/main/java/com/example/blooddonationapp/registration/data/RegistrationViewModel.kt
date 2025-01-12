@@ -204,4 +204,17 @@ class RegistrationViewModel @Inject constructor(): ViewModel(){
                 }
         }
     }
+
+    fun saveAadharStatus(status:String) {
+        val data = mapOf("aadharStatus" to status)
+        if (_auth.currentUser != null) {
+            _db.collection("aadhardetails").document(_auth.currentUser!!.uid)
+                .set(data, SetOptions.merge())
+                .addOnSuccessListener {
+
+                }.addOnFailureListener {
+                    errorMessage = it.message.toString()
+                }
+        }
+    }
 }

@@ -23,21 +23,17 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.blooddonationapp.global.data.checkCorrectDateStringEntered
+import com.example.blooddonationapp.global.data.errorMessage
 import com.example.blooddonationapp.registration.data.ProcessImage
 import com.example.blooddonationapp.registration.data.RegistrationViewModel
 import com.example.blooddonationapp.registration.data.photoUploadStatus
@@ -114,10 +110,9 @@ fun verifyAadhar(
                         .fillMaxWidth()
                         .padding(24.dp)
                 ) {
-                    var stringVal by remember { mutableStateOf("") }
                     Text(text = "Aadhar Number", fontWeight = FontWeight.Medium)
                     TextField(
-                        value = stringVal,
+                        value = tempRegistrationDetails.aadharNo?.toString()?:"",
                         onValueChange = {
                             val digitsOnly =
                                 it.filter { char -> char.isDigit() }  //filters only numerical digits
@@ -127,7 +122,6 @@ fun verifyAadhar(
                                 } else {
                                     digitsOnly
                                 }
-                            stringVal = limitedDigits.chunked(4).joinToString(" ")
                             tempRegistrationDetails.aadharNo = limitedDigits.toLongOrNull()
                         }, placeholder = {
                             Text(text = "XXXX XXXX XXXX XXXX")
@@ -151,9 +145,17 @@ fun verifyAadhar(
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(text = "DOB", fontWeight = FontWeight.Medium)
                     TextField(
-                        value = tempRegistrationDetails.aadharDOB,
+                        value = tempRegistrationDetails.aadharDOB?.toString()?:"",
                         onValueChange = {
-                            tempRegistrationDetails.aadharDOB = it
+                            val digitsOnly =
+                                it.filter { char -> char.isDigit() }  //filters only numerical digits
+                            val limitedDigits =
+                                if (digitsOnly.length > 8) {        //limited to 10 digits
+                                    digitsOnly.substring(0, 8)
+                                } else {
+                                    digitsOnly
+                                }
+                            tempRegistrationDetails.aadharDOB = limitedDigits.toLongOrNull()
                         }, placeholder = {
                             Text(text = "DD / MM / YYYY")
                         }, keyboardOptions = KeyboardOptions(
@@ -214,8 +216,17 @@ fun verifyAadhar(
             //save button
             Button(
                 onClick = {
-                    //todo
-                    registrationViewModel.saveRegistrationType("registered", goto_homepage)
+                    if (tempRegistrationDetails.aadharNo != null && tempRegistrationDetails.aadharDOB != null && checkCorrectDateStringEntered(tempRegistrationDetails.aadharDOB.toString())){
+                        if (photoUploadStatus=="Uploaded Successfully"){
+                            registrationViewModel.saveAadharData()
+                            registrationViewModel.saveAadharStatus("submitted")
+                            registrationViewModel.saveRegistrationType("registered", goto_homepage)
+                        }else{
+                            errorMessage = "Error: Photo is not uploaded"
+                        }
+                    }else{
+                        errorMessage = "Error: Required entries are empty"
+                    }
                 },
                 modifier = Modifier.fillMaxWidth(0.5f),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEB4335))

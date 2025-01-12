@@ -44,7 +44,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun imagePicker() {
     val context = LocalContext.current
-
+    photoUploadStatus = "Upload"
     var isImagePicked by remember { mutableStateOf(false) }
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
