@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.Button
@@ -21,12 +22,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.blooddonationapp.home.data.TimestampToLocalDate
 import com.example.blooddonationapp.home.data.globalNotificationList
+import com.example.blooddonationapp.home.data.homeViewmodel
+import com.example.blooddonationapp.home.data.newNotificationsCounter
 import com.example.blooddonationapp.home.data.notification
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun notificationsPage(){
+    //when user enters this page, store the timestamp, we will use that timestamp to look for new notifications
+    var homeViewmodel:homeViewmodel = viewModel()
+    CoroutineScope(Dispatchers.IO).launch {
+        homeViewmodel.updateNotificationLastSeen()
+    }
+
     Box(
         modifier = Modifier.fillMaxSize()
     ){
@@ -39,13 +53,14 @@ fun notificationsPage(){
             ){
                 Text("NOTIFICATIONS")
             }
-            Text("0 New Notifications")
+            Text(newNotificationsCounter.toString()+" New Notifications")
             LazyColumn (
                 modifier = Modifier.fillMaxSize()
             ){
+
                 globalNotificationList?.let {
-                    items(it.toList()){ item ->
-                        showNotification(item)
+                    itemsIndexed(it.toList()){ item, index ->
+                        showNotification(item, index)
                     }
                 }
             }
@@ -56,10 +71,12 @@ fun notificationsPage(){
 
 @SuppressLint("NewApi")
 @Composable
-fun showNotification(data:notification){
+fun showNotification(index: Int, data:notification){
     Box(modifier = Modifier.fillMaxWidth()){
         Column (
-            modifier = Modifier.fillMaxWidth().padding(20.dp).border(1.dp, Color.Red)
+            modifier = Modifier.fillMaxWidth()
+                .padding(20.dp)
+                .border(1.dp, if (index < newNotificationsCounter)Color.Red else Color.Black)
         ){
             Text("Blood group:"+data.bloodtype)
             Text("hospital:"+data.hospital)
