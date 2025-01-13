@@ -45,10 +45,13 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
@@ -57,12 +60,13 @@ import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.global.data.updateCurrentUser
 import com.example.blooddonationapp.home.data.homeViewmodel
 
+
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun userProfile(){
+fun userProfile() {
     updateCurrentUser()
 
-    Box(modifier = Modifier.fillMaxSize()){
+    Box(modifier = Modifier.fillMaxSize()) {
         Column(
             Modifier.fillMaxSize()
         ) {
@@ -71,10 +75,13 @@ fun userProfile(){
                     .fillMaxWidth()
                     .weight(0.15f)
                     .background(Color(0xFFEB4335))
-            ){
+            ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(top = 98.dp, start = 16.dp)
+                    modifier = Modifier.padding(
+                        top = dimensionResource(id = R.dimen.profile_top_padding),
+                        start = 16.dp
+                    )
                 ) {
                     Text("Donor Details", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
                 }
@@ -84,72 +91,69 @@ fun userProfile(){
                     .fillMaxWidth()
                     .weight(0.85f)
                     .background(Color.White)
-            ){
+            ) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(top = 16.dp),
+                        .padding(top = 16.dp)
+                        .padding(horizontal = dimensionResource(id = R.dimen.profile_horizontal_padding)),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    when(currentUser.profilePic){
-                        ""->{
+                    when(currentUser.profilePic) {
+                        "" -> {
                             Image(
                                 painterResource(id = R.drawable.default_user_icon),
                                 contentDescription = null,
                                 modifier = Modifier
-                                    .size(200.dp)
+                                    .size(min(200.dp, dimensionResource(id = R.dimen.profile_pic_size)))
                                     .clip(CircleShape))
                         }
-                        else->{
+                        else -> {
                             Image(
                                 painter = rememberAsyncImagePainter(model = currentUser.profilePic),
                                 contentDescription = null,
                                 modifier = Modifier
-                                    .size(200.dp)
+                                    .size(min(200.dp, dimensionResource(id = R.dimen.profile_pic_size)))
                                     .clip(CircleShape))
                         }
                     }
                     Spacer(Modifier.height(8.dp))
-                    Text(text = currentUser.username, fontWeight = FontWeight.Medium, fontSize = 24.sp)
+                    Text(
+                        text = currentUser.username,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 24.sp,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
                     Spacer(Modifier.height(16.dp))
                     Surface(
-                        shape = RectangleShape.let {
-                            RoundedCornerShape(16.dp)
-                        },
+                        shape = RoundedCornerShape(16.dp),
                         color = Color(0x988BC34A),
                         contentColor = Color.White,
                         modifier = Modifier
                             .height(34.dp)
-                            .width(300.dp),
+                            .fillMaxWidth(0.8f),
                         shadowElevation = 8.dp,
                         tonalElevation = 8.dp
                     ) {
                         Row(
                             horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
                         ) {
                             Image(painter = painterResource(R.drawable.verified_icon), contentDescription = "verified logo")
                             Text("Can Donate Blood", Modifier.padding(horizontal = 8.dp), fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         }
                     }
                     Spacer(Modifier.height(16.dp))
-                    Card(modifier = Modifier
-                        .fillMaxWidth().padding(16.dp),
-                        colors = CardDefaults.cardColors(
-                            Color.White
-                        ),
-                        elevation = CardDefaults.elevatedCardElevation(
-                            8.dp
-                        ),
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = dimensionResource(id = R.dimen.card_horizontal_padding)),
+                        colors = CardDefaults.cardColors(Color.White),
+                        elevation = CardDefaults.elevatedCardElevation(8.dp),
                         shape = RoundedCornerShape(16.dp)
                     ) {
-//                        Column(modifier = Modifier
-//                            .fillMaxWidth(),
-//                            horizontalAlignment = Alignment.CenterHorizontally
-//                        ) {
-//                            Text(text = "Blood Group:" + currentUser.bloodGroup)
-//                            Text(text = currentUser.area)
-//                        }
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
@@ -161,37 +165,29 @@ fun userProfile(){
                                 horizontalArrangement = Arrangement.SpaceEvenly,
                                 modifier = Modifier.fillMaxWidth()
                             ) {
-                                Column(
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    Text(currentUser.bloodGroup, fontSize = 32.sp, color = Color(0xFFEB4335), fontWeight = FontWeight.SemiBold)
-                                    Text("Blood Group", fontSize = 18.sp, fontWeight = FontWeight.Normal)
-                                }
-                                Column(
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                )  {
-                                    //donated count
-                                    Text("2", fontSize = 32.sp, color = Color(0xFFEB4335), fontWeight = FontWeight.SemiBold)
-                                    Text("Donated", fontSize = 18.sp, fontWeight = FontWeight.Normal)
-                                }
-                                Column(
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                )  {
-                                    //Requested count
-                                    Text("0", fontSize = 32.sp, color = Color(0xFFEB4335), fontWeight = FontWeight.SemiBold)
-                                    Text("Blood Group", fontSize = 18.sp, fontWeight = FontWeight.Normal)
-                                }
+                                InfoColumn(label = "Blood Group", value = currentUser.bloodGroup)
+                                InfoColumn(label = "Donated", value = "2")
+                                InfoColumn(label = "Blood Group", value = "0")
                             }
                             Spacer(Modifier.height(16.dp))
-                            Row {
-                                Icon(imageVector = Icons.Filled.LocationOn, contentDescription = "Location Icon", tint = Color.Black)
-                                Text("Tezpur University", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.LocationOn,
+                                    contentDescription = "Location Icon",
+                                    tint = Color.Black
+                                )
+                                Text(
+                                    "Tezpur University",
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    textAlign = TextAlign.Center
+                                )
                             }
                         }
-
                     }
                     Card(
                         modifier = Modifier
@@ -199,9 +195,7 @@ fun userProfile(){
                             .padding(16.dp),
                         shape = RoundedCornerShape(24.dp),
                         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                        colors = CardDefaults.cardColors(
-                            Color.White
-                        )
+                        colors = CardDefaults.cardColors(Color.White)
                     ) {
                         Column(
                             modifier = Modifier
@@ -213,35 +207,54 @@ fun userProfile(){
                                 text = "SETTINGS & PREFERENCES",
                                 onClick = {}
                             )
-
                             Divider(
                                 modifier = Modifier.padding(vertical = 12.dp),
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
                             )
-
                             MenuRow(
                                 icon = Icons.Default.Notifications,
                                 text = "NOTIFICATIONS",
-                                onClick = {  }
+                                onClick = {}
                             )
-
                             Divider(
                                 modifier = Modifier.padding(vertical = 12.dp),
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
                             )
-
                             MenuRow(
                                 icon = Icons.Default.Info,
                                 text = "HELP & FAQS",
-                                onClick = {  }
+                                onClick = {}
                             )
                         }
                     }
                 }
             }
         }
+    }
+}
 
-
+@Composable
+private fun InfoColumn(
+    label: String,
+    value: String
+) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            value,
+            fontSize = 32.sp,
+            color = Color(0xFFEB4335),
+            fontWeight = FontWeight.SemiBold,
+            textAlign = TextAlign.Center
+        )
+        Text(
+            label,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Normal,
+            textAlign = TextAlign.Center
+        )
     }
 }
 
