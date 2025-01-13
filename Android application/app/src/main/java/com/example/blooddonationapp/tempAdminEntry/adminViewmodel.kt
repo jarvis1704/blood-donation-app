@@ -26,15 +26,15 @@ class adminViewmodel:ViewModel() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun newNotification(){
-        val instant = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()
-        val theDate = Date.from(instant)
-        val timestamp = Timestamp(theDate)
+//        val instant = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()
+//        val theDate = Date.from(instant)
+//        val timestamp = Timestamp(theDate)
         try {
             val datamap = mapOf(
                 "bloodtype" to newBloodRequest.bloodgroup,
                 "hospital" to newBloodRequest.hospital,
                 "details" to newBloodRequest.details,
-                "date" to timestamp
+                "date" to Timestamp.now()
             )
             if (true){
                 db.collection("blood_requests").document()

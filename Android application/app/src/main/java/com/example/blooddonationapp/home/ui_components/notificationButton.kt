@@ -17,8 +17,9 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.blooddonationapp.global.data.currentPage
+import com.example.blooddonationapp.home.data.newNotificationsCounter
 
-var temp = true
+
 @Composable
 fun notifButton(goto_notifications:()->Unit){
     when(currentPage){
@@ -37,7 +38,7 @@ fun notifButton(goto_notifications:()->Unit){
                     )
                 }
             }
-            if (temp){
+            if (newNotificationsCounter!=0){
                 Box {
                     IconButton(modifier = Modifier
                         .clickable(enabled = false, onClick = {})
@@ -54,7 +55,7 @@ fun notifButton(goto_notifications:()->Unit){
                     }
                 }
             }
-            if (temp){
+            if (newNotificationsCounter!=0){
                 Box {
                     IconButton(modifier = Modifier
                         .clickable(enabled = false, onClick = {})
@@ -71,7 +72,7 @@ fun notifButton(goto_notifications:()->Unit){
                     }
                 }
             }
-            if (temp){
+            if (newNotificationsCounter!=0){
                 Box {
                     IconButton(modifier = Modifier
                         .clickable(enabled = false, onClick = {})
