@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -91,10 +92,10 @@ fun homepage(goto_loadingpage:()->Unit, viewModel: EmailLoginViewModel = hiltVie
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth().offset(y = (-50).dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalArrangement = Arrangement.spacedBy(24.dp)
                     ) {
                         Card(
-                            modifier = Modifier.height(111.dp).width(176.dp),
+                            modifier = Modifier.weight(1f).aspectRatio(1.6f),
                             elevation = CardDefaults.cardElevation(
                                 8.dp
                             ),
@@ -113,7 +114,7 @@ fun homepage(goto_loadingpage:()->Unit, viewModel: EmailLoginViewModel = hiltVie
                             }
                         }
                         Card(
-                            modifier = Modifier.height(111.dp).width(176.dp),
+                            modifier = Modifier.weight(1f).aspectRatio(1.6f),
                             elevation = CardDefaults.cardElevation(
                                 8.dp
                             ),
