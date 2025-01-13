@@ -109,6 +109,7 @@ fun userProfile(){
                                     .clip(CircleShape))
                         }
                     }
+                    Spacer(Modifier.height(8.dp))
                     Text(text = currentUser.username, fontWeight = FontWeight.Medium, fontSize = 24.sp)
                     Spacer(Modifier.height(16.dp))
                     Surface(
@@ -197,7 +198,10 @@ fun userProfile(){
                             .fillMaxWidth()
                             .padding(16.dp),
                         shape = RoundedCornerShape(24.dp),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                        colors = CardDefaults.cardColors(
+                            Color.White
+                        )
                     ) {
                         Column(
                             modifier = Modifier
