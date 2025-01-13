@@ -36,7 +36,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.blooddonationapp.global.data.errorMessage
 import com.example.blooddonationapp.home.data.globalNotificationList
 import com.example.blooddonationapp.home.interfaces.showNotification
-import com.example.blooddonationapp.home.ui_components.temp
 import com.example.blooddonationapp.registration.data.tempRegistrationDetails
 import com.example.blooddonationapp.registration.ui_components.dateYearSelector
 import kotlinx.coroutines.CoroutineScope

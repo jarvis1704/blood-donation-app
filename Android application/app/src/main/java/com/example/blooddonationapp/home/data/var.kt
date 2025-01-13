@@ -2,6 +2,7 @@ package com.example.blooddonationapp.home.data
 
 import android.annotation.SuppressLint
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.google.firebase.Timestamp
@@ -14,10 +15,11 @@ import java.time.ZoneId
 data class notification(
     var bloodtype:String,
     var hospital: String,
-    var date: LocalDate?
+    var date: LocalDateTime?
 )
 
 var globalNotificationList: List<notification>? by mutableStateOf(null)
+var newNotificationsCounter :Int by mutableIntStateOf(0)
 
 @SuppressLint("NewApi")
 fun TimestampToLocalDate(timestamp: Timestamp):LocalDate{
