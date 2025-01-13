@@ -50,8 +50,8 @@ class MainActivity : ComponentActivity() {
                         goto_userprofile = {navCtrl.navigate("userprofile")}
                     )}) { _ ->
                     errorAlert()
-//                    appNav(navCtrl, googleAuthUiClient)
-                    adminPage()   //for testing
+                    appNav(navCtrl, googleAuthUiClient)
+//                    adminPage()   //for testing
                 }
             }
         }
