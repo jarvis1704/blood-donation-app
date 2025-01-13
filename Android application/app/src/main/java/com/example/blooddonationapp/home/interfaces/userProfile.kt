@@ -133,7 +133,7 @@ fun userProfile(){
                     }
                     Spacer(Modifier.height(16.dp))
                     Card(modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth().padding(16.dp),
                         colors = CardDefaults.cardColors(
                             Color.White
                         ),
