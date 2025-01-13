@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="profile_top_padding">98dp</dimen>
+    <dimen name="profile_horizontal_padding">16dp</dimen>
+    <dimen name="profile_pic_size">200dp</dimen>
+    <dimen name="card_horizontal_padding">16dp</dimen>
+</resources>
