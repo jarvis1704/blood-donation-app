@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Notifications
@@ -233,6 +234,17 @@ fun userProfile(){
                             MenuRow(
                                 icon = Icons.Default.Info,
                                 text = "HELP & FAQS",
+                                onClick = {  }
+                            )
+
+                            Divider(
+                                modifier = Modifier.padding(vertical = 12.dp),
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
+                            )
+
+                            MenuRow(
+                                icon = Icons.Default.ExitToApp,
+                                text = "LOGOUT",
                                 onClick = {  }
                             )
                         }
