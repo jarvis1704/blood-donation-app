@@ -27,7 +27,7 @@ fun notifButton(goto_notifications:()->Unit){
 
             Box {
                 IconButton(modifier = Modifier.offset(
-                    x= (-7).dp, y= (-685).dp
+                    x= (-1).dp, y= (-685).dp
                 ),
                     onClick = { goto_notifications() }) {
                     Icon(
