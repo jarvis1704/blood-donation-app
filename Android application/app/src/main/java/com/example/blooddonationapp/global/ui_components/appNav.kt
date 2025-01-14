@@ -159,7 +159,9 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         }
         composable("notificationspage"){
             currentPage="notificationspage"
-            notificationsPage()
+            notificationsPage(
+                {navController.navigate("homepage")}
+            )
         }
 
     }
