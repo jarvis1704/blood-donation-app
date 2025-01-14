@@ -151,7 +151,7 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         }
         composable("bloodrequests"){
             currentPage="bloodrequests"
-            bloodRequests()
+            bloodRequests({navController.navigate("homepage")})
         }
         composable("userprofile"){
             currentPage="userprofile"
