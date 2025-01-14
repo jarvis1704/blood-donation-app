@@ -23,16 +23,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.blooddonationapp.home.data.HomeViewModel
 import com.example.blooddonationapp.home.data.globalNotificationList
-import com.example.blooddonationapp.home.data.homeViewmodel
 import com.example.blooddonationapp.home.data.newNotificationsCounter
 import com.example.blooddonationapp.home.data.notification
 import com.example.blooddonationapp.ui.theme.BloodDonationAppColor
@@ -40,15 +39,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun NotificationsPage(goto_homepage: () -> Unit) {
+fun NotificationsPage(
+    goto_homepage: () -> Unit,
+    homeViewModel: HomeViewModel = hiltViewModel()
+) {
     //when user enters this page, store the timestamp, we will use that timestamp to look for new notifications
-
-    var homeViewmodel: homeViewmodel = viewModel()
-    LaunchedEffect(Unit) {
-        CoroutineScope(Dispatchers.IO).launch {
-            homeViewmodel.updateNotificationLastSeen()
-        }
+    CoroutineScope(Dispatchers.IO).launch {
+        homeViewModel.updateNotificationLastSeen()
     }
 
     Box(

@@ -8,7 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.blooddonationapp.home.data.homeViewmodel
+import com.example.blooddonationapp.home.data.HomeViewModel
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +46,7 @@ object currentUser{
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun updateCurrentUser(){
-    var viewmodel: homeViewmodel = viewModel()
+    var viewmodel: HomeViewModel = viewModel()
     CoroutineScope(Dispatchers.IO).launch {
         currentUser.username = viewmodel.getRegistrationEntryByString("username")
         currentUser.gender = viewmodel.getRegistrationEntryByString("gender")
