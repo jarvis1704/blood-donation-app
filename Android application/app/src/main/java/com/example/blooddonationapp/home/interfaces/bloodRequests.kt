@@ -2,6 +2,8 @@ package com.example.blooddonationapp.home.interfaces
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +17,9 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
@@ -66,7 +70,9 @@ fun bloodRequests(){
                 modifier = Modifier.fillMaxWidth().weight(0.85f)
             ){
                 Column(
-                    modifier = Modifier.fillMaxSize().padding(top = 24.dp, start = 24.dp, end = 24.dp).navigationBarsPadding(),
+                    modifier = Modifier.fillMaxSize().padding(top = 24.dp, start = 24.dp, end = 24.dp).navigationBarsPadding().verticalScroll(
+                        rememberScrollState()
+                    ),
                     horizontalAlignment = Alignment.Start,
                 ) {
                     Text(text = "BLOOD REQUESTS NEAR YOU", fontSize = 24.sp, fontWeight = FontWeight.Bold)
