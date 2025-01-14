@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.blooddonationapp.auth.data.googleAuthClient
 import com.example.blooddonationapp.global.ui_components.appNav
 import com.example.blooddonationapp.global.ui_components.errorAlert
+import com.example.blooddonationapp.global.ui_components.globalAlert
 import com.example.blooddonationapp.home.ui_components.bottomBar
 import com.example.blooddonationapp.home.ui_components.notifButton
 import com.example.blooddonationapp.tempAdminEntry.adminPage
@@ -50,6 +51,7 @@ class MainActivity : ComponentActivity() {
                         goto_userprofile = {navCtrl.navigate("userprofile")}
                     )}) { _ ->
                     errorAlert()
+                    globalAlert()
                     appNav(navCtrl, googleAuthUiClient)
 //                    adminPage()   //for testing
                 }

@@ -154,7 +154,9 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         }
         composable("userprofile"){
             currentPage="userprofile"
-            userProfile()
+            userProfile(
+                goto_loadingpage = {navController.navigate("loadingpage")}
+            )
         }
         composable("notificationspage"){
             currentPage="notificationspage"

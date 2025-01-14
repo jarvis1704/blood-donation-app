@@ -1,6 +1,7 @@
 package com.example.blooddonationapp.global.data
 
 import android.annotation.SuppressLint
+import android.icu.text.CaseMap.Title
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
@@ -61,6 +62,22 @@ fun updateCurrentUser(){
 //for global error dialogue
 var errorMessage by mutableStateOf("")         //just change value to push an alert
 var isErrorDialogue by mutableStateOf(false)   //no need to change value, launchedAffect takes care of it
+
+//for global alert dialogue
+var isAlertDialogue by mutableStateOf(false)   //need to change value
+object GlobalAlert{
+    var title by mutableStateOf("")
+    var details by mutableStateOf("")
+    var onCancelClick:()->Unit = {}
+    var onConfirmClick:()->Unit = {}
+}
+fun NewGlobalAlert(title: String, details:String, onCancelClick:()->Unit={}, onConfirmClick:()->Unit){
+    GlobalAlert.title=title
+    GlobalAlert.details=details
+    GlobalAlert.onCancelClick = onCancelClick
+    GlobalAlert.onConfirmClick = onConfirmClick
+    isAlertDialogue = true
+}
 
 var currentPage by mutableStateOf("")  //universal, handled inside appNav
 
