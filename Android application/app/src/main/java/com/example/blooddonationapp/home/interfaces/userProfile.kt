@@ -3,6 +3,7 @@ package com.example.blooddonationapp.home.interfaces
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Notifications
@@ -41,15 +43,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.blooddonationapp.R
+import com.example.blooddonationapp.auth.data.EmailLoginViewModel
+import com.example.blooddonationapp.global.data.NewGlobalAlert
 import com.example.blooddonationapp.global.data.currentUser
+import com.example.blooddonationapp.global.data.errorMessage
 import com.example.blooddonationapp.global.data.updateCurrentUser
 
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun userProfile() {
+fun userProfile(
+    goto_loadingpage:()->Unit,
+    emailLoginViewModel: EmailLoginViewModel = hiltViewModel()
+) {
     updateCurrentUser()
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -211,6 +220,22 @@ fun userProfile() {
                                 text = "HELP & FAQS",
                                 onClick = {}
                             )
+
+                            Divider(
+                                modifier = Modifier.padding(vertical = 12.dp),
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
+                            )
+
+                            MenuRow(
+                                icon = Icons.Default.ExitToApp,
+                                text = "LOGOUT",
+                                onClick = { NewGlobalAlert(
+                                    "Logout?",
+                                    "Are you sure you want to logout?",
+                                    onCancelClick = {},
+                                    onConfirmClick = {emailLoginViewModel.signout { goto_loadingpage() }}
+                                )}
+                            )
                         }
                     }
                 }
@@ -251,26 +276,30 @@ private fun MenuRow(
     text: String,
     onClick: () -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
+    Column(
+        modifier = Modifier.clickable { onClick() }
     ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = text,
-            modifier = Modifier.size(24.dp),
-            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = text,
+                modifier = Modifier.size(24.dp),
+                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+            )
 
-        Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(16.dp))
 
-        Text(
-            text = text,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Medium,
-            color = MaterialTheme.colorScheme.onSurface
-        )
+            Text(
+                text = text,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
     }
 }

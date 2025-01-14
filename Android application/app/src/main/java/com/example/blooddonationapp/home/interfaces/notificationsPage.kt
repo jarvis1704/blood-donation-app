@@ -119,7 +119,7 @@ fun NotificationComposable(index: Int, data: notification) {
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    "Blood group:" + data.bloodtype + "is required at hospital:" + data.hospital,
+                    "Blood group: " + data.bloodtype + "is required at hospital: " + data.hospital,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium
                 )
