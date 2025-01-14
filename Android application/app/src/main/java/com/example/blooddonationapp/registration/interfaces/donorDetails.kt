@@ -35,11 +35,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.blooddonationapp.global.data.checkCorrectDateStringEntered
 import com.example.blooddonationapp.global.data.errorMessage
 import com.example.blooddonationapp.global.data.stringToTimestamp
-import com.example.blooddonationapp.home.data.homeViewmodel
+import com.example.blooddonationapp.home.data.HomeViewModel
 import com.example.blooddonationapp.registration.data.RegistrationViewModel
 import com.example.blooddonationapp.registration.data.tempRegistrationDetails
 import kotlinx.coroutines.CoroutineScope
@@ -51,16 +50,16 @@ import kotlinx.coroutines.launch
 @Composable
 fun donorDetails(
     goto_bloodgroup: () -> Unit,
-    viewModel: RegistrationViewModel = hiltViewModel()
+    viewModel: RegistrationViewModel = hiltViewModel(),
+    dataViewModel: HomeViewModel = hiltViewModel()
 ) {
     //todo get already existing user details here
-    var dataviewmodel: homeViewmodel = viewModel()
 
     CoroutineScope(Dispatchers.IO).launch {
-        tempRegistrationDetails.username = dataviewmodel.getRegistrationEntryByString("username")
-        tempRegistrationDetails.gender = dataviewmodel.getRegistrationEntryByString("gender")
-        tempRegistrationDetails.area = dataviewmodel.getRegistrationEntryByString("area")
-        tempRegistrationDetails.phoneNo = dataviewmodel.getRegistrationEntryByString("phoneNo")
+        tempRegistrationDetails.username = dataViewModel.getRegistrationEntryByString("username")
+        tempRegistrationDetails.gender = dataViewModel.getRegistrationEntryByString("gender")
+        tempRegistrationDetails.area = dataViewModel.getRegistrationEntryByString("area")
+        tempRegistrationDetails.phoneNo = dataViewModel.getRegistrationEntryByString("phoneNo")
     }
 
     //main container

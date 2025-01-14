@@ -32,8 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.blooddonationapp.home.data.homeViewmodel
+import com.example.blooddonationapp.home.data.HomeViewModel
 import com.example.blooddonationapp.registration.data.RegistrationViewModel
 import com.example.blooddonationapp.registration.data.tempRegistrationDetails
 import kotlinx.coroutines.CoroutineScope
@@ -43,14 +42,16 @@ import kotlinx.coroutines.launch
 @SuppressLint("CoroutineCreationDuringComposition")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun bloodGroup(
+fun BloodGroup(
     goto_verifyadhaar: () -> Unit,
-    viewModel: RegistrationViewModel = hiltViewModel()
+    viewModel: RegistrationViewModel = hiltViewModel(),
+    dataViewModel: HomeViewModel = hiltViewModel()
 ) {
-    var dataviewmodel: homeViewmodel = viewModel()
     CoroutineScope(Dispatchers.IO).launch {
-        tempRegistrationDetails.bloodGroup = dataviewmodel.getRegistrationEntryByString("bloodGroup")
+        tempRegistrationDetails.bloodGroup =
+            dataViewModel.getRegistrationEntryByString("bloodGroup")
     }
+
     //variable for each blood group
     val positiveBloodGroups = listOf("A+", "B+", "AB+", "O+")
     val negativeBloodGroups = listOf("A-", "B-", "AB-", "O-")
