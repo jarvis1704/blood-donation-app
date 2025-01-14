@@ -25,12 +25,11 @@ import com.example.blooddonationapp.auth.interfaces.signuppage
 import com.example.blooddonationapp.global.data.currentPage
 import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.global.data.errorMessage
-import com.example.blooddonationapp.home.data.homeViewmodel
 import com.example.blooddonationapp.home.interfaces.bloodRequests
-import com.example.blooddonationapp.home.interfaces.notificationsPage
+import com.example.blooddonationapp.home.interfaces.NotificationsPage
 import com.example.blooddonationapp.home.interfaces.userProfile
 import com.example.blooddonationapp.registration.interfaces.ageVerification
-import com.example.blooddonationapp.registration.interfaces.bloodGroup
+import com.example.blooddonationapp.registration.interfaces.BloodGroup
 import com.example.blooddonationapp.registration.interfaces.donorDetails
 import com.example.blooddonationapp.registration.interfaces.verifyAadhar
 import kotlinx.coroutines.launch
@@ -140,7 +139,7 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         }
         composable("bloodgroup"){
             currentPage = "bloodgroup"
-            bloodGroup(
+            BloodGroup(
                 goto_verifyadhaar = {navController.navigate("verifyaadhar")})
         }
         composable("verifyaadhar"){
@@ -151,7 +150,7 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         }
         composable("bloodrequests"){
             currentPage="bloodrequests"
-            bloodRequests()
+            bloodRequests({navController.navigate("homepage")})
         }
         composable("userprofile"){
             currentPage="userprofile"
@@ -159,7 +158,9 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         }
         composable("notificationspage"){
             currentPage="notificationspage"
-            notificationsPage()
+            NotificationsPage(
+                {navController.navigate("homepage")}
+            )
         }
 
     }
