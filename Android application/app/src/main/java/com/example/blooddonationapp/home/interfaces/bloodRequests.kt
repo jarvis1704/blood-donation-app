@@ -46,7 +46,7 @@ import com.example.blooddonationapp.ui.theme.BloodDonationAppColor
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun bloodRequests(){
+fun bloodRequests(goto_homepage:()->Unit){
     updateCurrentUser()
     Box(modifier = Modifier.fillMaxSize()){
         Column {
@@ -58,7 +58,7 @@ fun bloodRequests(){
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     IconButton({
-
+                        goto_homepage()
                     }) {
                         Icon(imageVector = Icons.Filled.KeyboardArrowLeft, contentDescription = "Back Button", tint = Color.White, modifier = Modifier.size(30.dp))
                     }
