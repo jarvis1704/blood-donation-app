@@ -32,6 +32,9 @@ import com.example.blooddonationapp.registration.interfaces.ageVerification
 import com.example.blooddonationapp.registration.interfaces.BloodGroup
 import com.example.blooddonationapp.registration.interfaces.donorDetails
 import com.example.blooddonationapp.registration.interfaces.verifyAadhar
+import com.example.blooddonationapp.settings.interfaces.AboutUs
+import com.example.blooddonationapp.settings.interfaces.SettingsAndPreferences
+import com.example.blooddonationapp.settings.interfaces.aboutUs
 import kotlinx.coroutines.launch
 
 
@@ -155,7 +158,9 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         composable("userprofile"){
             currentPage="userprofile"
             userProfile(
-                goto_loadingpage = {navController.navigate("loadingpage")}
+                goto_loadingpage = {navController.navigate("loadingpage")},
+                goto_settings = {navController.navigate("settingsandpreferences")},
+                goto_aboutus = {navController.navigate("aboutus")}
             )
         }
         composable("notificationspage"){
@@ -164,6 +169,15 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                 {navController.navigate("homepage")}
             )
         }
-
+        composable("settingsandpreferences"){
+            currentPage = "settingsandpreferences"
+            SettingsAndPreferences(
+                goto_loadingpage = {navController.navigate("loadingpage")}
+            )
+        }
+        composable("aboutus"){
+            currentPage = "aboutus"
+            AboutUs()
+        }
     }
 }
