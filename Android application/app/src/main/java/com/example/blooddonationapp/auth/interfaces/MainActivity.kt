@@ -54,9 +54,8 @@ class MainActivity : ComponentActivity() {
                     )}) { _ ->
                     errorAlert()
                     globalAlert()
-//                    appNav(navCtrl, googleAuthUiClient)
+                    appNav(navCtrl, googleAuthUiClient)
 //                    adminPage()   //for testing
-                    verifyAadhar({})
                 }
             }
         }
