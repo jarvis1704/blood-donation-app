@@ -63,7 +63,8 @@ fun bottomBar(
                             onClick = goto_bloodrequests,
                             icon = {
                                 Icon(
-                                    painter = painterResource(id = R.drawable.ic_blood_drop),
+                                    painter = painterResource(id = R.drawable.blood_drop_icon),
+                                    modifier = Modifier.size(25.dp),
                                     contentDescription = "Blood Requests",
                                     tint = if (currentPage == "bloodrequests")
                                         Color(0xFFEB4335)
