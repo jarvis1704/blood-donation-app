@@ -66,6 +66,8 @@ import com.example.blooddonationapp.home.data.HomeViewModel
 @Composable
 fun userProfile(
     goto_loadingpage:()->Unit,
+    goto_settings:()->Unit,
+    goto_aboutus:()->Unit,
     emailLoginViewModel: EmailLoginViewModel = hiltViewModel(),
 ) {
     updateCurrentUser()
@@ -262,7 +264,7 @@ fun userProfile(
                                     tint = Color.Black
                                 )
                                 Text(
-                                    "Tezpur University",
+                                    currentUser.area,
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.SemiBold,
                                     textAlign = TextAlign.Center
@@ -286,7 +288,7 @@ fun userProfile(
                             MenuRow(
                                 icon = Icons.Default.Settings,
                                 text = "SETTINGS & PREFERENCES",
-                                onClick = {}
+                                onClick = { goto_settings()}
                             )
                             Divider(
                                 modifier = Modifier.padding(vertical = 12.dp),
@@ -295,7 +297,12 @@ fun userProfile(
                             MenuRow(
                                 icon = Icons.Default.Notifications,
                                 text = "NOTIFICATIONS",
-                                onClick = {}
+                                onClick = { NewGlobalAlert(
+                                    "Notifications",
+                                    "Currently, App notifications are enabled\n\nDo wish to disable them?",
+                                    onCancelClick = {},
+                                    onConfirmClick = {}
+                                )}
                             )
                             Divider(
                                 modifier = Modifier.padding(vertical = 12.dp),
@@ -315,7 +322,7 @@ fun userProfile(
                             MenuRow(
                                 icon = Icons.Default.Face,
                                 text = "ABOUT US",
-                                onClick = { }
+                                onClick = { goto_aboutus() }
                             )
 
                             Divider(

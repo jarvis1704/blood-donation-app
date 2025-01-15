@@ -1,8 +1,96 @@
 package com.example.blooddonationapp.settings.interfaces
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.blooddonationapp.R
+import com.example.blooddonationapp.auth.data.EmailLoginViewModel
+import com.example.blooddonationapp.global.data.updateCurrentUser
 
+
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun AboutUs(){
+fun AboutUs() {
+    updateCurrentUser()
 
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            Modifier.fillMaxSize()
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.15f)
+                    .background(Color(0xFFEB4335))
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(
+                        top = dimensionResource(id = R.dimen.profile_top_padding),
+                        start = 16.dp
+                    )
+                ) {
+                    Text("About Us", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                }
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.85f)
+                    .background(Color(0xFFEB4335))
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 16.dp)
+                        .background(Color(0xFFEB4335))
+                        .verticalScroll(rememberScrollState())
+                        .padding(horizontal = dimensionResource(id = R.dimen.profile_horizontal_padding)),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(6.dp),
+                        shape = RoundedCornerShape(24.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                        colors = CardDefaults.cardColors(Color.White)
+                    ) {
+                        Column(
+                            Modifier.padding(10.dp)
+                        ) {
+                            Text(aboutUs)
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
+
+var aboutUs:String = "We are an NGO in tezpur..\n\nlorem ipsum dolor sit amet asdf fasfdsf fdfadfads ffds fdhf d fg dg dsa d  f dsfadsfdsafds dfsafsdfsdaf dsfdsfdsfas dfadsfasf dfadsfdf sdfasdfaf sdfsdafsdf sdfsdfasf sdfdd hdf  f btb f  bt  bf d fgs bbsdb sb s dsfsd b s fg sd f dfsdf \n" +
+        "\n\nOur Development Team:" +
+        "\n\nAndroid Application:" +
+        "\n..." +
+        "\n\nWebsite Development" +
+        "\n\n..."

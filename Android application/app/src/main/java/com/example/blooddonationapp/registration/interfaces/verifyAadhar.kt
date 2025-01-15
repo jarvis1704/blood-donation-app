@@ -58,8 +58,6 @@ fun verifyAadhar(
     goto_homepage: () -> Unit,
     registrationViewModel: RegistrationViewModel = hiltViewModel()
 ) {
-//    var registrationViewModel: RegistrationViewModel = viewModel()
-
     Box(modifier = Modifier.fillMaxSize())
     {
         Column(
