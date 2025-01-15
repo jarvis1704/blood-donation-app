@@ -37,6 +37,24 @@ class HomeViewModel @Inject constructor(): ViewModel() {
         return ""
     }
 
+    suspend fun getAadharDetails(
+        entry: String
+    ):Any{
+        if (_auth.currentUser != null) {
+            try {
+                val document =
+                    _auth.currentUser?.let { _db.collection("aadhardetails").document(it.uid) }
+                        ?.get()?.await()
+                if (document != null) {
+                    return document.getString(entry) ?: ""
+                }
+            } catch (e: Exception) {
+                errorMessage = e.message.toString()
+            }
+        }
+        return ""
+    }
+
     @SuppressLint("NewApi")
     suspend fun FetchNotifications() {
         var lastNotificationSeen: Timestamp? by mutableStateOf(null)

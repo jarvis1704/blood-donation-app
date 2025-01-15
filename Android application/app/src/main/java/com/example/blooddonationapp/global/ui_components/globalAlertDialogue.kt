@@ -82,6 +82,7 @@ fun globalAlert() {
                     }
                     Button(
                         onClick = {
+                            isAlertDialogue=false
                             GlobalAlert.onConfirmClick()
                         },
                         modifier = Modifier

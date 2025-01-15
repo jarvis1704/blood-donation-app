@@ -42,6 +42,7 @@ object currentUser{
     var adhaarNo by mutableStateOf(0)
     var adhaarDOB by mutableStateOf("")
     var profilePic by mutableStateOf("")
+    var aadharStatus by mutableStateOf("")
 }
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -54,6 +55,7 @@ fun updateCurrentUser(){
         currentUser.area = viewmodel.getRegistrationEntryByString("area")
         currentUser.profilePic = viewmodel.getRegistrationEntryByString("profilepic")
         currentUser.bloodGroup = viewmodel.getRegistrationEntryByString("bloodGroup")
+        currentUser.aadharStatus = viewmodel.getAadharDetails("aadharStatus").toString()
         viewmodel.FetchNotifications()
         viewmodel.FetchAnnouncements()
     }
