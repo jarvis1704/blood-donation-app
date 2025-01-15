@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
@@ -36,6 +37,7 @@ import coil.request.ImageRequest
 import com.example.blooddonationapp.global.data.errorMessage
 import com.example.blooddonationapp.registration.data.ProcessImage
 import com.example.blooddonationapp.registration.data.photoUploadStatus
+import com.example.blooddonationapp.ui.theme.BloodDonationAppColor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -54,7 +56,10 @@ fun imagePicker() {
     }
 
     Button(
-        onClick = { launcher.launch("image/*") }
+        onClick = { launcher.launch("image/*") },
+        colors = ButtonDefaults.buttonColors(
+            BloodDonationAppColor.BloodRed
+        )
     ) {
         Text(text = if (isImagePicked) tempRegistrationDetails.aadharPhotoUri?.path.toString() else "Choose from Gallery")
     }

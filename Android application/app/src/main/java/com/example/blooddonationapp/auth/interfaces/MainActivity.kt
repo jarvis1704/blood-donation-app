@@ -17,7 +17,9 @@ import com.example.blooddonationapp.global.ui_components.errorAlert
 import com.example.blooddonationapp.global.ui_components.globalAlert
 import com.example.blooddonationapp.home.ui_components.bottomBar
 import com.example.blooddonationapp.home.ui_components.notifButton
+import com.example.blooddonationapp.registration.interfaces.verifyAadhar
 import com.example.blooddonationapp.tempAdminEntry.adminPage
+import com.example.blooddonationapp.tempAdminEntry.verifyaadhar
 import com.example.blooddonationapp.ui.theme.BloodDonationAppTheme
 import com.google.android.gms.auth.api.identity.Identity
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,8 +54,9 @@ class MainActivity : ComponentActivity() {
                     )}) { _ ->
                     errorAlert()
                     globalAlert()
-                    appNav(navCtrl, googleAuthUiClient)
+//                    appNav(navCtrl, googleAuthUiClient)
 //                    adminPage()   //for testing
+                    verifyAadhar({})
                 }
             }
         }
