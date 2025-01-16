@@ -1,7 +1,6 @@
 package com.example.blooddonationapp.global.data
 
 import android.annotation.SuppressLint
-import android.icu.text.CaseMap.Title
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
@@ -56,8 +55,9 @@ fun updateCurrentUser(){
         currentUser.profilePic = viewmodel.getRegistrationEntryByString("profilepic")
         currentUser.bloodGroup = viewmodel.getRegistrationEntryByString("bloodGroup")
         currentUser.aadharStatus = viewmodel.getAadharDetails("aadharStatus").toString()
-        viewmodel.FetchNotifications()
+        viewmodel.FetchBloodRequests()
         viewmodel.FetchAnnouncements()
+        viewmodel.FetchNotifications()
     }
 }
 

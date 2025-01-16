@@ -70,25 +70,28 @@ class HomeViewModel @Inject constructor(): ViewModel() {
             }
 
             //get all notifications
-            val list = _db.collection("blood_requests").get().await()
+            val list = _db.collection("notifications").get().await()
             if (list != null) {
                 val notificationList = list.documents.mapNotNull { doc ->
                     val data = doc.data
                     data?.let {
                         notification(
-                            bloodtype = it["bloodtype"].toString(),
-                            hospital = it["hospital"].toString(),
-                            date = (it["date"] as? Timestamp)?.let { timestamp ->
+                            body = it["body"].toString(),
+                            type = "",
+                            title = "",
+                            bloodtype = "",
+                            location = it["location"].toString(),
+                            dateAndTime = (it["date&time"] as? Timestamp)?.let { timestamp ->
                                 TimestampToLocalDateTime(timestamp)
-                            }
+                            },
                         )
                     }
-                }.sortedByDescending { it.date }
+                }.sortedByDescending { it.dateAndTime }
                 globalNotificationList = notificationList
 
                 //now compare to identify new notifications
                 notificationList.forEach { notification ->
-                    notification.date?.let { notificationDate ->
+                    notification.dateAndTime?.let { notificationDate ->
                         if (lastSeenLocalDateTime == null || notificationDate.isAfter(
                                 lastSeenLocalDateTime
                             )
@@ -97,6 +100,30 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                         }
                     }
                 }
+            }
+        } catch (e: Exception) {
+            errorMessage = e.message.toString()
+        }
+    }
+
+    suspend fun FetchBloodRequests() {
+        try {
+            //get all blood req
+            val list = _db.collection("blood_requests").get().await()
+            if (list != null) {
+                val bloodReqList = list.documents.mapNotNull { doc ->
+                    val data = doc.data
+                    data?.let {
+                        bloodRequest(
+                            bloodtype = it["bloodtype"].toString(),
+                            hospital = it["hospital"].toString(),
+                            date = (it["date"] as? Timestamp)?.let { timestamp ->
+                                TimestampToLocalDateTime(timestamp)
+                            }
+                        )
+                    }
+                }.sortedByDescending { it.date }
+                globalBloodRequestList = bloodReqList
             }
         } catch (e: Exception) {
             errorMessage = e.message.toString()

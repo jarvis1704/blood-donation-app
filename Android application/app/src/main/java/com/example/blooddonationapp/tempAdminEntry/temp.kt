@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.blooddonationapp.global.data.errorMessage
+import com.example.blooddonationapp.home.data.notification
 import com.example.blooddonationapp.registration.ui_components.dateYearSelector
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -79,7 +80,8 @@ fun adminPage(){
                 Button(
                     onClick = {
                         if (newBloodRequest.bloodgroup != "" && newBloodRequest.hospital != ""){
-                            viewmodel.newNotification()
+                            viewmodel.newBloodReq()
+                            viewmodel.newNotification(type ="bloodrequest", bloodtype = newBloodRequest.bloodgroup, location = newBloodRequest.hospital)
                         }
                         else{
                             errorMessage = "Error: multiple entries are empty"
@@ -119,6 +121,7 @@ fun adminPage(){
                         if (newAnnouncement.title != "" && newAnnouncement.location != ""){
                             //todo combine date and time
                             viewmodel.newAnnouncement()
+                            viewmodel.newNotification(type ="announcement", location = newAnnouncement.location, title = newAnnouncement.title)
                         }
                         else{
                             errorMessage = "Error: multiple entries are empty"

@@ -31,8 +31,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.blooddonationapp.home.data.HomeViewModel
-import com.example.blooddonationapp.home.data.globalNotificationList
+import com.example.blooddonationapp.home.data.globalBloodRequestList
 import com.example.blooddonationapp.home.data.newNotificationsCounter
+import com.example.blooddonationapp.home.data.bloodRequest
+import com.example.blooddonationapp.home.data.globalNotificationList
 import com.example.blooddonationapp.home.data.notification
 import com.example.blooddonationapp.ui.theme.BloodDonationAppColor
 import kotlinx.coroutines.CoroutineScope
@@ -119,18 +121,18 @@ fun NotificationComposable(index: Int, data: notification) {
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    "Blood group: " + data.bloodtype + "is required at hospital: " + data.hospital,
+                    data.body.toString(),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium
                 )
             }
 
             Text(
-                "${data.date?.dayOfMonth}, ${data.date?.month}",
+                "${data.dateAndTime?.dayOfMonth}, ${data.dateAndTime?.month}",
                 modifier = Modifier.padding(horizontal = 48.dp),
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 16.sp,
-                color = BloodDonationAppColor.BloodRed
+                color = Color.Black
             )
 
             Spacer(modifier = Modifier.height(8.dp))
