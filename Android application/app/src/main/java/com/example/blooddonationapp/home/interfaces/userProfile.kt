@@ -41,6 +41,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -66,9 +67,9 @@ import com.example.blooddonationapp.home.data.HomeViewModel
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun userProfile(
-    goto_loadingpage:()->Unit,
-    goto_settings:()->Unit,
-    goto_aboutus:()->Unit,
+    goto_loadingpage: () -> Unit,
+    goto_settings: () -> Unit,
+    goto_aboutus: () -> Unit,
     emailLoginViewModel: EmailLoginViewModel = hiltViewModel(),
 ) {
     updateCurrentUser()
@@ -90,7 +91,12 @@ fun userProfile(
                         start = 16.dp
                     )
                 ) {
-                    Text("Donor Details", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                    Text(
+                        "Donor Details",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
                 }
             }
             Box(
@@ -108,36 +114,49 @@ fun userProfile(
                         .padding(horizontal = dimensionResource(id = R.dimen.profile_horizontal_padding)),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Card (
+                    Card(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = dimensionResource(id = R.dimen.card_horizontal_padding)),
                         colors = CardDefaults.cardColors(Color.White),
                         elevation = CardDefaults.elevatedCardElevation(8.dp),
                         shape = RoundedCornerShape(16.dp)
-                    ){
-                        Column (
+                    ) {
+                        Column(
                             modifier = Modifier.fillMaxSize(),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.SpaceEvenly
-                        ){
+                        ) {
                             Spacer(Modifier.height(16.dp))
-                            when(currentUser.profilePic) {
+                            when (currentUser.profilePic) {
                                 "" -> {
                                     Image(
                                         painterResource(id = R.drawable.default_user_icon),
                                         contentDescription = null,
                                         modifier = Modifier
-                                            .size(min(200.dp, dimensionResource(id = R.dimen.profile_pic_size)))
-                                            .clip(CircleShape))
+                                            .size(
+                                                min(
+                                                    200.dp,
+                                                    dimensionResource(id = R.dimen.profile_pic_size)
+                                                )
+                                            )
+                                            .clip(CircleShape)
+                                    )
                                 }
+
                                 else -> {
                                     Image(
                                         painter = rememberAsyncImagePainter(model = currentUser.profilePic),
                                         contentDescription = null,
                                         modifier = Modifier
-                                            .size(min(200.dp, dimensionResource(id = R.dimen.profile_pic_size)))
-                                            .clip(CircleShape))
+                                            .size(
+                                                min(
+                                                    200.dp,
+                                                    dimensionResource(id = R.dimen.profile_pic_size)
+                                                )
+                                            )
+                                            .clip(CircleShape)
+                                    )
                                 }
                             }
                             Spacer(Modifier.height(8.dp))
@@ -149,8 +168,8 @@ fun userProfile(
                                 modifier = Modifier.fillMaxWidth()
                             )
                             Spacer(Modifier.height(8.dp))
-                            when(currentUser.aadharStatus){
-                                "submitted"->{
+                            when (currentUser.aadharStatus) {
+                                "submitted" -> {
                                     Surface(
                                         shape = RoundedCornerShape(16.dp),
                                         color = Color(0xFFFFD700).copy(alpha = 0.5f),
@@ -164,11 +183,17 @@ fun userProfile(
                                             verticalAlignment = Alignment.CenterVertically,
                                             modifier = Modifier.fillMaxWidth()
                                         ) {
-                                            Text("Verification Pending :(", Modifier.padding(horizontal = 4.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                            Text(
+                                                "Verification Pending :(",
+                                                Modifier.padding(horizontal = 4.dp),
+                                                fontSize = 12.sp,
+                                                fontWeight = FontWeight.Bold
+                                            )
                                         }
                                     }
                                 }
-                                "verified"->{
+
+                                "verified" -> {
                                     Surface(
                                         shape = RoundedCornerShape(16.dp),
                                         color = Color.Black.copy(alpha = 0f),
@@ -183,15 +208,22 @@ fun userProfile(
                                             verticalAlignment = Alignment.CenterVertically,
                                             modifier = Modifier.fillMaxWidth()
                                         ) {
-                                            Text("Verified User", Modifier.padding(horizontal = 4.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                            Text(
+                                                "Verified User",
+                                                Modifier.padding(horizontal = 4.dp),
+                                                fontSize = 12.sp,
+                                                fontWeight = FontWeight.Bold
+                                            )
                                             Image(
                                                 painter = painterResource(R.drawable.verified_icon),
                                                 contentDescription = "verified logo",
-                                                colorFilter =  ColorFilter.tint(Color(0xFF3498DB)))
+                                                colorFilter = ColorFilter.tint(Color(0xFF3498DB))
+                                            )
                                         }
                                     }
                                 }
-                                else->{
+
+                                else -> {
                                     //doc is not submitted
                                     Surface(
                                         shape = RoundedCornerShape(16.dp),
@@ -203,12 +235,18 @@ fun userProfile(
                                             verticalAlignment = Alignment.CenterVertically,
                                             modifier = Modifier.padding(5.dp)
                                         ) {
-                                            Text("Complete Registration to get Verified", Modifier.padding(horizontal = 4.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                            Text(
+                                                "Complete Registration to get Verified",
+                                                Modifier.padding(horizontal = 4.dp),
+                                                fontSize = 12.sp,
+                                                fontWeight = FontWeight.Bold
+                                            )
                                             Image(
                                                 modifier = Modifier.size(12.dp),
                                                 imageVector = Icons.Default.ArrowForward,
                                                 contentDescription = "go to edit details",
-                                                colorFilter =  ColorFilter.tint(Color.Black))
+                                                colorFilter = ColorFilter.tint(Color.Black)
+                                            )
                                         }
                                     }
                                 }
@@ -216,10 +254,9 @@ fun userProfile(
                             Spacer(Modifier.height(16.dp))
                             Surface(
                                 shape = RoundedCornerShape(16.dp),
-                                color = Color(0x988BC34A),
+                                color = Color(0xFF8BC34A),
                                 contentColor = Color.White,
                                 modifier = Modifier
-                                    .height(34.dp)
                                     .fillMaxWidth(0.8f),
                                 shadowElevation = 8.dp,
                                 tonalElevation = 8.dp
@@ -227,10 +264,18 @@ fun userProfile(
                                 Row(
                                     horizontalArrangement = Arrangement.Center,
                                     verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier.fillMaxWidth()
+                                    modifier = Modifier.padding(vertical = 5.dp)
                                 ) {
-                                    Image(painter = painterResource(R.drawable.verified_icon), contentDescription = "verified logo")
-                                    Text("Can Donate Blood", Modifier.padding(horizontal = 8.dp), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                                    Image(
+                                        painter = painterResource(R.drawable.verified_icon),
+                                        contentDescription = "verified logo"
+                                    )
+                                    Text(
+                                        text = "Can Donate Blood",
+                                        modifier = Modifier.padding(horizontal = 8.dp),
+                                        fontSize = 16.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
                                 }
                             }
                         }
@@ -286,7 +331,7 @@ fun userProfile(
                             MenuRow(
                                 icon = Icons.Default.Settings,
                                 text = "SETTINGS & PREFERENCES",
-                                onClick = { goto_settings()}
+                                onClick = { goto_settings() }
                             )
                             Divider(
                                 modifier = Modifier.padding(vertical = 12.dp),
@@ -295,12 +340,14 @@ fun userProfile(
                             MenuRow(
                                 icon = Icons.Default.Notifications,
                                 text = "NOTIFICATIONS",
-                                onClick = { NewGlobalAlert(
-                                    "Notifications",
-                                    "Currently, App notifications are enabled\n\nDo wish to disable them?",
-                                    onCancelClick = {},
-                                    onConfirmClick = {}
-                                )}
+                                onClick = {
+                                    NewGlobalAlert(
+                                        "Notifications",
+                                        "Currently, App notifications are enabled\n\nDo wish to disable them?",
+                                        onCancelClick = {},
+                                        onConfirmClick = {}
+                                    )
+                                }
                             )
                             Divider(
                                 modifier = Modifier.padding(vertical = 12.dp),
@@ -331,12 +378,14 @@ fun userProfile(
                             MenuRow(
                                 icon = Icons.Default.ExitToApp,
                                 text = "LOGOUT",
-                                onClick = { NewGlobalAlert(
-                                    "Logout?",
-                                    "Are you sure you want to logout?",
-                                    onCancelClick = {},
-                                    onConfirmClick = {emailLoginViewModel.signout { goto_loadingpage() }}
-                                )}
+                                onClick = {
+                                    NewGlobalAlert(
+                                        "Logout?",
+                                        "Are you sure you want to logout?",
+                                        onCancelClick = {},
+                                        onConfirmClick = { emailLoginViewModel.signout { goto_loadingpage() } }
+                                    )
+                                }
                             )
                         }
                     }
