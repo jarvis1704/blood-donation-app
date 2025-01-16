@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -195,15 +196,12 @@ fun userProfile(
                                     Surface(
                                         shape = RoundedCornerShape(16.dp),
                                         color = Color(0xFFB0B0B0).copy(alpha = 0.5f),
-                                        contentColor = Color.Black,
-                                        modifier = Modifier
-                                            .height(30.dp)
-                                            .fillMaxWidth(0.65f),
+                                        contentColor = Color.Black
                                     ) {
                                         Row(
                                             horizontalArrangement = Arrangement.Center,
                                             verticalAlignment = Alignment.CenterVertically,
-                                            modifier = Modifier.fillMaxWidth()
+                                            modifier = Modifier.padding(5.dp)
                                         ) {
                                             Text("Complete Registration to get Verified", Modifier.padding(horizontal = 4.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                                             Image(
