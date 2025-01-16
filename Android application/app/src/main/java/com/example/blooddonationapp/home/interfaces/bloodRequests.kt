@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -35,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -42,7 +45,10 @@ import androidx.compose.ui.unit.sp
 import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.global.data.updateCurrentUser
 import com.example.blooddonationapp.home.data.announcement
+import com.example.blooddonationapp.home.data.bloodRequest
+import com.example.blooddonationapp.home.data.globalBloodRequestList
 import com.example.blooddonationapp.ui.theme.BloodDonationAppColor
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -70,28 +76,23 @@ fun bloodRequests(goto_homepage:()->Unit){
                 modifier = Modifier.fillMaxWidth().weight(0.85f)
             ){
                 Column(
-                    modifier = Modifier.fillMaxSize().padding(top = 24.dp, start = 24.dp, end = 24.dp).navigationBarsPadding().verticalScroll(
-                        rememberScrollState()
-                    ),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 24.dp, start = 14.dp, end = 14.dp)
+                        .navigationBarsPadding(),
                     horizontalAlignment = Alignment.Start,
                 ) {
                     Text(text = "BLOOD REQUESTS NEAR YOU", fontSize = 24.sp, fontWeight = FontWeight.Bold)
                     Spacer(Modifier.height(16.dp))
-//                    Text(currentUser.bloodGroup+" Type Blood Required Near You")
-                    repeat(5){
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
-                        ){
-                            repeat(5){
-                                BloodRequestAnouncementCard()
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        globalBloodRequestList?.let {
+                            items(it.toList()){item->
+                                BloodRequestAnouncementCard(item)
                             }
                         }
                     }
-//                    Spacer(modifier = Modifier.padding(.dp))
-                    Text("All Blood Requests")
-
-
                 }
             }
 
@@ -102,11 +103,9 @@ fun bloodRequests(goto_homepage:()->Unit){
 
 @SuppressLint("NewApi")
 @Composable
-fun BloodRequestAnouncementCard() {
-//    val formatter = DateTimeFormatter.ofPattern("hh:mm a")
-//    val formattedTime = announcement.dateAndTime?.format(formatter)
+fun BloodRequestAnouncementCard(bloodRequest: bloodRequest) {
     Card(
-        modifier= Modifier.defaultMinSize(minWidth = 393.dp, minHeight = 200.dp),
+        modifier= Modifier.defaultMinSize(minWidth = 393.dp, minHeight = 180.dp),
         colors = CardDefaults.cardColors(
             Color(0xFFEB4335)
         ),
@@ -118,25 +117,35 @@ fun BloodRequestAnouncementCard() {
         Column(
             modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)
         ) {
-            Text("EMERGENCY BLOOD NEEDED", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.White, lineHeight = 1.25.em)
+            Text("EMERGENCY ${bloodRequest.bloodtype} BLOOD NEEDED", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.White, lineHeight = 1.25.em)
             Spacer(Modifier.height(8.dp))
             Row(
                 verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Icon(imageVector = Icons.Filled.LocationOn, contentDescription = "Location Icon", tint = Color.White)
-                Text("TEZPUR MENTAL HOSPITAL", fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color.White)
+                Text(bloodRequest.hospital, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color.White)
             }
             Spacer(Modifier.height(8.dp))
-            Text("28 Nov",
+            Text(
+                "${bloodRequest.date?.dayOfMonth} ${bloodRequest.date?.month}",
                 fontSize = 16.sp, fontWeight = FontWeight.Bold,
                 modifier = Modifier.clip(RoundedCornerShape(8.dp))
                     .background(
                         Color.Black).padding(8.dp), color = Color.White)
-            Spacer(Modifier.height(8.dp))
 
-            Text("10:00AM Onwards",
-                fontSize = 16.sp, fontWeight = FontWeight.SemiBold
-            )
+//            Text("10:00AM Onwards",
+//                fontSize = 16.sp, fontWeight = FontWeight.SemiBold
+//            )
         }
     }
+    Spacer(Modifier.height(18.dp))
+}
+
+@SuppressLint("NewApi")
+@Preview
+@Composable
+fun test(){
+    BloodRequestAnouncementCard(
+        bloodRequest = bloodRequest("B+","XYZ Hospital", LocalDateTime.now())
+    )
 }

@@ -18,14 +18,8 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,18 +27,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.blooddonationapp.R
 import com.example.blooddonationapp.auth.data.EmailLoginViewModel
 import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.global.data.updateCurrentUser
-import com.example.blooddonationapp.home.data.announcement
 import com.example.blooddonationapp.home.data.globalAnnouncementList
-import com.example.blooddonationapp.home.data.globalNotificationList
 import com.example.blooddonationapp.home.ui_components.AnnouncementCard
 
 @Composable

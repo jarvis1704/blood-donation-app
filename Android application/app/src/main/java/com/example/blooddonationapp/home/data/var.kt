@@ -6,16 +6,25 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.google.firebase.Timestamp
-import java.sql.Time
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.LocalTime
 import java.time.ZoneId
 
-data class notification(
+data class bloodRequest(
     var bloodtype:String,
     var hospital: String,
     var date: LocalDateTime?
+)
+
+var globalBloodRequestList: List<bloodRequest>? by mutableStateOf(null)
+
+data class notification(
+    var type:String,
+    var title: String?,
+    val bloodtype: String?,
+    var body: String?,
+    var location: String?,
+    var dateAndTime: LocalDateTime?
 )
 
 var globalNotificationList: List<notification>? by mutableStateOf(null)
