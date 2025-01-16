@@ -42,6 +42,7 @@ object currentUser{
     var adhaarDOB by mutableStateOf("")
     var profilePic by mutableStateOf("")
     var aadharStatus by mutableStateOf("")
+    var isBloodTypeFilter by mutableStateOf(false)
 }
 
 @SuppressLint("CoroutineCreationDuringComposition")

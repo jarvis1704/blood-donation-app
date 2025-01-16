@@ -30,8 +30,10 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,18 +44,28 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.global.data.updateCurrentUser
+import com.example.blooddonationapp.home.data.HomeViewModel
 import com.example.blooddonationapp.home.data.announcement
 import com.example.blooddonationapp.home.data.bloodRequest
 import com.example.blooddonationapp.home.data.globalBloodRequestList
 import com.example.blooddonationapp.ui.theme.BloodDonationAppColor
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun bloodRequests(goto_homepage:()->Unit){
+fun bloodRequests(
+    goto_homepage:()->Unit,
+    homeViewModel: HomeViewModel = hiltViewModel()
+){
     updateCurrentUser()
+
     Box(modifier = Modifier.fillMaxSize()){
         Column {
             Box(
@@ -83,13 +95,33 @@ fun bloodRequests(goto_homepage:()->Unit){
                     horizontalAlignment = Alignment.Start,
                 ) {
                     Text(text = "BLOOD REQUESTS NEAR YOU", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.height(3.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(text = "Filter By Your Blood Group: ${currentUser.bloodGroup}", fontSize = 18.sp, fontWeight = FontWeight.Medium, color = Color.Gray)
+                        Switch(
+                            checked = currentUser.isBloodTypeFilter,
+                            onCheckedChange = {
+                                currentUser.isBloodTypeFilter = !currentUser.isBloodTypeFilter
+                            }
+                        )
+                    }
                     Spacer(Modifier.height(16.dp))
                     LazyColumn(
                         modifier = Modifier.fillMaxSize()
                     ) {
                         globalBloodRequestList?.let {
                             items(it.toList()){item->
-                                BloodRequestAnouncementCard(item)
+                                if (currentUser.isBloodTypeFilter){
+                                    if (item.bloodtype == currentUser.bloodGroup){
+                                        BloodRequestAnouncementCard(item)
+                                    }
+                                }else{
+                                    BloodRequestAnouncementCard(item)
+                                }
                             }
                         }
                     }
@@ -139,13 +171,4 @@ fun BloodRequestAnouncementCard(bloodRequest: bloodRequest) {
         }
     }
     Spacer(Modifier.height(18.dp))
-}
-
-@SuppressLint("NewApi")
-@Preview
-@Composable
-fun test(){
-    BloodRequestAnouncementCard(
-        bloodRequest = bloodRequest("B+","XYZ Hospital", LocalDateTime.now())
-    )
 }

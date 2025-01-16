@@ -55,6 +55,38 @@ class HomeViewModel @Inject constructor(): ViewModel() {
         return ""
     }
 
+    suspend fun saveBoolean(collection: String, field:String, value: Boolean){
+        try {
+            val document = _auth.currentUser?.let { _db.collection(collection).document(it.uid) }
+                ?.get()?.await()
+            if (document != null) {
+                _db.collection(collection).document(_auth.currentUser!!.uid)
+                    .update(field, true)
+                    .addOnSuccessListener {
+
+                    }.addOnFailureListener {
+                        errorMessage = it.message.toString()
+                    }
+            }
+        } catch (e: Exception) {
+            errorMessage = e.message.toString()
+        }
+    }
+
+    suspend fun getBoolean(collection: String, field: String):Boolean{
+        try {
+            val document =
+                _auth.currentUser?.let { _db.collection(collection).document(it.uid) }
+                    ?.get()?.await()
+            if (document != null) {
+                return document.getBoolean(field)?:false
+            }
+        } catch (e: Exception) {
+            errorMessage = e.message.toString()
+        }
+        return false
+    }
+
     @SuppressLint("NewApi")
     suspend fun FetchNotifications() {
         var lastNotificationSeen: Timestamp? by mutableStateOf(null)
