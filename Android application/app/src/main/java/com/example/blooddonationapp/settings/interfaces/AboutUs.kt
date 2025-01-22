@@ -71,15 +71,16 @@ fun AboutUs() {
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(6.dp),
-                        shape = RoundedCornerShape(24.dp),
+                            .padding(8.dp),
+                        shape = RoundedCornerShape(16.dp),
                         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                         colors = CardDefaults.cardColors(Color.White)
                     ) {
                         Column(
-                            Modifier.padding(10.dp)
+                            Modifier.padding(10.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(aboutUs)
+                            Text(aboutUs, fontSize = 20.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(8.dp))
                         }
                     }
                 }
