@@ -178,7 +178,7 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         }
         composable("aboutus"){
             currentPage = "aboutus"
-            AboutUs()
+            AboutUs(goto_userProfile = {navController.navigate("userprofile")})
         }
     }
 }
