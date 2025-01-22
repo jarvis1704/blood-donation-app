@@ -31,6 +31,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchColors
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -106,7 +108,11 @@ fun bloodRequests(
                             checked = currentUser.isBloodTypeFilter,
                             onCheckedChange = {
                                 currentUser.isBloodTypeFilter = !currentUser.isBloodTypeFilter
-                            }
+                            },
+                            colors = SwitchDefaults.colors(
+                                checkedTrackColor = BloodDonationAppColor.BloodRed,
+
+                            )
                         )
                     }
                     Spacer(Modifier.height(16.dp))

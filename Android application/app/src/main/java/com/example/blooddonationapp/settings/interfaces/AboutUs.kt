@@ -11,8 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,7 +34,9 @@ import com.example.blooddonationapp.global.data.updateCurrentUser
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun AboutUs() {
+fun AboutUs(
+    goto_userProfile:()-> Unit
+) {
     updateCurrentUser()
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -50,6 +56,11 @@ fun AboutUs() {
                         start = 16.dp
                     )
                 ) {
+                    IconButton({
+                        goto_userProfile()
+                    }) {
+                        Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "Back Button", tint = Color.White)
+                    }
                     Text("About Us", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
                 }
             }
@@ -71,15 +82,16 @@ fun AboutUs() {
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(6.dp),
-                        shape = RoundedCornerShape(24.dp),
+                            .padding(8.dp),
+                        shape = RoundedCornerShape(16.dp),
                         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                         colors = CardDefaults.cardColors(Color.White)
                     ) {
                         Column(
-                            Modifier.padding(10.dp)
+                            Modifier.padding(10.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(aboutUs)
+                            Text(aboutUs, fontSize = 20.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(8.dp))
                         }
                     }
                 }
