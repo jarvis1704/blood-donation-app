@@ -172,7 +172,8 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         composable("settingsandpreferences"){
             currentPage = "settingsandpreferences"
             SettingsAndPreferences(
-                goto_loadingpage = {navController.navigate("loadingpage")}
+                goto_loadingpage = {navController.navigate("loadingpage")},
+                goto_userProfile = {navController.navigate("userprofile")}
             )
         }
         composable("aboutus"){
