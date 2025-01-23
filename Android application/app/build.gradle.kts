@@ -85,6 +85,7 @@ dependencies {
     implementation(libs.play.services.fido)
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.firebase.messaging)
     kapt(libs.hilt.compiler)
 
     debugImplementation(libs.androidx.ui.tooling)
