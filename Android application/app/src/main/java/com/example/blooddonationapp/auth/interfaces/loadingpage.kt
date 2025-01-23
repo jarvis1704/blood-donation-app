@@ -1,6 +1,8 @@
 package com.example.blooddonationapp.auth.interfaces
 
+import android.content.ContentValues.TAG
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +27,8 @@ import com.example.blooddonationapp.R
 import com.example.blooddonationapp.auth.data.EmailLoginViewModel
 import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.registration.data.RegistrationViewModel
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.messaging
 import kotlinx.coroutines.delay
 
 @Composable
@@ -41,6 +45,15 @@ fun loadingpage(
 //    var emailLoginViewmodel:EmailLoginViewModel = viewModel()
 //    var registrationViewmodel: RegistrationViewModel = viewModel()
 
+    Firebase.messaging.subscribeToTopic("global")
+        .addOnCompleteListener { task ->
+            var msg = "Subscribed"
+            if (!task.isSuccessful) {
+                msg = "Subscribe failed"
+            }
+            Log.d("firebase", msg)
+//            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+        }
     LaunchedEffect(currentUser.isSearching) {
         while (currentUser.isSearching){
             emailLoginViewModel.checkLoginStatus()
