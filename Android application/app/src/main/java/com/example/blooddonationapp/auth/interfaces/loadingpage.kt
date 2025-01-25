@@ -1,6 +1,7 @@
 package com.example.blooddonationapp.auth.interfaces
 
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -19,6 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -45,15 +47,8 @@ fun loadingpage(
 //    var emailLoginViewmodel:EmailLoginViewModel = viewModel()
 //    var registrationViewmodel: RegistrationViewModel = viewModel()
 
-    Firebase.messaging.subscribeToTopic("global")
-        .addOnCompleteListener { task ->
-            var msg = "Subscribed"
-            if (!task.isSuccessful) {
-                msg = "Subscribe failed"
-            }
-            Log.d("firebase", msg)
-//            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-        }
+    subscribeToGlobalTopic(context = LocalContext.current)
+
     LaunchedEffect(currentUser.isSearching) {
         while (currentUser.isSearching){
             emailLoginViewModel.checkLoginStatus()
@@ -91,6 +86,31 @@ fun loadingpage(
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = "Tezpur", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.SemiBold, color = Color.Black)
         }
+    }
+}
+
+fun subscribeToGlobalTopic(context: Context) {
+    val sharedPrefs = context.getSharedPreferences("FCMPrefs", Context.MODE_PRIVATE)
+    val isSubscribed = sharedPrefs.getBoolean("isSubscribedToGlobal", false)
+
+    if (!isSubscribed) {
+        Firebase.messaging.subscribeToTopic("global")
+            .addOnCompleteListener { task ->
+                val subscriptionStatusMessage = when {
+                    task.isSuccessful -> {
+                        sharedPrefs.edit().putBoolean("isSubscribedToGlobal", true).apply()
+                        context.getString(R.string.subscribed)
+                    }
+                    else -> {
+                        Log.e("firebase", "Subscribe failed", task.exception)
+                        context.getString(R.string.subscribe_failed)
+                    }
+                }
+                Log.d("firebase", subscriptionStatusMessage)
+                // Toast.makeText(context, subscriptionStatusMessage, Toast.LENGTH_SHORT).show()
+            }
+    } else {
+        Log.d("firebase", "Already subscribed to global topic")
     }
 }
 //
