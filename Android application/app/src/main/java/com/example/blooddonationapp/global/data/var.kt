@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -49,16 +50,20 @@ object currentUser{
 @Composable
 fun updateCurrentUser(){
     var viewmodel: HomeViewModel = viewModel()
-    CoroutineScope(Dispatchers.IO).launch {
-        currentUser.username = viewmodel.getRegistrationEntryByString("username")
-        currentUser.gender = viewmodel.getRegistrationEntryByString("gender")
-        currentUser.area = viewmodel.getRegistrationEntryByString("area")
-        currentUser.profilePic = viewmodel.getRegistrationEntryByString("profilepic")
-        currentUser.bloodGroup = viewmodel.getRegistrationEntryByString("bloodGroup")
-        currentUser.aadharStatus = viewmodel.getAadharDetails("aadharStatus").toString()
-        viewmodel.FetchBloodRequests()
-        viewmodel.FetchAnnouncements()
-        viewmodel.FetchNotifications()
+    if (currentPage in "homepage bloodrequests userprofile"){
+        LaunchedEffect(currentPage){
+            CoroutineScope(Dispatchers.IO).launch {
+                currentUser.username = viewmodel.getRegistrationEntryByString("username")
+                currentUser.gender = viewmodel.getRegistrationEntryByString("gender")
+                currentUser.area = viewmodel.getRegistrationEntryByString("area")
+                currentUser.profilePic = viewmodel.getRegistrationEntryByString("profilepic")
+                currentUser.bloodGroup = viewmodel.getRegistrationEntryByString("bloodGroup")
+                currentUser.aadharStatus = viewmodel.getAadharDetails("aadharStatus").toString()
+                viewmodel.FetchBloodRequests()
+                viewmodel.FetchAnnouncements()
+                viewmodel.FetchNotifications()
+            }
+        }
     }
 }
 

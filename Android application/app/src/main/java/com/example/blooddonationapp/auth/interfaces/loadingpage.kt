@@ -56,13 +56,15 @@ fun loadingpage(
         }
         if (currentUser.isLoggedIn){
             currentUser.registrationType = registrationViewmodel.getRegistrationType()
-            Log.d("checkLogin", "returned from getRegis, registrationtype="+currentUser.registrationType)
-            if (currentUser.registrationType == "registered"){
-                delay(300)
-                goto_homepage()
-            }else{
-                goto_ageverification()
-            }
+//            Log.d("checkLogin", "returned from getRegis, registrationtype="+currentUser.registrationType)
+            delay(300)
+            goto_homepage()
+//            if (currentUser.registrationType == "registered"){
+//                delay(300)
+//                goto_homepage()
+//            }else{
+//                goto_ageverification()
+//            }
         }else{
             delay(1000)
             goto_loginpage()
