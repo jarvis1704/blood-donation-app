@@ -6,6 +6,13 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -48,9 +55,93 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
 
     NavHost(
         navController = navController,
-        startDestination = "loadingpage") {
+        startDestination = "loadingpage",
+        enterTransition = {
+            when (initialState.destination.route) {
+                "homepage", "userprofile", "notificationspage", "bloodrequests" ->
+                    slideIntoContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    ) + fadeIn(animationSpec = tween(300))
+                else ->
+                    slideIntoContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.Up,
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    ) + fadeIn(animationSpec = tween(300))
+            }
+        },
+        exitTransition = {
+            when (targetState.destination.route) {
+                "homepage", "userprofile", "notificationspage", "bloodrequests" ->
+                    slideOutOfContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.End,
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    ) + fadeOut(animationSpec = tween(300))
+                else ->
+                    slideOutOfContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.Down,
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    ) + fadeOut(animationSpec = tween(300))
+            }
+        },
+        popEnterTransition = {
+            when (initialState.destination.route) {
+                "homepage", "userprofile", "notificationspage", "bloodrequests" ->
+                    slideIntoContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.End,
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    ) + fadeIn(animationSpec = tween(300))
+                else ->
+                    slideIntoContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.Up,
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    ) + fadeIn(animationSpec = tween(300))
+            }
+        },
+        popExitTransition = {
+            when (targetState.destination.route) {
+                "homepage", "userprofile", "notificationspage", "bloodrequests" ->
+                    slideOutOfContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    ) + fadeOut(animationSpec = tween(300))
+                else ->
+                    slideOutOfContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.Down,
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    ) + fadeOut(animationSpec = tween(300))
+            }
+        },
+    ) {
 
-        composable("loadingpage"){
+        val mainScreens = listOf("homepage", "userprofile", "notificationspage", "bloodrequests")
+
+        composable(route = "loadingpage",
+            enterTransition = {
+                scaleIn(
+                    initialScale = 0.9f,
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
+                ) + fadeIn(animationSpec = tween(400))
+            },
+            exitTransition = {
+                scaleOut(
+                    targetScale = 1.1f,
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
+                ) + fadeOut(animationSpec = tween(300))
+            },
+            popEnterTransition = {
+                scaleIn(
+                    initialScale = 1.1f,
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
+                ) + fadeIn(animationSpec = tween(400))
+            },
+            popExitTransition = {
+                scaleOut(
+                    targetScale = 0.9f,
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
+                ) + fadeOut(animationSpec = tween(300))
+            },
+        ){
             currentPage = "loadingpage"
             loadingpage(
                 goto_homepage = {navController.navigate("homepage")},
@@ -58,7 +149,40 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                 goto_ageverification = {navController.navigate("ageverification")}
             )
         }
-        composable("loginpage"){
+
+        composable(route = "loginpage",
+            enterTransition = {
+                slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Up,
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
+                ) + fadeIn(animationSpec = tween(300))
+            },
+            exitTransition = {
+                if (targetState.destination.route in mainScreens) {
+                    slideOutOfContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.Up,
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    ) + fadeOut(animationSpec = tween(300))
+                } else {
+                    slideOutOfContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    ) + fadeOut(animationSpec = tween(300))
+                }
+            },
+            popEnterTransition = {
+                slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.End,
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
+                ) + fadeIn(animationSpec = tween(300))
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
+                ) + fadeOut(animationSpec = tween(300))
+            },
+        ){
             currentPage = "loginpage"
 
             val viewModel = viewModel<GoogleAuthViewModel>()
@@ -117,68 +241,218 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                 }
             )
         }
-        composable("homepage"){
-            currentPage = "homepage"
-            homepage(
-                goto_loadingpage = {navController.navigate("loadingpage")}
-            )
+
+        // Main screens with bottom navigation bar - use sliding up/down animations
+        mainScreens.forEach { route ->
+            composable(
+                route = route,
+                enterTransition = {
+                    if (initialState.destination.route in mainScreens) {
+                        // Transition between main screens
+                        slideIntoContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                            animationSpec = tween(400, easing = FastOutSlowInEasing)
+                        ) + fadeIn(animationSpec = tween(300))
+                    } else {
+                        // Coming from a subscreen or other screen
+                        slideIntoContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Up,
+                            animationSpec = tween(400, easing = FastOutSlowInEasing)
+                        ) + fadeIn(animationSpec = tween(300))
+                    }
+                },
+                exitTransition = {
+                    if (targetState.destination.route in mainScreens) {
+                        // Going to another main screen
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.End,
+                            animationSpec = tween(400, easing = FastOutSlowInEasing)
+                        ) + fadeOut(animationSpec = tween(300))
+                    } else {
+                        // Going to a subscreen
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                            animationSpec = tween(400, easing = FastOutSlowInEasing)
+                        ) + fadeOut(animationSpec = tween(300))
+                    }
+                },
+                popEnterTransition = {
+                    if (initialState.destination.route in mainScreens) {
+                        // Popping between main screens
+                        slideIntoContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.End,
+                            animationSpec = tween(400, easing = FastOutSlowInEasing)
+                        ) + fadeIn(animationSpec = tween(300))
+                    } else {
+                        // Coming back from a subscreen
+                        slideIntoContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.End,
+                            animationSpec = tween(400, easing = FastOutSlowInEasing)
+                        ) + fadeIn(animationSpec = tween(300))
+                    }
+                },
+                popExitTransition = {
+                    if (targetState.destination.route in mainScreens) {
+                        // Popping to another main screen
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                            animationSpec = tween(400, easing = FastOutSlowInEasing)
+                        ) + fadeOut(animationSpec = tween(300))
+                    } else {
+                        // Popping to a non-main screen
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Down,
+                            animationSpec = tween(400, easing = FastOutSlowInEasing)
+                        ) + fadeOut(animationSpec = tween(300))
+                    }
+                },
+            ) {
+                currentPage = route
+                when (route) {
+                    "homepage" -> homepage(goto_loadingpage = { navController.navigate("loadingpage") })
+                    "userprofile" -> userProfile(
+                        goto_loadingpage = { navController.navigate("loadingpage") },
+                        goto_settings = { navController.navigate("settingsandpreferences") },
+                        goto_aboutus = { navController.navigate("aboutus") }
+                    )
+                    "notificationspage" -> NotificationsPage({ navController.navigate("homepage") })
+                    "bloodrequests" -> bloodRequests({ navController.navigate("homepage") })
+                }
+            }
         }
-        composable("signuppage"){
+
+        composable(route = "signuppage",
+            enterTransition = {
+                slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
+                ) + fadeIn(animationSpec = tween(300))
+            },
+            exitTransition = {
+                if (targetState.destination.route in mainScreens) {
+                    slideOutOfContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.Up,
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    ) + fadeOut(animationSpec = tween(300))
+                } else {
+                    slideOutOfContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.End,
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    ) + fadeOut(animationSpec = tween(300))
+                }
+            },
+            popEnterTransition = {
+                slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.End,
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
+                ) + fadeIn(animationSpec = tween(300))
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
+                ) + fadeOut(animationSpec = tween(300))
+            },
+        ){
             currentPage = "signuppage"
             signuppage(
                 goto_homepage = {navController.navigate("homepage")},
                 goto_loginpage = {navController.navigate("loginpage")},
                 goto_loadingpage = {navController.navigate("loadingpage")})
         }
-        composable("ageverification"){
-            currentPage = "ageverification"
-            ageVerification(
-                goto_donordetails = {navController.navigate("donordetails")})
+
+        // Sequential registration flow screens - use left/right animations for a smooth flow
+        val registrationScreens = listOf("ageverification", "donordetails", "bloodgroup", "verifyaadhar")
+
+        registrationScreens.forEach { route ->
+            composable(
+                route = route,
+                enterTransition = {
+                    slideIntoContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                        animationSpec = tween(450, easing = FastOutSlowInEasing)
+                    ) + fadeIn(animationSpec = tween(350))
+                },
+                exitTransition = {
+                    val index = registrationScreens.indexOf(route)
+                    val targetIndex = registrationScreens.indexOf(targetState.destination.route)
+                    if (targetState.destination.route in registrationScreens && targetIndex > index) {
+                        // Moving forward in registration flow
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                            animationSpec = tween(450, easing = FastOutSlowInEasing)
+                        ) + fadeOut(animationSpec = tween(350))
+                    } else {
+                        // Moving backward or to non-registration screen
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.End,
+                            animationSpec = tween(450, easing = FastOutSlowInEasing)
+                        ) + fadeOut(animationSpec = tween(350))
+                    }
+                },
+                popEnterTransition = {
+                    slideIntoContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.End,
+                        animationSpec = tween(450, easing = FastOutSlowInEasing)
+                    ) + fadeIn(animationSpec = tween(350))
+                },
+                popExitTransition = {
+                    slideOutOfContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                        animationSpec = tween(450, easing = FastOutSlowInEasing)
+                    ) + fadeOut(animationSpec = tween(350))
+                },
+            ) {
+                currentPage = route
+                when (route) {
+                    "ageverification" -> ageVerification(goto_donordetails = { navController.navigate("donordetails") })
+                    "donordetails" -> donorDetails(goto_bloodgroup = { navController.navigate("bloodgroup") })
+                    "bloodgroup" -> BloodGroup(goto_verifyadhaar = { navController.navigate("verifyaadhar") })
+                    "verifyaadhar" -> verifyAadhar(goto_homepage = { navController.navigate("homepage") })
+                }
+            }
         }
-        composable("donordetails"){
-            currentPage = "donordetails"
-            donorDetails(
-                goto_bloodgroup = {navController.navigate("bloodgroup")})
-        }
-        composable("bloodgroup"){
-            currentPage = "bloodgroup"
-            BloodGroup(
-                goto_verifyadhaar = {navController.navigate("verifyaadhar")})
-        }
-        composable("verifyaadhar"){
-            currentPage = "verifyaadhar"
-            verifyAadhar(
-                goto_homepage = {navController.navigate("homepage")}
-            )
-        }
-        composable("bloodrequests"){
-            currentPage="bloodrequests"
-            bloodRequests({navController.navigate("homepage")})
-        }
-        composable("userprofile"){
-            currentPage="userprofile"
-            userProfile(
-                goto_loadingpage = {navController.navigate("loadingpage")},
-                goto_settings = {navController.navigate("settingsandpreferences")},
-                goto_aboutus = {navController.navigate("aboutus")}
-            )
-        }
-        composable("notificationspage"){
-            currentPage="notificationspage"
-            NotificationsPage(
-                {navController.navigate("homepage")}
-            )
-        }
-        composable("settingsandpreferences"){
-            currentPage = "settingsandpreferences"
-            SettingsAndPreferences(
-                goto_loadingpage = {navController.navigate("loadingpage")},
-                goto_userProfile = {navController.navigate("userprofile")}
-            )
-        }
-        composable("aboutus"){
-            currentPage = "aboutus"
-            AboutUs(goto_userProfile = {navController.navigate("userprofile")})
+
+        // Supporting screens - slide in from sides
+        val supportScreens = listOf("settingsandpreferences", "aboutus")
+
+        supportScreens.forEach { route ->
+            composable(
+                route = route,
+                enterTransition = {
+                    slideIntoContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    ) + fadeIn(animationSpec = tween(300))
+                },
+                exitTransition = {
+                    slideOutOfContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.End,
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    ) + fadeOut(animationSpec = tween(300))
+                },
+                popEnterTransition = {
+                    slideIntoContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.End,
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    ) + fadeIn(animationSpec = tween(300))
+                },
+                popExitTransition = {
+                    slideOutOfContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    ) + fadeOut(animationSpec = tween(300))
+                },
+            ) {
+                currentPage = route
+                when (route) {
+                    "settingsandpreferences" -> SettingsAndPreferences(
+                        goto_loadingpage = { navController.navigate("loadingpage") },
+                        goto_userProfile = { navController.navigate("userprofile") }
+                    )
+                    "aboutus" -> AboutUs(goto_userProfile = { navController.navigate("userprofile") })
+                }
+            }
         }
     }
 }
