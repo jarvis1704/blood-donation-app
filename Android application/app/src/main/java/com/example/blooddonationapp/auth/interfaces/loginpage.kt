@@ -55,6 +55,7 @@ fun loginpage(
     goto_homepage:()->Unit,
     goto_signuppage:()->Unit,
     goto_loadingpage:()->Unit,
+    goto_bloodreqform:()->Unit,
     state: SignInState,
     onSignInClick:()->Unit,
     viewModel: EmailLoginViewModel = hiltViewModel()
@@ -198,8 +199,6 @@ fun loginpage(
                         }
                     )
                 }
-
-
                 Spacer(modifier = Modifier.height(16.dp))
             }
             Text(text = "Or", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
@@ -237,7 +236,14 @@ fun loginpage(
                     )
                 }
             }
-
+            Text("...")
+            Button(
+                onClick = {
+                    goto_bloodreqform()
+                }
+            ) {
+                Text("Need emergency blood? Click here!")
+            }
         }
     }
 }
