@@ -38,7 +38,10 @@ import com.example.blooddonationapp.home.data.globalAnnouncementList
 import com.example.blooddonationapp.home.ui_components.AnnouncementCard
 
 @Composable
-fun homepage(goto_loadingpage:()->Unit, viewModel: EmailLoginViewModel = hiltViewModel()){
+fun homepage(
+    goto_bloodreqform:()->Unit,
+    viewModel: EmailLoginViewModel = hiltViewModel()
+){
 //    var viewmodel: emailLoginViewmodel = viewModel()
     updateCurrentUser()
     Box(modifier = Modifier.fillMaxSize()){
@@ -111,7 +114,9 @@ fun homepage(goto_loadingpage:()->Unit, viewModel: EmailLoginViewModel = hiltVie
                             colors = CardDefaults.cardColors(
                                 Color.White
                             ),
-                            onClick = {/*todo find donor button implementation*/}
+                            onClick = {
+                                goto_bloodreqform()
+                            }
                         ) {
                             Column(
                                 modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),

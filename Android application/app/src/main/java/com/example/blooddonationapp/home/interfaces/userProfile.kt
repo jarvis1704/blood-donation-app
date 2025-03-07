@@ -70,6 +70,7 @@ fun userProfile(
     goto_loadingpage: () -> Unit,
     goto_settings: () -> Unit,
     goto_aboutus: () -> Unit,
+    goto_ageverification: () -> Unit,
     emailLoginViewModel: EmailLoginViewModel = hiltViewModel(),
 ) {
     updateCurrentUser()
@@ -127,7 +128,7 @@ fun userProfile(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.SpaceEvenly
                         ) {
-                            Spacer(Modifier.height(16.dp))
+                            Spacer(Modifier.height(26.dp))
                             when (currentUser.profilePic) {
                                 "" -> {
                                     Image(
@@ -176,7 +177,10 @@ fun userProfile(
                                         contentColor = Color.Black,
                                         modifier = Modifier
                                             .height(30.dp)
-                                            .fillMaxWidth(0.45f),
+                                            .fillMaxWidth(0.45f)
+                                            .clickable {
+                                                goto_ageverification()
+                                            },
                                     ) {
                                         Row(
                                             horizontalArrangement = Arrangement.Center,
@@ -201,6 +205,9 @@ fun userProfile(
                                         contentColor = Color.Black,
                                         modifier = Modifier
                                             .height(30.dp)
+                                            .clickable {
+                                                goto_ageverification()
+                                            }
                                             .fillMaxWidth(0.35f),
                                     ) {
                                         Row(
@@ -228,7 +235,10 @@ fun userProfile(
                                     Surface(
                                         shape = RoundedCornerShape(16.dp),
                                         color = Color(0xFFB0B0B0).copy(alpha = 0.5f),
-                                        contentColor = Color.Black
+                                        contentColor = Color.Black,
+                                        modifier = Modifier.clickable {
+                                            goto_ageverification()
+                                        }
                                     ) {
                                         Row(
                                             horizontalArrangement = Arrangement.Center,
@@ -251,35 +261,34 @@ fun userProfile(
                                     }
                                 }
                             }
-                            Spacer(Modifier.height(16.dp))
-                            Surface(
-                                shape = RoundedCornerShape(16.dp),
-                                color = Color(0xFF8BC34A),
-                                contentColor = Color.White,
-                                modifier = Modifier
-                                    .fillMaxWidth(0.8f),
-                                shadowElevation = 8.dp,
-                                tonalElevation = 8.dp
-                            ) {
-                                Row(
-                                    horizontalArrangement = Arrangement.Center,
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier.padding(vertical = 5.dp)
-                                ) {
-                                    Image(
-                                        painter = painterResource(R.drawable.verified_icon),
-                                        contentDescription = "verified logo"
-                                    )
-                                    Text(
-                                        text = "Can Donate Blood",
-                                        modifier = Modifier.padding(horizontal = 8.dp),
-                                        fontSize = 16.sp,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                }
-                            }
+//                            Surface(
+//                                shape = RoundedCornerShape(16.dp),
+//                                color = Color(0xFF8BC34A),
+//                                contentColor = Color.White,
+//                                modifier = Modifier
+//                                    .fillMaxWidth(0.8f),
+//                                shadowElevation = 8.dp,
+//                                tonalElevation = 8.dp
+//                            ) {
+//                                Row(
+//                                    horizontalArrangement = Arrangement.Center,
+//                                    verticalAlignment = Alignment.CenterVertically,
+//                                    modifier = Modifier.padding(vertical = 5.dp)
+//                                ) {
+//                                    Image(
+//                                        painter = painterResource(R.drawable.verified_icon),
+//                                        contentDescription = "verified logo"
+//                                    )
+//                                    Text(
+//                                        text = "Can Donate Blood",
+//                                        modifier = Modifier.padding(horizontal = 8.dp),
+//                                        fontSize = 16.sp,
+//                                        fontWeight = FontWeight.Bold
+//                                    )
+//                                }
+//                            }
                         }
-                        Spacer(Modifier.height(16.dp))
+                        Spacer(Modifier.height(8.dp))
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,

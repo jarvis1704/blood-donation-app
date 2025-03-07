@@ -32,6 +32,7 @@ import com.example.blooddonationapp.auth.interfaces.signuppage
 import com.example.blooddonationapp.global.data.currentPage
 import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.global.data.errorMessage
+import com.example.blooddonationapp.home.interfaces.BloodRequestForm
 import com.example.blooddonationapp.home.interfaces.bloodRequests
 import com.example.blooddonationapp.home.interfaces.NotificationsPage
 import com.example.blooddonationapp.home.interfaces.userProfile
@@ -41,7 +42,6 @@ import com.example.blooddonationapp.registration.interfaces.donorDetails
 import com.example.blooddonationapp.registration.interfaces.verifyAadhar
 import com.example.blooddonationapp.settings.interfaces.AboutUs
 import com.example.blooddonationapp.settings.interfaces.SettingsAndPreferences
-import com.example.blooddonationapp.settings.interfaces.aboutUs
 import kotlinx.coroutines.launch
 
 
@@ -222,6 +222,7 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                 } },
                 goto_signuppage = {navController.navigate("signuppage")},
                 goto_loadingpage = {navController.navigate("loadingpage")},
+                goto_bloodreqform = {navController.navigate("bloodreqform")},
                 //for login with google
                 state = state,
                 onSignInClick = {
@@ -309,11 +310,14 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
             ) {
                 currentPage = route
                 when (route) {
-                    "homepage" -> homepage(goto_loadingpage = { navController.navigate("loadingpage") })
+                    "homepage" -> homepage(
+                        goto_bloodreqform = {navController.navigate("bloodreqform")}
+                    )
                     "userprofile" -> userProfile(
                         goto_loadingpage = { navController.navigate("loadingpage") },
                         goto_settings = { navController.navigate("settingsandpreferences") },
-                        goto_aboutus = { navController.navigate("aboutus") }
+                        goto_aboutus = { navController.navigate("aboutus") },
+                        goto_ageverification = {navController.navigate("ageverification")}
                     )
                     "notificationspage" -> NotificationsPage({ navController.navigate("homepage") })
                     "bloodrequests" -> bloodRequests({ navController.navigate("homepage") })
@@ -453,6 +457,10 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                     "aboutus" -> AboutUs(goto_userProfile = { navController.navigate("userprofile") })
                 }
             }
+        }
+        composable("bloodreqform"){
+            currentPage= "bloodreqform"
+            BloodRequestForm()
         }
     }
 }
