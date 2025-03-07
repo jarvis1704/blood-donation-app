@@ -316,7 +316,8 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                     "userprofile" -> userProfile(
                         goto_loadingpage = { navController.navigate("loadingpage") },
                         goto_settings = { navController.navigate("settingsandpreferences") },
-                        goto_aboutus = { navController.navigate("aboutus") }
+                        goto_aboutus = { navController.navigate("aboutus") },
+                        goto_ageverification = {navController.navigate("ageverification")}
                     )
                     "notificationspage" -> NotificationsPage({ navController.navigate("homepage") })
                     "bloodrequests" -> bloodRequests({ navController.navigate("homepage") })
