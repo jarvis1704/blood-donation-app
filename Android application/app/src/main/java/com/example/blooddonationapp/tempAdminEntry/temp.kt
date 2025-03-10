@@ -80,7 +80,7 @@ fun AdminPannel(){
                     onClick = {
                         if (newBloodRequest.bloodgroup != "" && newBloodRequest.hospital != ""){
                             viewmodel.newBloodReq()
-                            viewmodel.newNotification(type ="bloodrequest", bloodtype = newBloodRequest.bloodgroup, location = newBloodRequest.hospital)
+//                            viewmodel.newNotification(type ="bloodrequest", bloodtype = newBloodRequest.bloodgroup, location = newBloodRequest.hospital)
                         }
                         else{
                             errorMessage = "Error: multiple entries are empty"
@@ -120,7 +120,7 @@ fun AdminPannel(){
                         if (newAnnouncement.title != "" && newAnnouncement.location != ""){
                             //todo combine date and time
                             viewmodel.newAnnouncement()
-                            viewmodel.newNotification(type ="announcement", location = newAnnouncement.location, title = newAnnouncement.title)
+//                            viewmodel.newNotification(type ="announcement", location = newAnnouncement.location, title = newAnnouncement.title)
                         }
                         else{
                             errorMessage = "Error: multiple entries are empty"
