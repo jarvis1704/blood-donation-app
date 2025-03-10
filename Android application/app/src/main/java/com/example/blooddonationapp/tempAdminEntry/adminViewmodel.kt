@@ -71,65 +71,65 @@ class adminViewmodel:ViewModel() {
         }
     }
 
-    @SuppressLint("NewApi")
-    fun newNotification(type:String, bloodtype:String="", location:String="", title:String=""){
-        when(type){
-            "bloodrequest"->{
-                //here, bloodtype and location cannot be empty
-                if (bloodtype =="" || location == ""){
-                    errorMessage = "Error: Not enough details to push notification"
-                }
-                var body = "Emergency $bloodtype Blood Needed"
-                try {
-                    val datamap = mapOf(
-                        "body" to body,
-                        "location" to location,
-                        "date&time" to Timestamp.now()
-                    )
-                    db.collection("notifications").document()
-                        .set(datamap, SetOptions.merge())
-                        .addOnSuccessListener {
-                            errorMessage="Just kidding, notification pushed successfully"
-                        }
-                        .addOnFailureListener {
-                            errorMessage = it.message.toString()
-                        }
-                }catch (e:Exception){
-                    errorMessage = e.message.toString()
-                }
-            }
-            "announcement"->{
-                //here, title location and time cannot be empty
-                if (title =="" || location == ""){
-                    errorMessage = "Error: Not enough details to push notification"
-                }
-                var body = "New Event: $title upcoming"
-                try {
-                    val datamap = mapOf(
-                        "body" to body,
-                        "location" to newAnnouncement.location,
-                        "date&time" to Timestamp.now()
-                    )
-                    db.collection("notifications").document()
-                        .set(datamap, SetOptions.merge())
-                        .addOnSuccessListener {
-                            errorMessage="Just kidding, notification pushed successfully"
-                        }
-                        .addOnFailureListener {
-                            errorMessage = it.message.toString()
-                        }
-                }catch (e:Exception){
-                    errorMessage = e.message.toString()
-                }
-            }
-            "aadhar"->{
-
-            }else->{
-                //ignore
-                errorMessage = "Error: Notification type not recognized"
-            }
-        }
-    }
+//    @SuppressLint("NewApi")
+//    fun newNotification(type:String, bloodtype:String="", location:String="", title:String=""){
+//        when(type){
+//            "bloodrequest"->{
+//                //here, bloodtype and location cannot be empty
+//                if (bloodtype =="" || location == ""){
+//                    errorMessage = "Error: Not enough details to push notification"
+//                }
+//                var body = "Emergency $bloodtype Blood Needed"
+//                try {
+//                    val datamap = mapOf(
+//                        "body" to body,
+//                        "location" to location,
+//                        "date&time" to Timestamp.now()
+//                    )
+//                    db.collection("notifications").document()
+//                        .set(datamap, SetOptions.merge())
+//                        .addOnSuccessListener {
+//                            errorMessage="Just kidding, notification pushed successfully"
+//                        }
+//                        .addOnFailureListener {
+//                            errorMessage = it.message.toString()
+//                        }
+//                }catch (e:Exception){
+//                    errorMessage = e.message.toString()
+//                }
+//            }
+//            "announcement"->{
+//                //here, title location and time cannot be empty
+//                if (title =="" || location == ""){
+//                    errorMessage = "Error: Not enough details to push notification"
+//                }
+//                var body = "New Event: $title upcoming"
+//                try {
+//                    val datamap = mapOf(
+//                        "body" to body,
+//                        "location" to newAnnouncement.location,
+//                        "date&time" to Timestamp.now()
+//                    )
+//                    db.collection("notifications").document()
+//                        .set(datamap, SetOptions.merge())
+//                        .addOnSuccessListener {
+//                            errorMessage="Just kidding, notification pushed successfully"
+//                        }
+//                        .addOnFailureListener {
+//                            errorMessage = it.message.toString()
+//                        }
+//                }catch (e:Exception){
+//                    errorMessage = e.message.toString()
+//                }
+//            }
+//            "aadhar"->{
+//
+//            }else->{
+//                //ignore
+//                errorMessage = "Error: Notification type not recognized"
+//            }
+//        }
+//    }
 
     suspend fun getPendingAadhar(){
         try {

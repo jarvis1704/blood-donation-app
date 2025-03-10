@@ -61,7 +61,7 @@ fun updateCurrentUser(){
                 currentUser.aadharStatus = viewmodel.getAadharDetails("aadharStatus").toString()
                 viewmodel.FetchBloodRequests()
                 viewmodel.FetchAnnouncements()
-                viewmodel.FetchNotifications()
+//                viewmodel.FetchNotifications()
             }
         }
     }
