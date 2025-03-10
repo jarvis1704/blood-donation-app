@@ -26,6 +26,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -56,6 +57,7 @@ fun loginpage(
     goto_signuppage:()->Unit,
     goto_loadingpage:()->Unit,
     goto_bloodreqform:()->Unit,
+    goto_adminloginpage: () -> Unit,
     state: SignInState,
     onSignInClick:()->Unit,
     viewModel: EmailLoginViewModel = hiltViewModel()
@@ -236,7 +238,13 @@ fun loginpage(
                     )
                 }
             }
-            Text("...")
+            TextButton(
+                onClick = {
+                    goto_adminloginpage()
+                }
+            ) {
+                Text("Admin? Click Here")
+            }
             Button(
                 onClick = {
                     goto_bloodreqform()

@@ -25,6 +25,7 @@ import androidx.navigation.compose.composable
 import com.example.blooddonationapp.auth.data.EmailLoginViewModel
 import com.example.blooddonationapp.auth.data.googleAuthClient
 import com.example.blooddonationapp.auth.data.GoogleAuthViewModel
+import com.example.blooddonationapp.auth.interfaces.AdminLoginPage
 import com.example.blooddonationapp.home.interfaces.homepage
 import com.example.blooddonationapp.auth.interfaces.loadingpage
 import com.example.blooddonationapp.auth.interfaces.loginpage
@@ -42,6 +43,7 @@ import com.example.blooddonationapp.registration.interfaces.donorDetails
 import com.example.blooddonationapp.registration.interfaces.verifyAadhar
 import com.example.blooddonationapp.settings.interfaces.AboutUs
 import com.example.blooddonationapp.settings.interfaces.SettingsAndPreferences
+import com.example.blooddonationapp.tempAdminEntry.AdminPannel
 import kotlinx.coroutines.launch
 
 
@@ -223,6 +225,7 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                 goto_signuppage = {navController.navigate("signuppage")},
                 goto_loadingpage = {navController.navigate("loadingpage")},
                 goto_bloodreqform = {navController.navigate("bloodreqform")},
+                goto_adminloginpage = {navController.navigate("adminloginpage")},
                 //for login with google
                 state = state,
                 onSignInClick = {
@@ -461,6 +464,16 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         composable("bloodreqform"){
             currentPage= "bloodreqform"
             BloodRequestForm()
+        }
+        composable("adminloginpage"){
+            currentPage= "adminloginpage"
+            AdminLoginPage(
+                goto_adminpannel = {navController.navigate("adminpannel")}
+            )
+        }
+        composable("adminpannel"){
+            currentPage= "adminpannel"
+            AdminPannel()
         }
     }
 }
