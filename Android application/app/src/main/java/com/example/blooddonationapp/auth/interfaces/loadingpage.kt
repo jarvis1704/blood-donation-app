@@ -1,9 +1,7 @@
 package com.example.blooddonationapp.auth.interfaces
 
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -35,9 +33,8 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun loadingpage(
-    goto_loginpage:()->Unit,
-    goto_homepage:()->Unit,
-    goto_ageverification:()->Unit,
+    goto_welcomepage: () -> Unit,
+    goto_homepage: () -> Unit,
     emailLoginViewModel: EmailLoginViewModel = hiltViewModel(),
     registrationViewmodel: RegistrationViewModel = hiltViewModel()
 ){
@@ -67,7 +64,7 @@ fun loadingpage(
 //            }
         }else{
             delay(1000)
-            goto_loginpage()
+            goto_welcomepage()
         }
     }
 

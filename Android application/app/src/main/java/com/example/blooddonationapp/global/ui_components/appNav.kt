@@ -26,6 +26,7 @@ import com.example.blooddonationapp.auth.data.EmailLoginViewModel
 import com.example.blooddonationapp.auth.data.googleAuthClient
 import com.example.blooddonationapp.auth.data.GoogleAuthViewModel
 import com.example.blooddonationapp.auth.interfaces.AdminLoginPage
+import com.example.blooddonationapp.auth.interfaces.WelcomePage
 import com.example.blooddonationapp.home.interfaces.homepage
 import com.example.blooddonationapp.auth.interfaces.loadingpage
 import com.example.blooddonationapp.auth.interfaces.loginpage
@@ -146,9 +147,8 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         ){
             currentPage = "loadingpage"
             loadingpage(
-                goto_homepage = {navController.navigate("homepage")},
-                goto_loginpage = {navController.navigate("loginpage")},
-                goto_ageverification = {navController.navigate("ageverification")}
+                goto_welcomepage = {navController.navigate("welcomepage")},
+                goto_homepage = {navController.navigate("homepage")}
             )
         }
 
@@ -224,8 +224,6 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                 } },
                 goto_signuppage = {navController.navigate("signuppage")},
                 goto_loadingpage = {navController.navigate("loadingpage")},
-                goto_bloodreqform = {navController.navigate("bloodreqform")},
-                goto_adminloginpage = {navController.navigate("adminloginpage")},
                 //for login with google
                 state = state,
                 onSignInClick = {
@@ -474,6 +472,14 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         composable("adminpannel"){
             currentPage= "adminpannel"
             AdminPannel()
+        }
+        composable("welcomepage"){
+            currentPage= "welcomepage"
+            WelcomePage(
+                goto_bloodreqform = {navController.navigate("bloodreqform")},
+                goto_loginpage = {navController.navigate("loginpage")},
+                goto_adminpannel = {navController.navigate("adminpannel")}
+            )
         }
     }
 }
