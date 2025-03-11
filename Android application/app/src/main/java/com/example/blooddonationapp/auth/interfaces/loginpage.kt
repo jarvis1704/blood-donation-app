@@ -26,7 +26,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -53,13 +52,11 @@ import com.example.blooddonationapp.auth.data.tempUserObj.password
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun loginpage(
-    goto_homepage:()->Unit,
-    goto_signuppage:()->Unit,
-    goto_loadingpage:()->Unit,
-    goto_bloodreqform:()->Unit,
-    goto_adminloginpage: () -> Unit,
+    goto_homepage: () -> Unit,
+    goto_signuppage: () -> Unit,
+    goto_loadingpage: () -> Unit,
     state: SignInState,
-    onSignInClick:()->Unit,
+    onSignInClick: () -> Unit,
     viewModel: EmailLoginViewModel = hiltViewModel()
 ){
 //    var viewModel:EmailLoginViewModel = viewModel()
@@ -237,20 +234,6 @@ fun loginpage(
                         color = Color.Black
                     )
                 }
-            }
-            TextButton(
-                onClick = {
-                    goto_adminloginpage()
-                }
-            ) {
-                Text("Admin? Click Here")
-            }
-            Button(
-                onClick = {
-                    goto_bloodreqform()
-                }
-            ) {
-                Text("Need emergency blood? Click here!")
             }
         }
     }

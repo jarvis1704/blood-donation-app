@@ -1,5 +1,6 @@
 package com.example.blooddonationapp.auth.data
 
+import android.provider.ContactsContract.Data
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.blooddonationapp.global.data.currentUser
@@ -15,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EmailLoginViewModel @Inject constructor() : ViewModel() {
     private val _auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val _db : FirebaseFirestore = FirebaseFirestore.getInstance()
 
     //on initialization, checks if logged in
     init {
@@ -79,8 +81,8 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
     }
 
 
-    suspend fun returnAuth(scope: CoroutineScope): FirebaseAuth? {
-        var tempauth: FirebaseAuth? = null
+//    suspend fun returnAuth(scope: CoroutineScope): FirebaseAuth? {
+//        var tempauth: FirebaseAuth? = null
 //        scope.launch {
 //            try {
 //                val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -89,8 +91,8 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
 //                errorMessage = e.message.toString()
 //            }
 //        }
-        return tempauth
-    }
+//        return tempauth
+//    }
 
     fun signup(
         email: String,
@@ -141,5 +143,28 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
         currentUser.isLoggedIn = false
         goto_loadingpage()
         //todo clear temp user data
+    }
+
+    suspend fun CheckAdminPasskey(key:String, goto_adminpage:()->Unit){
+        var DatabaseKeys = mutableListOf<String>()
+        try {
+            val document = _db.collection("passkey").get().await()
+            document.documents.forEach{doc->
+                val temp = doc.getString("passkey")
+                if (temp != null) {
+                    DatabaseKeys.add(temp)
+                }
+            }
+            if (key in DatabaseKeys){
+                goto_adminpage()
+            }
+            else{
+                errorMessage="Oops, incorrect key!"
+            }
+        } catch (e: Exception) {
+            errorMessage = e.message.toString()
+        }finally {
+            DatabaseKeys.clear()
+        }
     }
 }
