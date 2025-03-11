@@ -9,13 +9,26 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.blooddonationapp.auth.data.EmailLoginViewModel
+import com.example.blooddonationapp.global.data.errorMessage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 @Composable
 fun AdminLoginPage(
-    goto_adminpannel:()->Unit
+    goto_adminpannel:()->Unit,
+    viewModel: EmailLoginViewModel = hiltViewModel()
 ){
+    val coroutineScope = rememberCoroutineScope()
     var Passkey = remember { mutableStateOf("") }
     Column (
         Modifier.fillMaxSize(),
@@ -32,7 +45,14 @@ fun AdminLoginPage(
         )
         Button(
             onClick = {
-                goto_adminpannel()
+                if (Passkey.value.isEmpty()){
+                    errorMessage = "Error: Empty Field"
+                }
+                else{
+                    coroutineScope.launch {
+                        viewModel.CheckAdminPasskey(Passkey.value, goto_adminpannel)
+                    }
+                }
             }
         ) {
             Text("Continue")

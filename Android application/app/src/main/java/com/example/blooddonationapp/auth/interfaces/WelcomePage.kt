@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 fun WelcomePage(
     goto_bloodreqform:()->Unit,
     goto_loginpage:()->Unit,
-    goto_adminpannel:()->Unit
+    goto_adminloginpage:()->Unit
 ){
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -38,7 +38,7 @@ fun WelcomePage(
                 Text("Login/Signup")
             }
             TextButton(onClick = {
-                goto_adminpannel()
+                goto_adminloginpage()
             }) {
                 Text("Admin? Click Here")
             }

@@ -478,7 +478,7 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
             WelcomePage(
                 goto_bloodreqform = {navController.navigate("bloodreqform")},
                 goto_loginpage = {navController.navigate("loginpage")},
-                goto_adminpannel = {navController.navigate("adminpannel")}
+                goto_adminloginpage = {navController.navigate("adminloginpage")}
             )
         }
     }
