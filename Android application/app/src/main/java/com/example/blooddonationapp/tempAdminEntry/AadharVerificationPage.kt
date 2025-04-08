@@ -11,23 +11,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
-import com.example.blooddonationapp.global.data.currentUser
-import kotlinx.coroutines.CoroutineStart
-import kotlin.io.encoding.ExperimentalEncodingApi
 import android.util.Base64
+import androidx.hilt.navigation.compose.hiltViewModel
 
 
 @Composable
-fun verifyaadhar(){
+fun AadharVerificationPage(
+    AdminViewmodel:AdminViewmodel = hiltViewModel()
+){
+    AdminViewmodel.getPendingAadhar()
     Column(modifier = Modifier.fillMaxSize().padding(top = 100.dp).padding(20.dp)) {
         Text("Verify pending aadhar details here:")
         LazyColumn(

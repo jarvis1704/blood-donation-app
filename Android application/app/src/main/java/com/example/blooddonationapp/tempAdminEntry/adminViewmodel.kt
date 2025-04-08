@@ -1,22 +1,23 @@
 package com.example.blooddonationapp.tempAdminEntry
 
-import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.blooddonationapp.global.data.errorMessage
-import com.example.blooddonationapp.home.data.notification
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.google.type.DateTime
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.Date
+import javax.inject.Inject
 
-class adminViewmodel:ViewModel() {
+@HiltViewModel
+class AdminViewmodel @Inject constructor():ViewModel() {
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
 
@@ -131,26 +132,28 @@ class adminViewmodel:ViewModel() {
 //        }
 //    }
 
-    suspend fun getPendingAadhar(){
-        try {
-            val aadharlist = db.collection("aadhardetails").get().await()
-            if (aadharlist != null){
-                val aadharList = aadharlist.documents.mapNotNull { doc->
-                    val data = doc.data
-                    data?.let {
-                        aadharUser(
-                            useremail = it["useremail"].toString(),
-                            aadharNo = it["aadharNo"].toString().toLongOrNull(),
-                            aadharDOB = it["aadharDOB"].toString().toLongOrNull(),
-                            aadharStatus = it["aadharStatus"].toString(),
-                            aadharPhotoString = it["imageData"].toString()
-                        )
-                    }
-                }.filter { it.aadharStatus=="submitted" }
-                aadharPendingList = aadharList
+    fun getPendingAadhar(){
+        viewModelScope.launch {
+            try {
+                val aadharlist = db.collection("aadhardetails").get().await()
+                if (aadharlist != null){
+                    val aadharList = aadharlist.documents.mapNotNull { doc->
+                        val data = doc.data
+                        data?.let {
+                            aadharUser(
+                                useremail = it["useremail"].toString(),
+                                aadharNo = it["aadharNo"].toString().toLongOrNull(),
+                                aadharDOB = it["aadharDOB"].toString().toLongOrNull(),
+                                aadharStatus = it["aadharStatus"].toString(),
+                                aadharPhotoString = it["imageData"].toString()
+                            )
+                        }
+                    }.filter { it.aadharStatus=="submitted" }
+                    aadharPendingList = aadharList
+                }
+            }catch (e:Exception){
+                errorMessage=e.message.toString()
             }
-        }catch (e:Exception){
-            errorMessage=e.message.toString()
         }
     }
 }
