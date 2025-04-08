@@ -44,8 +44,9 @@ import com.example.blooddonationapp.registration.interfaces.donorDetails
 import com.example.blooddonationapp.registration.interfaces.verifyAadhar
 import com.example.blooddonationapp.settings.interfaces.AboutUs
 import com.example.blooddonationapp.settings.interfaces.SettingsAndPreferences
-import com.example.blooddonationapp.tempAdminEntry.AadharVerificationPage
-import com.example.blooddonationapp.tempAdminEntry.AdminHomepage
+import com.example.blooddonationapp.AdminEntry.AadharVerificationPage
+import com.example.blooddonationapp.AdminEntry.AdminHomepage
+import com.example.blooddonationapp.AdminEntry.NewBloodRequest
 import kotlinx.coroutines.launch
 
 
@@ -473,7 +474,8 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         composable("adminpannel"){
             currentPage= "adminpannel"
             AdminHomepage(
-                goto_aadharverification = {navController.navigate("aadharverification")}
+                goto_aadharverification = {navController.navigate("aadharverification")},
+                goto_newbloodreqpage = {navController.navigate("newbloodreqpage")}
             )
         }
         composable("welcomepage"){
@@ -487,6 +489,10 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         composable("aadharverification"){
             currentPage = "aadharverification"
             AadharVerificationPage()
+        }
+        composable("newbloodreqpage"){
+            currentPage = "newbloodreqpage"
+            NewBloodRequest()
         }
     }
 }

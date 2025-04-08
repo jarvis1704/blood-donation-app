@@ -147,11 +147,14 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                     val data = doc.data
                     data?.let {
                         bloodRequest(
+                            patientname = it["patient"].toString(),
                             bloodtype = it["bloodtype"].toString(),
                             hospital = it["hospital"].toString(),
                             date = (it["date"] as? Timestamp)?.let { timestamp ->
                                 TimestampToLocalDateTime(timestamp)
-                            }
+                            },
+                            attendantname = it["attendant"].toString(),
+                            attendantphoneno = it["attendantphoneno"].toString()
                         )
                     }
                 }.sortedByDescending { it.date }

@@ -1,4 +1,4 @@
-package com.example.blooddonationapp.tempAdminEntry
+package com.example.blooddonationapp.AdminEntry
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -22,10 +22,12 @@ class AdminViewmodel @Inject constructor():ViewModel() {
     private val db = FirebaseFirestore.getInstance()
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun newBloodReq(){
         try {
             val datamap = mapOf(
+                "patient" to newBloodRequest.patientname,
+                "attendant" to newBloodRequest.attendantname,
+                "attendantphoneno" to newBloodRequest.attendantphoneno,
                 "bloodtype" to newBloodRequest.bloodgroup,
                 "hospital" to newBloodRequest.hospital,
                 "details" to newBloodRequest.details,
