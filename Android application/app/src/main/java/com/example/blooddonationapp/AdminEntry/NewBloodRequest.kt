@@ -47,7 +47,7 @@ fun NewBloodRequest(
         TextField(
             value = newBloodRequest.patientage,
             onValueChange = {
-                newBloodRequest.attendantname = it
+                newBloodRequest.patientage = it
             }
         )
         TextField(
