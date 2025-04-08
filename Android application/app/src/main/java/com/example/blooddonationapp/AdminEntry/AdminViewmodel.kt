@@ -54,14 +54,15 @@ class AdminViewmodel @Inject constructor():ViewModel() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun newAnnouncement(){
-        val instant2 = newAnnouncement.time.atDate(newAnnouncement.date).atZone(ZoneId.systemDefault()).toInstant()
-        val theTime = Date.from(instant2)
-        val timestamp2 = Timestamp(theTime)
+        val localDateTime = newAnnouncement.date.atTime(newAnnouncement.time)
+        val instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant()
+        val timestamp = Timestamp(instant.epochSecond, instant.nano)
+
         try {
             val datamap = mapOf(
                 "title" to newAnnouncement.title,
                 "location" to newAnnouncement.location,
-                "date&time" to timestamp2
+                "date&time" to timestamp
             )
             if (true){
                 db.collection("announcements").document()

@@ -30,7 +30,8 @@ import java.time.LocalTime
 @Composable
 fun AdminHomepage(
     goto_aadharverification:()->Unit,
-    goto_newbloodreqpage:()->Unit
+    goto_newbloodreqpage:()->Unit,
+    goto_newannouncementpage:()->Unit
 ){
     Box(modifier = Modifier.padding(16.dp)){
         Column (
@@ -61,7 +62,9 @@ fun AdminHomepage(
                 Text("New Blood Request")
             }
             Button(
-                onClick = {}
+                onClick = {
+                    goto_newannouncementpage()
+                }
             ) {
                 Text("New Announcement")
             }
@@ -182,74 +185,4 @@ fun AdminHomepage(
 //        }
 //    }
 
-}
-
-@SuppressLint("NewApi")
-@Composable
-fun SimpleTimeSelector12Hour() {
-    var hour by remember { mutableStateOf("12") }
-    var minute by remember { mutableStateOf("00") }
-    var isAm by remember { mutableStateOf(true) } // AM or PM toggle
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Text("Select Time",)
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            // Hour Input
-            TextField(
-                value = hour,
-                onValueChange = { input ->
-                    hour = input.filter { it.isDigit() }.take(2).takeIf { it.toIntOrNull() in 1..12 } ?: hour
-                },
-                label = { Text("Hour") },
-                singleLine = true,
-                modifier = Modifier.width(80.dp)
-            )
-
-            Text(":")
-
-            // Minute Input
-            TextField(
-                value = minute,
-                onValueChange = { input ->
-                    minute = input.filter { it.isDigit() }.take(2).takeIf { it.toIntOrNull() in 0..59 } ?: minute
-                },
-                label = { Text("Minute") },
-                singleLine = true,
-                modifier = Modifier.width(80.dp)
-            )
-
-            // AM/PM Toggle
-            Button(onClick = { isAm = !isAm }) {
-                Text(if (isAm) "AM" else "PM")
-            }
-        }
-
-        // Confirm Button
-        Button(onClick = {
-            // Convert to LocalTime
-            val hourInt = hour.toIntOrNull() ?: 12
-            val minuteInt = minute.toIntOrNull() ?: 0
-            val adjustedHour = if (isAm) {
-                if (hourInt == 12) 0 else hourInt // 12 AM is 0, 1-11 AM stays the same
-            } else {
-                if (hourInt == 12) 12 else hourInt + 12 // 12 PM is 12, 1-11 PM adds 12
-            }
-
-            val selectedTime = LocalTime.of(adjustedHour, minuteInt)
-            println("Selected LocalTime: $selectedTime") // Logs LocalTime
-            newAnnouncement.time = selectedTime
-        }) {
-            Text("Confirm Time")
-        }
-    }
 }
