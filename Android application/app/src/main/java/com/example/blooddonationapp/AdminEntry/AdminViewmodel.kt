@@ -26,10 +26,14 @@ class AdminViewmodel @Inject constructor():ViewModel() {
         try {
             val datamap = mapOf(
                 "patient" to newBloodRequest.patientname,
+                "patientage" to newBloodRequest.patientage,
+                "patientgender" to newBloodRequest.patientgender,
                 "attendant" to newBloodRequest.attendantname,
                 "attendantphoneno" to newBloodRequest.attendantphoneno,
                 "bloodtype" to newBloodRequest.bloodgroup,
                 "hospital" to newBloodRequest.hospital,
+                "urgencylevel" to newBloodRequest.urgencylevel,
+                "unitsrequired" to newBloodRequest.unitsrequired,
                 "details" to newBloodRequest.details,
                 "date" to Timestamp.now()
             )

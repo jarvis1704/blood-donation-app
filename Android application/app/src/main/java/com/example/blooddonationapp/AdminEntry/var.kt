@@ -11,10 +11,15 @@ import java.time.LocalTime
 
 object newBloodRequest{
     var patientname by mutableStateOf("")
+    var patientage by mutableStateOf("")
+    var patientgender by mutableStateOf("")
     var attendantname by mutableStateOf("")
     var attendantphoneno by mutableStateOf("")
     var hospital by mutableStateOf("")
     var bloodgroup by mutableStateOf("")
+    //these 3 are optional
+    var urgencylevel by mutableStateOf("")
+    var unitsrequired by mutableStateOf("")
     var details by mutableStateOf("")
 }
 

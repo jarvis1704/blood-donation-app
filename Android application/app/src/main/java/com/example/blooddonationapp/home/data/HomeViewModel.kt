@@ -87,57 +87,6 @@ class HomeViewModel @Inject constructor(): ViewModel() {
         return false
     }
 
-//    @SuppressLint("NewApi")
-//    suspend fun FetchNotifications() {
-//        var lastNotificationSeen: Timestamp? by mutableStateOf(null)
-//        var lastSeenLocalDateTime: LocalDateTime? by mutableStateOf(null)
-//        newNotificationsCounter = 0
-//        try {
-//            //get the last seen timestamp
-//            val doc = _db.collection("userdetails").document(_auth.currentUser!!.uid)
-//                .get().await()
-//            if (doc != null) {
-//                lastNotificationSeen = doc.getTimestamp("lastNotificationSeen")
-//                lastSeenLocalDateTime = lastNotificationSeen?.let { TimestampToLocalDateTime(it) }
-//            }
-//
-//            //get all notifications
-//            val list = _db.collection("notifications").get().await()
-//            if (list != null) {
-//                val notificationList = list.documents.mapNotNull { doc ->
-//                    val data = doc.data
-//                    data?.let {
-//                        notification(
-//                            body = it["body"].toString(),
-//                            type = "",
-//                            title = "",
-//                            bloodtype = "",
-//                            location = it["location"].toString(),
-//                            dateAndTime = (it["date&time"] as? Timestamp)?.let { timestamp ->
-//                                TimestampToLocalDateTime(timestamp)
-//                            },
-//                        )
-//                    }
-//                }.sortedByDescending { it.dateAndTime }
-//                globalNotificationList = notificationList
-//
-//                //now compare to identify new notifications
-//                notificationList.forEach { notification ->
-//                    notification.dateAndTime?.let { notificationDate ->
-//                        if (lastSeenLocalDateTime == null || notificationDate.isAfter(
-//                                lastSeenLocalDateTime
-//                            )
-//                        ) {
-//                            newNotificationsCounter++
-//                        }
-//                    }
-//                }
-//            }
-//        } catch (e: Exception) {
-//            errorMessage = e.message.toString()
-//        }
-//    }
-
     suspend fun FetchBloodRequests() {
         try {
             //get all blood req
@@ -154,7 +103,12 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                                 TimestampToLocalDateTime(timestamp)
                             },
                             attendantname = it["attendant"].toString(),
-                            attendantphoneno = it["attendantphoneno"].toString()
+                            attendantphoneno = it["attendantphoneno"].toString(),
+                            patientage = it["patientage"].toString(),
+                            patientgender = it["patientgender"].toString(),
+                            urgencylevel = it["urgencylevel"].toString(),
+                            unitsrequired = it["unitsrequired"].toString(),
+                            details = it["details"].toString(),
                         )
                     }
                 }.sortedByDescending { it.date }
