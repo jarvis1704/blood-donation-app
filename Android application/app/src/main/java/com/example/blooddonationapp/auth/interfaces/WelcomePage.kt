@@ -97,8 +97,6 @@ fun WelcomePage(
                     }
                 }
             }
-
-
         }
     }
 }

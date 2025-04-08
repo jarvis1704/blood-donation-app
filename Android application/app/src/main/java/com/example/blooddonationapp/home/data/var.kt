@@ -11,6 +11,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 
 data class bloodRequest(
+    var id:String,
     var patientname: String,
     var patientage : String,
     var patientgender : String,

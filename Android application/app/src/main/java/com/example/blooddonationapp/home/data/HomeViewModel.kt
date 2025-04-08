@@ -5,11 +5,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.blooddonationapp.global.data.errorMessage
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -87,58 +89,64 @@ class HomeViewModel @Inject constructor(): ViewModel() {
         return false
     }
 
-    suspend fun FetchBloodRequests() {
-        try {
-            //get all blood req
-            val list = _db.collection("blood_requests").get().await()
-            if (list != null) {
-                val bloodReqList = list.documents.mapNotNull { doc ->
-                    val data = doc.data
-                    data?.let {
-                        bloodRequest(
-                            patientname = it["patient"].toString(),
-                            bloodtype = it["bloodtype"].toString(),
-                            hospital = it["hospital"].toString(),
-                            date = (it["date"] as? Timestamp)?.let { timestamp ->
-                                TimestampToLocalDateTime(timestamp)
-                            },
-                            attendantname = it["attendant"].toString(),
-                            attendantphoneno = it["attendantphoneno"].toString(),
-                            patientage = it["patientage"].toString(),
-                            patientgender = it["patientgender"].toString(),
-                            urgencylevel = it["urgencylevel"].toString(),
-                            unitsrequired = it["unitsrequired"].toString(),
-                            details = it["details"].toString(),
-                        )
-                    }
-                }.sortedByDescending { it.date }
-                globalBloodRequestList = bloodReqList
+    fun FetchBloodRequests() {
+        viewModelScope.launch {
+            try {
+                //get all blood req
+                val list = _db.collection("blood_requests").get().await()
+                if (list != null) {
+                    val bloodReqList = list.documents.mapNotNull { doc ->
+                        val temp = doc.id
+                        val data = doc.data
+                        data?.let {
+                            bloodRequest(
+                                id = temp,
+                                patientname = it["patient"].toString(),
+                                bloodtype = it["bloodtype"].toString(),
+                                hospital = it["hospital"].toString(),
+                                date = (it["date"] as? Timestamp)?.let { timestamp ->
+                                    TimestampToLocalDateTime(timestamp)
+                                },
+                                attendantname = it["attendant"].toString(),
+                                attendantphoneno = it["attendantphoneno"].toString(),
+                                patientage = it["patientage"].toString(),
+                                patientgender = it["patientgender"].toString(),
+                                urgencylevel = it["urgencylevel"].toString(),
+                                unitsrequired = it["unitsrequired"].toString(),
+                                details = it["details"].toString(),
+                            )
+                        }
+                    }.sortedByDescending { it.date }
+                    globalBloodRequestList = bloodReqList
+                }
+            } catch (e: Exception) {
+                errorMessage = e.message.toString()
             }
-        } catch (e: Exception) {
-            errorMessage = e.message.toString()
         }
     }
 
-    suspend fun FetchAnnouncements() {
-        try {
-            val list = _db.collection("announcements").get().await()
-            if (list != null) {
-                val announcementList = list.documents.mapNotNull { doc ->
-                    val data = doc.data
-                    data?.let {
-                        announcement(
-                            title = it["title"].toString(),
-                            location = it["location"].toString(),
-                            dateAndTime = (it["date&time"] as? Timestamp)?.let { timestamp ->
-                                TimestampToLocalDateTime(timestamp)
-                            }
-                        )
-                    }
-                }.sortedBy { it.dateAndTime }
-                globalAnnouncementList = announcementList
+    fun FetchAnnouncements() {
+        viewModelScope.launch {
+            try {
+                val list = _db.collection("announcements").get().await()
+                if (list != null) {
+                    val announcementList = list.documents.mapNotNull { doc ->
+                        val data = doc.data
+                        data?.let {
+                            announcement(
+                                title = it["title"].toString(),
+                                location = it["location"].toString(),
+                                dateAndTime = (it["date&time"] as? Timestamp)?.let { timestamp ->
+                                    TimestampToLocalDateTime(timestamp)
+                                }
+                            )
+                        }
+                    }.sortedBy { it.dateAndTime }
+                    globalAnnouncementList = announcementList
+                }
+            } catch (e: Exception) {
+                errorMessage = e.message.toString()
             }
-        } catch (e: Exception) {
-            errorMessage = e.message.toString()
         }
     }
 

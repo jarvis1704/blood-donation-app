@@ -28,7 +28,7 @@ object newAnnouncement{
     var title by mutableStateOf("")
     var location by mutableStateOf("")
     var date : LocalDate by mutableStateOf(LocalDate.now())
-    var time : LocalTime by mutableStateOf(LocalTime.now())
+    var time : LocalTime? by mutableStateOf(LocalTime.now())
 }
 
 data class aadharUser(
@@ -40,3 +40,4 @@ data class aadharUser(
 )
 
 var aadharPendingList : List<aadharUser>? by mutableStateOf(null)
+var showDialog by mutableStateOf(false) // for time selector

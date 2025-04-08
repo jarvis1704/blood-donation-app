@@ -51,6 +51,8 @@ object currentUser{
 fun updateCurrentUser(){
     var viewmodel: HomeViewModel = viewModel()
     if (currentPage in "homepage bloodrequests userprofile"){
+        viewmodel.FetchBloodRequests()
+        viewmodel.FetchAnnouncements()
         LaunchedEffect(currentPage){
             CoroutineScope(Dispatchers.IO).launch {
                 currentUser.username = viewmodel.getRegistrationEntryByString("username")
@@ -59,9 +61,6 @@ fun updateCurrentUser(){
                 currentUser.profilePic = viewmodel.getRegistrationEntryByString("profilepic")
                 currentUser.bloodGroup = viewmodel.getRegistrationEntryByString("bloodGroup")
                 currentUser.aadharStatus = viewmodel.getAadharDetails("aadharStatus").toString()
-                viewmodel.FetchBloodRequests()
-                viewmodel.FetchAnnouncements()
-//                viewmodel.FetchNotifications()
             }
         }
     }

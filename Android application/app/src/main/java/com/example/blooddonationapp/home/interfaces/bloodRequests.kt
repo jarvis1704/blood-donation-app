@@ -169,12 +169,7 @@ fun BloodRequestAnouncementCard(bloodRequest: bloodRequest) {
                 fontSize = 16.sp, fontWeight = FontWeight.Bold,
                 modifier = Modifier.clip(RoundedCornerShape(8.dp))
                     .background(
-                        Color.Black).padding(8.dp), color = Color.White)
-
-//            Text("10:00AM Onwards",
-//                fontSize = 16.sp, fontWeight = FontWeight.SemiBold
-//            )
-        }
+                        Color.Black).padding(8.dp), color = Color.White) }
     }
     Spacer(Modifier.height(18.dp))
 }
