@@ -5,6 +5,8 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.blooddonationapp.global.data.errorMessage
+import com.example.blooddonationapp.home.data.bloodRequest
+import com.example.blooddonationapp.home.data.globalBloodRequestList
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -79,66 +81,6 @@ class AdminViewmodel @Inject constructor():ViewModel() {
         }
     }
 
-//    @SuppressLint("NewApi")
-//    fun newNotification(type:String, bloodtype:String="", location:String="", title:String=""){
-//        when(type){
-//            "bloodrequest"->{
-//                //here, bloodtype and location cannot be empty
-//                if (bloodtype =="" || location == ""){
-//                    errorMessage = "Error: Not enough details to push notification"
-//                }
-//                var body = "Emergency $bloodtype Blood Needed"
-//                try {
-//                    val datamap = mapOf(
-//                        "body" to body,
-//                        "location" to location,
-//                        "date&time" to Timestamp.now()
-//                    )
-//                    db.collection("notifications").document()
-//                        .set(datamap, SetOptions.merge())
-//                        .addOnSuccessListener {
-//                            errorMessage="Just kidding, notification pushed successfully"
-//                        }
-//                        .addOnFailureListener {
-//                            errorMessage = it.message.toString()
-//                        }
-//                }catch (e:Exception){
-//                    errorMessage = e.message.toString()
-//                }
-//            }
-//            "announcement"->{
-//                //here, title location and time cannot be empty
-//                if (title =="" || location == ""){
-//                    errorMessage = "Error: Not enough details to push notification"
-//                }
-//                var body = "New Event: $title upcoming"
-//                try {
-//                    val datamap = mapOf(
-//                        "body" to body,
-//                        "location" to newAnnouncement.location,
-//                        "date&time" to Timestamp.now()
-//                    )
-//                    db.collection("notifications").document()
-//                        .set(datamap, SetOptions.merge())
-//                        .addOnSuccessListener {
-//                            errorMessage="Just kidding, notification pushed successfully"
-//                        }
-//                        .addOnFailureListener {
-//                            errorMessage = it.message.toString()
-//                        }
-//                }catch (e:Exception){
-//                    errorMessage = e.message.toString()
-//                }
-//            }
-//            "aadhar"->{
-//
-//            }else->{
-//                //ignore
-//                errorMessage = "Error: Notification type not recognized"
-//            }
-//        }
-//    }
-
     fun getPendingAadhar(){
         viewModelScope.launch {
             try {
@@ -160,6 +102,20 @@ class AdminViewmodel @Inject constructor():ViewModel() {
                 }
             }catch (e:Exception){
                 errorMessage=e.message.toString()
+            }
+        }
+    }
+
+    fun DeleteBloodRequest(req:bloodRequest){
+        viewModelScope.launch {
+            try {
+                db.collection("blood_requests").document(req.id)
+                    .delete()
+                    .addOnSuccessListener {
+                        globalBloodRequestList = globalBloodRequestList?.minus(req)
+                    }
+            }catch (e:Exception){
+                errorMessage = e.message.toString()
             }
         }
     }

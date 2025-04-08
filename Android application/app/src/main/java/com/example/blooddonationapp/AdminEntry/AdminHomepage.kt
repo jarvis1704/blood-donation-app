@@ -31,7 +31,8 @@ import java.time.LocalTime
 fun AdminHomepage(
     goto_aadharverification:()->Unit,
     goto_newbloodreqpage:()->Unit,
-    goto_newannouncementpage:()->Unit
+    goto_newannouncementpage:()->Unit,
+    goto_activebloodrequestspage:()->Unit
 ){
     Box(modifier = Modifier.padding(16.dp)){
         Column (
@@ -70,7 +71,9 @@ fun AdminHomepage(
             }
             Text("Edit")
             Button(
-                onClick = {}
+                onClick = {
+                    goto_activebloodrequestspage()
+                }
             ) {
                 Text("Manage Active Blood requests")
             }
