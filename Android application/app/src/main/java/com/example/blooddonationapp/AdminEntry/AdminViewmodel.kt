@@ -1,10 +1,12 @@
 package com.example.blooddonationapp.AdminEntry
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.blooddonationapp.global.data.errorMessage
+import com.example.blooddonationapp.home.data.TimestampToLocalDateTime
 import com.example.blooddonationapp.home.data.announcement
 import com.example.blooddonationapp.home.data.bloodRequest
 import com.example.blooddonationapp.home.data.globalAnnouncementList
@@ -140,14 +142,52 @@ class AdminViewmodel @Inject constructor():ViewModel() {
         viewModelScope.launch {
             try {
                 val document = db.collection("passkey").get().await()
-                document.documents.forEach { doc->
-                    val temp = doc.data?.get("passkey").toString()
-                    ActivePasskeysList = ActivePasskeysList+temp
+                val list = document.documents.mapNotNull { doc->
+                    val temp = doc.id
+                    val data = doc.data
+                    data?.let {
+                        Passkey(
+                            id = temp,
+                            key = it["passkey"].toString()
+                        )
+                    }
                 }
+                ActivePasskeysList = list
             } catch (e: Exception) {
                 errorMessage = e.message.toString()
             }finally {
                 isFetchingPasskeys = false
+            }
+        }
+    }
+
+    fun DeletePasskey(key: Passkey){
+        viewModelScope.launch {
+            try {
+                db.collection("passkey").document(key.id)
+                    .delete()
+                    .addOnSuccessListener {
+                        ActivePasskeysList = ActivePasskeysList.minus(key)
+                    }
+            }catch (e:Exception){
+                errorMessage = e.message.toString()
+            }
+        }
+    }
+
+    fun AddPasskey(key: String){
+        viewModelScope.launch {
+            try {
+                val data = mapOf(
+                    "passkey" to key
+                )
+                db.collection("passkey").add(data)
+                    .addOnSuccessListener {
+                        GetActivePasskeys()
+                        isNewPasskeyDialogue = false
+                    }
+            }catch (e: Exception){
+                errorMessage = e.message.toString()
             }
         }
     }

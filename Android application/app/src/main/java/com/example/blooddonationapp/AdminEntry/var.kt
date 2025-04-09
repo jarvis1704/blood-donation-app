@@ -39,5 +39,13 @@ data class aadharUser(
 
 var aadharPendingList : List<aadharUser>? by mutableStateOf(null)
 var showDialog by mutableStateOf(false) // for time selector
-var ActivePasskeysList by mutableStateOf(listOf<String>())
+var ActivePasskeysList by mutableStateOf(listOf<Passkey>())
 var isFetchingPasskeys by mutableStateOf(false)
+
+data class Passkey(
+    var id: String,
+    var key: String
+)
+
+var isNewPasskeyDialogue by mutableStateOf(false)
+var tempNewPasskey by mutableStateOf("")
