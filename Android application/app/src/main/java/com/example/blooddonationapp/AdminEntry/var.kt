@@ -1,8 +1,6 @@
 package com.example.blooddonationapp.AdminEntry
 
 import android.annotation.SuppressLint
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -41,3 +39,5 @@ data class aadharUser(
 
 var aadharPendingList : List<aadharUser>? by mutableStateOf(null)
 var showDialog by mutableStateOf(false) // for time selector
+var ActivePasskeysList by mutableStateOf(listOf<String>())
+var isFetchingPasskeys by mutableStateOf(false)

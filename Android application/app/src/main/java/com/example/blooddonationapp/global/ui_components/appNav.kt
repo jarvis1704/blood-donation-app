@@ -48,6 +48,7 @@ import com.example.blooddonationapp.AdminEntry.AadharVerificationPage
 import com.example.blooddonationapp.AdminEntry.ActiveAnnouncements
 import com.example.blooddonationapp.AdminEntry.ActiveBloodRequests
 import com.example.blooddonationapp.AdminEntry.AdminHomepage
+import com.example.blooddonationapp.AdminEntry.AdminPasskeys
 import com.example.blooddonationapp.AdminEntry.NewAnnouncement
 import com.example.blooddonationapp.AdminEntry.NewBloodRequest
 import kotlinx.coroutines.launch
@@ -481,7 +482,8 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                 goto_newbloodreqpage = { navController.navigate("newbloodreqpage") },
                 goto_newannouncementpage = { navController.navigate("newannouncementpage") },
                 goto_activebloodrequestspage = { navController.navigate("activebloodreqpage") },
-                goto_activeannouncementpage = {navController.navigate("activeannouncementpage")}
+                goto_activeannouncementpage = {navController.navigate("activeannouncementpage")},
+                goto_activeadminpasskeys = {navController.navigate("activeadminpasskeys")}
             )
         }
         composable("welcomepage"){
@@ -511,6 +513,10 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         composable("activeannouncementpage"){
             currentPage = "activeannouncementpage"
             ActiveAnnouncements()
+        }
+        composable("activeadminpasskeys"){
+            currentPage = "activeadminpasskeys"
+            AdminPasskeys()
         }
     }
 }

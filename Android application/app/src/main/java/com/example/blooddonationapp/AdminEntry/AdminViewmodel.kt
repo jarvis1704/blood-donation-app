@@ -17,7 +17,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.time.ZoneId
-import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -132,6 +131,23 @@ class AdminViewmodel @Inject constructor():ViewModel() {
                     }
             }catch (e:Exception){
                 errorMessage = e.message.toString()
+            }
+        }
+    }
+
+    fun GetActivePasskeys(){
+        ActivePasskeysList = emptyList()
+        viewModelScope.launch {
+            try {
+                val document = db.collection("passkey").get().await()
+                document.documents.forEach { doc->
+                    val temp = doc.data?.get("passkey").toString()
+                    ActivePasskeysList = ActivePasskeysList+temp
+                }
+            } catch (e: Exception) {
+                errorMessage = e.message.toString()
+            }finally {
+                isFetchingPasskeys = false
             }
         }
     }

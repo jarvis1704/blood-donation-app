@@ -33,7 +33,8 @@ fun AdminHomepage(
     goto_newbloodreqpage:()->Unit,
     goto_newannouncementpage:()->Unit,
     goto_activebloodrequestspage:()->Unit,
-    goto_activeannouncementpage:()->Unit
+    goto_activeannouncementpage:()->Unit,
+    goto_activeadminpasskeys:()-> Unit
 ){
     Box(modifier = Modifier.padding(16.dp)){
         Column (
@@ -86,7 +87,9 @@ fun AdminHomepage(
                 Text("Manage Active Announcements")
             }
             Button(
-                onClick = {}
+                onClick = {
+                    goto_activeadminpasskeys()
+                }
             ) {
                 Text("Manage Admin Passkeys")
             }
