@@ -54,6 +54,7 @@ fun TimestampToLocalDateTime(timestamp: Timestamp):LocalDateTime{
 }
 
 data class announcement(
+    var id: String,
     var title:String,
     var location: String,
     var dateAndTime: LocalDateTime?

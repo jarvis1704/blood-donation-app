@@ -132,8 +132,10 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 if (list != null) {
                     val announcementList = list.documents.mapNotNull { doc ->
                         val data = doc.data
+                        val temp = doc.id
                         data?.let {
                             announcement(
+                                id = temp,
                                 title = it["title"].toString(),
                                 location = it["location"].toString(),
                                 dateAndTime = (it["date&time"] as? Timestamp)?.let { timestamp ->

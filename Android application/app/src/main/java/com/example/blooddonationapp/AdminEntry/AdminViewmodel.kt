@@ -1,11 +1,15 @@
 package com.example.blooddonationapp.AdminEntry
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.blooddonationapp.global.data.errorMessage
+import com.example.blooddonationapp.home.data.TimestampToLocalDateTime
+import com.example.blooddonationapp.home.data.announcement
 import com.example.blooddonationapp.home.data.bloodRequest
+import com.example.blooddonationapp.home.data.globalAnnouncementList
 import com.example.blooddonationapp.home.data.globalBloodRequestList
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -15,7 +19,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.time.ZoneId
-import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -115,6 +118,75 @@ class AdminViewmodel @Inject constructor():ViewModel() {
                         globalBloodRequestList = globalBloodRequestList?.minus(req)
                     }
             }catch (e:Exception){
+                errorMessage = e.message.toString()
+            }
+        }
+    }
+
+    fun DeleteAnnouncement(announcement: announcement){
+        viewModelScope.launch {
+            try {
+                db.collection("announcements").document(announcement.id)
+                    .delete()
+                    .addOnSuccessListener {
+                        globalAnnouncementList = globalAnnouncementList?.minus(announcement)
+                    }
+            }catch (e:Exception){
+                errorMessage = e.message.toString()
+            }
+        }
+    }
+
+    fun GetActivePasskeys(){
+        ActivePasskeysList = emptyList()
+        viewModelScope.launch {
+            try {
+                val document = db.collection("passkey").get().await()
+                val list = document.documents.mapNotNull { doc->
+                    val temp = doc.id
+                    val data = doc.data
+                    data?.let {
+                        Passkey(
+                            id = temp,
+                            key = it["passkey"].toString()
+                        )
+                    }
+                }
+                ActivePasskeysList = list
+            } catch (e: Exception) {
+                errorMessage = e.message.toString()
+            }finally {
+                isFetchingPasskeys = false
+            }
+        }
+    }
+
+    fun DeletePasskey(key: Passkey){
+        viewModelScope.launch {
+            try {
+                db.collection("passkey").document(key.id)
+                    .delete()
+                    .addOnSuccessListener {
+                        ActivePasskeysList = ActivePasskeysList.minus(key)
+                    }
+            }catch (e:Exception){
+                errorMessage = e.message.toString()
+            }
+        }
+    }
+
+    fun AddPasskey(key: String){
+        viewModelScope.launch {
+            try {
+                val data = mapOf(
+                    "passkey" to key
+                )
+                db.collection("passkey").add(data)
+                    .addOnSuccessListener {
+                        GetActivePasskeys()
+                        isNewPasskeyDialogue = false
+                    }
+            }catch (e: Exception){
                 errorMessage = e.message.toString()
             }
         }

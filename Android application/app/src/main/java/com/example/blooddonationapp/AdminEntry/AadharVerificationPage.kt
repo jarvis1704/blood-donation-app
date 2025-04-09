@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
 import android.util.Base64
+import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 
 
@@ -25,7 +26,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 fun AadharVerificationPage(
     AdminViewmodel:AdminViewmodel = hiltViewModel()
 ){
-    AdminViewmodel.getPendingAadhar()
+    LaunchedEffect(Unit) {
+        AdminViewmodel.getPendingAadhar()
+    }
     Column(modifier = Modifier.fillMaxSize().padding(top = 100.dp).padding(20.dp)) {
         Text("Verify pending aadhar details here:")
         LazyColumn(
