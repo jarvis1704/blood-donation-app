@@ -5,7 +5,9 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.blooddonationapp.global.data.errorMessage
+import com.example.blooddonationapp.home.data.announcement
 import com.example.blooddonationapp.home.data.bloodRequest
+import com.example.blooddonationapp.home.data.globalAnnouncementList
 import com.example.blooddonationapp.home.data.globalBloodRequestList
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -113,6 +115,20 @@ class AdminViewmodel @Inject constructor():ViewModel() {
                     .delete()
                     .addOnSuccessListener {
                         globalBloodRequestList = globalBloodRequestList?.minus(req)
+                    }
+            }catch (e:Exception){
+                errorMessage = e.message.toString()
+            }
+        }
+    }
+
+    fun DeleteAnnouncement(announcement: announcement){
+        viewModelScope.launch {
+            try {
+                db.collection("announcements").document(announcement.id)
+                    .delete()
+                    .addOnSuccessListener {
+                        globalAnnouncementList = globalAnnouncementList?.minus(announcement)
                     }
             }catch (e:Exception){
                 errorMessage = e.message.toString()
