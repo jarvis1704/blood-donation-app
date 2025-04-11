@@ -78,23 +78,22 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             BloodDonationAppTheme {
-//                val navCtrl = rememberNavController()
-//                Scaffold(
-////                    floatingActionButton = { notifButton(
-////                        goto_notifications = {navCtrl.navigate("notificationspage")}
-////                    )},
-//                    modifier = Modifier.fillMaxSize(),
-//                    bottomBar = { bottomBar(
-//                        goto_homepage = {navCtrl.navigate("homepage")},
-//                        goto_bloodrequests = {navCtrl.navigate("bloodrequests")},
-//                        goto_userprofile = {navCtrl.navigate("userprofile")}
-//                    )}) { _ ->
-//                    askNotificationPermission()
-//                    errorAlert()
-//                    globalAlert()
-//                    appNav(navCtrl, googleAuthUiClient)
-//                }
-                NewAnnouncement()
+                val navCtrl = rememberNavController()
+                Scaffold(
+//                    floatingActionButton = { notifButton(
+//                        goto_notifications = {navCtrl.navigate("notificationspage")}
+//                    )},
+                    modifier = Modifier.fillMaxSize(),
+                    bottomBar = { bottomBar(
+                        goto_homepage = {navCtrl.navigate("homepage")},
+                        goto_bloodrequests = {navCtrl.navigate("bloodrequests")},
+                        goto_userprofile = {navCtrl.navigate("userprofile")}
+                    )}) { _ ->
+                    askNotificationPermission()
+                    errorAlert()
+                    globalAlert()
+                    appNav(navCtrl, googleAuthUiClient)
+                }
             }
         }
     }
