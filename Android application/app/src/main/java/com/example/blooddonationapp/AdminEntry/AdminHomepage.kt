@@ -3,98 +3,226 @@ package com.example.blooddonationapp.AdminEntry
 import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import java.time.LocalTime
+import androidx.compose.ui.unit.sp
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AdminHomepage(
-    goto_aadharverification:()->Unit,
-    goto_newbloodreqpage:()->Unit,
-    goto_newannouncementpage:()->Unit,
-    goto_activebloodrequestspage:()->Unit,
-    goto_activeannouncementpage:()->Unit,
-    goto_activeadminpasskeys:()-> Unit
-){
-    Box(modifier = Modifier.padding(16.dp)){
-        Column (
+    goto_aadharverification: () -> Unit,
+    goto_newbloodreqpage: () -> Unit,
+    goto_newannouncementpage: () -> Unit,
+    goto_activebloodrequestspage: () -> Unit,
+    goto_activeannouncementpage: () -> Unit,
+    goto_activeadminpasskeys: () -> Unit
+) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.2f)
+                    .background(Color(0xFFEB4335))
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .statusBarsPadding(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Spacer(Modifier.height(30.dp))
+                    Text(
+                        "Admin Dashboard",
+                        fontSize = 32.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        "Blood Donation App Management",
+                        fontSize = 16.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            }
 
-        ){
-            Spacer(Modifier.height(32.dp))
-            Text("Welcome Admin")
-            Spacer(Modifier.height(16.dp))
-            Text("Verify")
-            Button(
-                onClick = {}
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.8f)
+                    .background(Color.White)
             ) {
-                Text("Pending Blood Requests")
-            }
-            Button(
-                onClick = {
-                    goto_aadharverification()
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White)
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        ) {
+                            Text(
+                                "Verification Tasks",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp,
+                                color = Color(0xFFEB4335)
+                            )
+                            Spacer(Modifier.height(8.dp))
+                            Divider(color = Color(0xFFEEEEEE), thickness = 1.dp)
+                            Spacer(Modifier.height(16.dp))
+
+                            AdminButton(
+                                text = "Pending Blood Requests",
+                                onClick = { /* Add functionality */ }
+                            )
+
+                            Spacer(Modifier.height(12.dp))
+
+                            AdminButton(
+                                text = "Pending User Verifications",
+                                onClick = { goto_aadharverification() }
+                            )
+                        }
+                    }
+
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White)
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        ) {
+                            Text(
+                                "Create New",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp,
+                                color = Color(0xFFEB4335)
+                            )
+                            Spacer(Modifier.height(8.dp))
+                            Divider(color = Color(0xFFEEEEEE), thickness = 1.dp)
+                            Spacer(Modifier.height(16.dp))
+
+                            AdminButton(
+                                text = "New Blood Request",
+                                onClick = { goto_newbloodreqpage() }
+                            )
+
+                            Spacer(Modifier.height(12.dp))
+
+                            AdminButton(
+                                text = "New Announcement",
+                                onClick = { goto_newannouncementpage() }
+                            )
+                        }
+                    }
+
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White)
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        ) {
+                            Text(
+                                "Manage Activities",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp,
+                                color = Color(0xFFEB4335)
+                            )
+                            Spacer(Modifier.height(8.dp))
+                            Divider(color = Color(0xFFEEEEEE), thickness = 1.dp)
+                            Spacer(Modifier.height(16.dp))
+
+                            AdminButton(
+                                text = "Manage Active Blood Requests",
+                                onClick = { goto_activebloodrequestspage() }
+                            )
+
+                            Spacer(Modifier.height(12.dp))
+
+                            AdminButton(
+                                text = "Manage Active Announcements",
+                                onClick = { goto_activeannouncementpage() }
+                            )
+
+                            Spacer(Modifier.height(12.dp))
+
+                            AdminButton(
+                                text = "Manage Admin Passkeys",
+                                onClick = { goto_activeadminpasskeys() }
+                            )
+                        }
+                    }
                 }
-            ) {
-                Text("Pending User Verifications")
-            }
-            Text("New")
-            Button(
-                onClick = {
-                    goto_newbloodreqpage()
-                }
-            ) {
-                Text("New Blood Request")
-            }
-            Button(
-                onClick = {
-                    goto_newannouncementpage()
-                }
-            ) {
-                Text("New Announcement")
-            }
-            Text("Edit")
-            Button(
-                onClick = {
-                    goto_activebloodrequestspage()
-                }
-            ) {
-                Text("Manage Active Blood requests")
-            }
-            Button(
-                onClick = {
-                    goto_activeannouncementpage()
-                }
-            ) {
-                Text("Manage Active Announcements")
-            }
-            Button(
-                onClick = {
-                    goto_activeadminpasskeys()
-                }
-            ) {
-                Text("Manage Admin Passkeys")
             }
         }
     }
+}
+
+@Composable
+fun AdminButton(
+    text: String,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEB4335)),
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Text(
+            text = text,
+            color = Color.White,
+            modifier = Modifier.padding(vertical = 4.dp),
+            fontWeight = FontWeight.Medium
+        )
+    }
+}
 //    var viewmodel:adminViewmodel = viewModel()
 //    CoroutineScope(Dispatchers.IO).launch {
 //        viewmodel.getPendingAadhar()
@@ -193,5 +321,3 @@ fun AdminHomepage(
 //            verifyaadhar()
 //        }
 //    }
-
-}
