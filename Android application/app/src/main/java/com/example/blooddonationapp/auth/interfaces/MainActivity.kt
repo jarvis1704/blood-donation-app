@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.blooddonationapp.AdminEntry.ActiveAnnouncements
 import com.example.blooddonationapp.AdminEntry.ActiveBloodRequests
 import com.example.blooddonationapp.AdminEntry.AdminPasskeys
+import com.example.blooddonationapp.AdminEntry.NewAnnouncement
 import com.example.blooddonationapp.auth.data.googleAuthClient
 import com.example.blooddonationapp.global.ui_components.appNav
 import com.example.blooddonationapp.global.ui_components.errorAlert
@@ -93,7 +94,7 @@ class MainActivity : ComponentActivity() {
 //                    globalAlert()
 //                    appNav(navCtrl, googleAuthUiClient)
 //                }
-                AdminPasskeys()
+                NewAnnouncement()
             }
         }
     }
