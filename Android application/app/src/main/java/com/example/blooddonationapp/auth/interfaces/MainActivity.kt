@@ -15,6 +15,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
+import com.example.blooddonationapp.AdminEntry.ActiveBloodRequests
 import com.example.blooddonationapp.auth.data.googleAuthClient
 import com.example.blooddonationapp.global.ui_components.appNav
 import com.example.blooddonationapp.global.ui_components.errorAlert
@@ -74,22 +75,23 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             BloodDonationAppTheme {
-                val navCtrl = rememberNavController()
-                Scaffold(
-//                    floatingActionButton = { notifButton(
-//                        goto_notifications = {navCtrl.navigate("notificationspage")}
-//                    )},
-                    modifier = Modifier.fillMaxSize(),
-                    bottomBar = { bottomBar(
-                        goto_homepage = {navCtrl.navigate("homepage")},
-                        goto_bloodrequests = {navCtrl.navigate("bloodrequests")},
-                        goto_userprofile = {navCtrl.navigate("userprofile")}
-                    )}) { _ ->
-                    askNotificationPermission()
-                    errorAlert()
-                    globalAlert()
-                    appNav(navCtrl, googleAuthUiClient)
-                }
+//                val navCtrl = rememberNavController()
+//                Scaffold(
+////                    floatingActionButton = { notifButton(
+////                        goto_notifications = {navCtrl.navigate("notificationspage")}
+////                    )},
+//                    modifier = Modifier.fillMaxSize(),
+//                    bottomBar = { bottomBar(
+//                        goto_homepage = {navCtrl.navigate("homepage")},
+//                        goto_bloodrequests = {navCtrl.navigate("bloodrequests")},
+//                        goto_userprofile = {navCtrl.navigate("userprofile")}
+//                    )}) { _ ->
+//                    askNotificationPermission()
+//                    errorAlert()
+//                    globalAlert()
+//                    appNav(navCtrl, googleAuthUiClient)
+//                }
+                ActiveBloodRequests()
             }
         }
     }

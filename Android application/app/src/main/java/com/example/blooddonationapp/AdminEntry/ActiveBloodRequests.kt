@@ -3,18 +3,25 @@ package com.example.blooddonationapp.AdminEntry
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -33,26 +40,111 @@ import com.example.blooddonationapp.global.data.NewGlobalAlert
 import com.example.blooddonationapp.home.data.HomeViewModel
 import com.example.blooddonationapp.home.data.bloodRequest
 import com.example.blooddonationapp.home.data.globalBloodRequestList
-import com.example.blooddonationapp.home.interfaces.BloodRequestAnouncementCard
 
 @Composable
 fun ActiveBloodRequests(
     homeViewModel: HomeViewModel = hiltViewModel()
-){
+) {
     LaunchedEffect(Unit) {
         homeViewModel.FetchBloodRequests()
     }
-    Column (
-        modifier = Modifier.padding(16.dp)
-    ){
-        Spacer(Modifier.height(16.dp))
-        Text("Active Blood Requests:")
-        globalBloodRequestList?.forEach { req->
-            BloodRequestEditComposable(req)
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.2f)
+                    .background(Color(0xFFEB4335))
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .statusBarsPadding(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Spacer(Modifier.height(30.dp))
+                    Text(
+                        "Active Blood Requests",
+                        fontSize = 32.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        "Manage current blood donation requests",
+                        fontSize = 16.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.8f)
+                    .background(Color.White)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    Spacer(Modifier.height(8.dp))
+
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White)
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        ) {
+                            Text(
+                                "All Active Requests",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp,
+                                color = Color(0xFFEB4335)
+                            )
+                            Spacer(Modifier.height(8.dp))
+                            Divider(color = Color(0xFFEEEEEE), thickness = 1.dp)
+                            Spacer(Modifier.height(16.dp))
+
+                            // Blood requests list
+                            globalBloodRequestList?.let { requests ->
+                                if (requests.isNotEmpty()) {
+                                    requests.forEach { req ->
+                                        BloodRequestEditComposable(req)
+                                    }
+                                } else {
+                                    Text(
+                                        "No active blood requests",
+                                        fontSize = 16.sp,
+                                        color = Color.Gray,
+                                        modifier = Modifier.padding(vertical = 16.dp)
+                                    )
+                                }
+                            } ?: run {
+                                Text(
+                                    "Loading blood requests...",
+                                    fontSize = 16.sp,
+                                    color = Color.Gray,
+                                    modifier = Modifier.padding(vertical = 16.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
-
 
 @SuppressLint("NewApi")
 @Composable
@@ -61,37 +153,66 @@ fun BloodRequestEditComposable(
     adminViewmodel: AdminViewmodel = hiltViewModel()
 ) {
     Card(
-        modifier= Modifier.defaultMinSize(minWidth = 393.dp, minHeight = 180.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .defaultMinSize(minHeight = 150.dp)
+            .padding(vertical = 8.dp),
         colors = CardDefaults.cardColors(
-            Color(0xFFEB4335)
+            containerColor = Color(0xFFEB4335)
         ),
-        elevation = CardDefaults.elevatedCardElevation(
-            8.dp
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 6.dp
         ),
-        onClick = {/*todo AnnounmentCard implementation*/}
+        shape = RoundedCornerShape(12.dp)
     ) {
         Column(
-            modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)
+            modifier = Modifier.padding(16.dp)
         ) {
-            Text("EMERGENCY ${bloodRequest.bloodtype} BLOOD NEEDED", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.White, lineHeight = 1.25.em)
-            Spacer(Modifier.height(8.dp))
+            Text(
+                "EMERGENCY ${bloodRequest.bloodtype} BLOOD NEEDED",
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                lineHeight = 1.25.em
+            )
+
+            Spacer(Modifier.height(12.dp))
+
             Row(
-                verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                Icon(imageVector = Icons.Filled.LocationOn, contentDescription = "Location Icon", tint = Color.White)
-                Text(bloodRequest.hospital, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color.White)
+                Icon(
+                    imageVector = Icons.Filled.LocationOn,
+                    contentDescription = "Location Icon",
+                    tint = Color.White
+                )
+                Text(
+                    bloodRequest.hospital,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.White
+                )
             }
-            Spacer(Modifier.height(8.dp))
-            Row (
+
+            Spacer(Modifier.height(12.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
-            ){
+            ) {
                 Text(
                     "${bloodRequest.date?.dayOfMonth} ${bloodRequest.date?.month}",
-                    fontSize = 16.sp, fontWeight = FontWeight.Bold,
-                    modifier = Modifier.clip(RoundedCornerShape(8.dp))
-                        .background(
-                            Color.Black).padding(8.dp), color = Color.White)
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(Color(0x33FFFFFF))
+                        .padding(horizontal = 12.dp, vertical = 6.dp),
+                    color = Color.White
+                )
+
                 IconButton(
                     onClick = {
                         NewGlobalAlert(
@@ -102,13 +223,18 @@ fun BloodRequestEditComposable(
                                 adminViewmodel.DeleteBloodRequest(bloodRequest)
                             }
                         )
-                    }
+                    },
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(Color.White)
                 ) {
-                    Icon(imageVector = Icons.Default.Delete,
-                        contentDescription = "Delete request")
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Delete request",
+                        tint = Color(0xFFEB4335)
+                    )
                 }
             }
         }
     }
-    Spacer(Modifier.height(18.dp))
 }
