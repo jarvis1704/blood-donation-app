@@ -15,6 +15,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
+import com.example.blooddonationapp.AdminEntry.ActiveAnnouncements
 import com.example.blooddonationapp.AdminEntry.ActiveBloodRequests
 import com.example.blooddonationapp.auth.data.googleAuthClient
 import com.example.blooddonationapp.global.ui_components.appNav
@@ -91,7 +92,7 @@ class MainActivity : ComponentActivity() {
 //                    globalAlert()
 //                    appNav(navCtrl, googleAuthUiClient)
 //                }
-                ActiveBloodRequests()
+                ActiveAnnouncements()
             }
         }
     }
