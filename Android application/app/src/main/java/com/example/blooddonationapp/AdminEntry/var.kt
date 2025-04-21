@@ -16,7 +16,7 @@ object newBloodRequest{
     var hospital by mutableStateOf("")
     var bloodgroup by mutableStateOf("")
     //these 3 are optional
-    var urgencylevel by mutableStateOf("")
+    var urgencylevel by mutableStateOf("Emergency")
     var unitsrequired by mutableStateOf("")
     var details by mutableStateOf("")
 }

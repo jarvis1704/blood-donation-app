@@ -1,4 +1,4 @@
-hello this a file for conversation btwn developers
+hello this is a file for conversation between developers
 
 todo:
 1) blood req form
@@ -11,4 +11,11 @@ todo:
 
 screens to be made:
 new homescreen (Done)
-TODO: admin pannel
+TODO: admin panel
+
+todo: ui part:
+1) in "admin passkeys" it is set as horizontalAlignment.center instead of horizontalAlignment.start
+2) in "new announcement" page, "selected date"  and "create announcement" needs respective spacers below
+3) also there, "event time" and current time will look better in a row instead of column
+4) in "new blood req" page, gender should be a selectable option ("M" "F" or "Others") like blood group (otherwise the fetching part will conflict),
+also "publish blood req" needs a spacer below
