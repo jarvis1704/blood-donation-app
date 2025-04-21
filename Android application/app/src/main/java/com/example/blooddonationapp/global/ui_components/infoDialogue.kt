@@ -29,27 +29,23 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.blooddonationapp.global.data.errorMessage
+import com.example.blooddonationapp.global.data.infoMessage
 import com.example.blooddonationapp.global.data.isErrorDialogue
+import com.example.blooddonationapp.global.data.isInfoDialogue
 
 
 @Composable
-fun errorAlert() {
-    if (errorMessage.isNotEmpty()) {
+fun infoAlert() {
+    if (infoMessage.isNotEmpty()) {
         AlertDialog(
-            onDismissRequest = { isErrorDialogue = false },
+            onDismissRequest = { isInfoDialogue = false },
             title = {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = "Error Icon",
-                        tint = Color(0xFFEB4335),
-                        modifier = Modifier.size(28.dp)
-                    )
                     Text(
-                        text = "Error",
+                        text = "Alert",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFFEB4335)
@@ -58,7 +54,7 @@ fun errorAlert() {
             },
             text = {
                 Text(
-                    text = errorMessage,
+                    text = infoMessage,
                     fontSize = 16.sp,
                     color = Color.DarkGray,
                     modifier = Modifier.padding(top = 8.dp)
@@ -72,7 +68,7 @@ fun errorAlert() {
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Button(
-                        onClick = { errorMessage = "" },
+                        onClick = { infoMessage = "" },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(48.dp),

@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.blooddonationapp.AdminEntry.ClearNewBloodReqObj
 import com.example.blooddonationapp.AdminEntry.newBloodRequest
 import com.example.blooddonationapp.global.data.errorMessage
+import com.example.blooddonationapp.global.data.infoMessage
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -196,6 +197,7 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 .set(datamap, SetOptions.merge())
                 .addOnSuccessListener {
                     ClearNewBloodReqObj()
+                    infoMessage = "Blood request submitted successfully.\n\nOur admins will review the response and post it globally in a short while."
                     goto_parentpage()
                 }
                 .addOnFailureListener {
