@@ -43,6 +43,7 @@ import com.example.blooddonationapp.registration.interfaces.AnimatedBloodGroupBu
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun NewBloodRequest(
+    goto_activeBloodreqs:()-> Unit,
     adminViewmodel: AdminViewmodel = hiltViewModel()
 ){
     val positiveBloodGroups = listOf("A+", "B+", "AB+", "O+")
@@ -460,7 +461,7 @@ fun NewBloodRequest(
                                     newBloodRequest.hospital.isNotEmpty() &&
                                     newBloodRequest.bloodgroup.isNotEmpty()){
 
-                                    adminViewmodel.newBloodReq()
+                                    adminViewmodel.newBloodReq(goto_activeBloodreqs)
                                 }else{
                                     errorMessage = "Required fields are empty"
                                 }
