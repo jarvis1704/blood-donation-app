@@ -39,6 +39,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.blooddonationapp.global.data.errorMessage
 import com.example.blooddonationapp.registration.data.tempRegistrationDetails
 import com.example.blooddonationapp.registration.interfaces.AnimatedBloodGroupButton
+import com.example.blooddonationapp.registration.interfaces.AnimatedButton
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -190,10 +191,10 @@ fun NewBloodRequest(
                                     ) {
                                         FlowRow(
                                             modifier = Modifier.fillMaxWidth(),
-                                            horizontalArrangement = Arrangement.spacedBy(6.dp),
+                                            horizontalArrangement = Arrangement.spacedBy(1.dp),
                                         ) {
                                             genderTypes.forEach { type->
-                                                AnimatedBloodGroupButton(
+                                                AnimatedButton(
                                                     bloodType = type,
                                                     isSelected = newBloodRequest.patientgender == type,
                                                     onClick = { newBloodRequest.patientgender = type}
@@ -393,10 +394,10 @@ fun NewBloodRequest(
                             ) {
                                 FlowRow(
                                     modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(1.dp),
                                 ) {
                                     urgencyTypes.forEach { type->
-                                        AnimatedBloodGroupButton(
+                                        AnimatedButton(
                                             bloodType = type,
                                             isSelected = newBloodRequest.urgencylevel == type,
                                             onClick = { newBloodRequest.urgencylevel = type}
