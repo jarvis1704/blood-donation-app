@@ -2,6 +2,7 @@ package com.example.blooddonationapp.AdminEntry
 
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.time.ZoneId
@@ -27,7 +29,7 @@ class AdminViewmodel @Inject constructor():ViewModel() {
     private val db = FirebaseFirestore.getInstance()
 
 
-    fun newBloodReq(){
+    fun newBloodReq(goto_activeBloodreqs:()-> Unit){
         try {
             val datamap = mapOf(
                 "patient" to newBloodRequest.patientname,
@@ -42,23 +44,22 @@ class AdminViewmodel @Inject constructor():ViewModel() {
                 "details" to newBloodRequest.details,
                 "date" to Timestamp.now()
             )
-            if (true){
-                db.collection("blood_requests").document()
-                    .set(datamap, SetOptions.merge())
-                    .addOnSuccessListener {
-                        errorMessage="Just kidding, blood req pushed successfully"
-                    }
-                    .addOnFailureListener {
-                        errorMessage = it.message.toString()
-                    }
-            }
+            db.collection("blood_requests").document()
+                .set(datamap, SetOptions.merge())
+                .addOnSuccessListener {
+                    ClearNewBloodReqObj()
+                    goto_activeBloodreqs()
+                }
+                .addOnFailureListener {
+                    errorMessage = it.message.toString()
+                }
         }catch (e:Exception){
             errorMessage = e.message.toString()
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun newAnnouncement(){
+    fun newAnnouncement(goto_activeAnnouncements:()-> Unit){
         val localDateTime = newAnnouncement.date.atTime(newAnnouncement.time)
         val instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant()
         val timestamp = Timestamp(instant.epochSecond, instant.nano)
@@ -73,7 +74,8 @@ class AdminViewmodel @Inject constructor():ViewModel() {
                 db.collection("announcements").document()
                     .set(datamap, SetOptions.merge())
                     .addOnSuccessListener {
-                        errorMessage="Just kidding, announcement pushed successfully"
+                        ClearNewAnnouncementObj()
+                        goto_activeAnnouncements()
                     }
                     .addOnFailureListener {
                         errorMessage = it.message.toString()
@@ -162,33 +164,42 @@ class AdminViewmodel @Inject constructor():ViewModel() {
     }
 
     fun DeletePasskey(key: Passkey){
-        viewModelScope.launch {
-            try {
-                db.collection("passkey").document(key.id)
-                    .delete()
-                    .addOnSuccessListener {
-                        ActivePasskeysList = ActivePasskeysList.minus(key)
-                    }
-            }catch (e:Exception){
-                errorMessage = e.message.toString()
+        if (ActivePasskeysList.size > 1){
+            viewModelScope.launch {
+                try {
+                    db.collection("passkey").document(key.id)
+                        .delete()
+                        .addOnSuccessListener {
+                            ActivePasskeysList = ActivePasskeysList.minus(key)
+                        }
+                }catch (e:Exception){
+                    errorMessage = e.message.toString()
+                }
             }
+        }else{
+            errorMessage = "Minimum 1 passkey is required!"
         }
     }
 
     fun AddPasskey(key: String){
-        viewModelScope.launch {
-            try {
-                val data = mapOf(
-                    "passkey" to key
-                )
-                db.collection("passkey").add(data)
-                    .addOnSuccessListener {
-                        GetActivePasskeys()
-                        isNewPasskeyDialogue = false
-                    }
-            }catch (e: Exception){
-                errorMessage = e.message.toString()
+        if (key.isNotEmpty()){
+            viewModelScope.launch {
+                try {
+                    val data = mapOf(
+                        "passkey" to key
+                    )
+                    db.collection("passkey").add(data)
+                        .addOnSuccessListener {
+                            tempNewPasskey = ""
+                            GetActivePasskeys()
+                            isNewPasskeyDialogue = false
+                        }
+                }catch (e: Exception){
+                    errorMessage = e.message.toString()
+                }
             }
+        }else{
+            errorMessage = "Key cannot be empty"
         }
     }
 }

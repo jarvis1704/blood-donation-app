@@ -1,6 +1,8 @@
 package com.example.blooddonationapp.AdminEntry
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -21,12 +23,33 @@ object newBloodRequest{
     var details by mutableStateOf("")
 }
 
+fun ClearNewBloodReqObj(){
+    newBloodRequest.patientname = ""
+    newBloodRequest.patientage = ""
+    newBloodRequest.patientgender = ""
+    newBloodRequest.attendantname = ""
+    newBloodRequest.attendantphoneno = ""
+    newBloodRequest.hospital = ""
+    newBloodRequest.bloodgroup = ""
+    newBloodRequest.unitsrequired = ""
+    newBloodRequest.urgencylevel = "Emergency"
+    newBloodRequest.details = ""
+}
+
 @SuppressLint("NewApi")
 object newAnnouncement{
     var title by mutableStateOf("")
     var location by mutableStateOf("")
     var date : LocalDate by mutableStateOf(LocalDate.now())
     var time : LocalTime? by mutableStateOf(LocalTime.now())
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun ClearNewAnnouncementObj(){
+    newAnnouncement.title = ""
+    newAnnouncement.location = ""
+    newAnnouncement.date = LocalDate.now()
+    newAnnouncement.time = LocalTime.now()
 }
 
 data class aadharUser(

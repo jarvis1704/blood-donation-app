@@ -51,6 +51,7 @@ import com.example.blooddonationapp.AdminEntry.AdminHomepage
 import com.example.blooddonationapp.AdminEntry.AdminPasskeys
 import com.example.blooddonationapp.AdminEntry.NewAnnouncement
 import com.example.blooddonationapp.AdminEntry.NewBloodRequest
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -500,11 +501,15 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         }
         composable("newbloodreqpage"){
             currentPage = "newbloodreqpage"
-            NewBloodRequest()
+            NewBloodRequest(
+                goto_activeBloodreqs = {navController.navigate("activebloodreqpage")}
+            )
         }
         composable("newannouncementpage"){
             currentPage = "newannouncementpage"
-            NewAnnouncement()
+            NewAnnouncement(
+                goto_activeAnnouncements = {navController.navigate("activeannouncementpage")}
+            )
         }
         composable("activebloodreqpage"){
             currentPage = "activebloodreqpage"

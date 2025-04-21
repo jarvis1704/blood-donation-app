@@ -34,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.blooddonationapp.global.data.errorMessage
 import com.example.blooddonationapp.registration.ui_components.dateYearSelector
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -42,6 +43,7 @@ import java.time.format.DateTimeFormatter
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NewAnnouncement(
+    goto_activeAnnouncements:()-> Unit,
     adminViewmodel: AdminViewmodel = hiltViewModel()
 ){
     Box(modifier = Modifier.fillMaxSize()) {
@@ -211,7 +213,13 @@ fun NewAnnouncement(
                     Spacer(Modifier.height(24.dp))
                     Button(
                         onClick = {
-                            adminViewmodel.newAnnouncement()
+                            if (newAnnouncement.title.isNotEmpty() &&
+                                newAnnouncement.location.isNotEmpty()){
+
+                                adminViewmodel.newAnnouncement(goto_activeAnnouncements)
+                            }else{
+                                errorMessage = "Required fields are empty"
+                            }
                         },
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(
