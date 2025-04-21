@@ -70,6 +70,9 @@ fun updateCurrentUser(){
 var errorMessage by mutableStateOf("")         //just change value to push an alert
 var isErrorDialogue by mutableStateOf(false)   //no need to change value, launchedAffect takes care of it
 
+var infoMessage by mutableStateOf("")
+var isInfoDialogue by mutableStateOf(false)
+
 //for global alert dialogue
 var isAlertDialogue by mutableStateOf(false)   //need to change value
 object GlobalAlert{

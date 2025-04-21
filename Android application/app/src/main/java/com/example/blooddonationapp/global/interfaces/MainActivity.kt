@@ -1,4 +1,4 @@
-package com.example.blooddonationapp.auth.interfaces
+package com.example.blooddonationapp.global.interfaces
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -15,16 +15,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
-import com.example.blooddonationapp.AdminEntry.ActiveAnnouncements
-import com.example.blooddonationapp.AdminEntry.ActiveBloodRequests
-import com.example.blooddonationapp.AdminEntry.AdminPasskeys
-import com.example.blooddonationapp.AdminEntry.NewAnnouncement
 import com.example.blooddonationapp.auth.data.googleAuthClient
 import com.example.blooddonationapp.global.ui_components.appNav
 import com.example.blooddonationapp.global.ui_components.errorAlert
 import com.example.blooddonationapp.global.ui_components.globalAlert
+import com.example.blooddonationapp.global.ui_components.infoAlert
 import com.example.blooddonationapp.home.ui_components.bottomBar
-import com.example.blooddonationapp.home.ui_components.notifButton
 import com.example.blooddonationapp.ui.theme.BloodDonationAppTheme
 import com.google.android.gms.auth.api.identity.Identity
 import dagger.hilt.android.AndroidEntryPoint
@@ -83,14 +79,17 @@ class MainActivity : ComponentActivity() {
 //                    floatingActionButton = { notifButton(
 //                        goto_notifications = {navCtrl.navigate("notificationspage")}
 //                    )},
-                    modifier = Modifier.fillMaxSize(),
-                    bottomBar = { bottomBar(
-                        goto_homepage = {navCtrl.navigate("homepage")},
-                        goto_bloodrequests = {navCtrl.navigate("bloodrequests")},
-                        goto_userprofile = {navCtrl.navigate("userprofile")}
-                    )}) { _ ->
+                    modifier = Modifier.Companion.fillMaxSize(),
+                    bottomBar = {
+                        bottomBar(
+                            goto_homepage = { navCtrl.navigate("homepage") },
+                            goto_bloodrequests = { navCtrl.navigate("bloodrequests") },
+                            goto_userprofile = { navCtrl.navigate("userprofile") }
+                        )
+                    }) { _ ->
                     askNotificationPermission()
                     errorAlert()
+                    infoAlert()
                     globalAlert()
                     appNav(navCtrl, googleAuthUiClient)
                 }

@@ -468,7 +468,9 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         }
         composable("bloodreqform"){
             currentPage= "bloodreqform"
-            BloodRequestForm()
+            BloodRequestForm(
+                goto_parentpage = {navController.navigate("loadingpage")}
+            )
         }
         composable("adminloginpage"){
             currentPage= "adminloginpage"

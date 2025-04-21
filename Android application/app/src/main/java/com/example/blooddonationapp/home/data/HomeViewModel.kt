@@ -6,10 +6,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.blooddonationapp.AdminEntry.ClearNewBloodReqObj
+import com.example.blooddonationapp.AdminEntry.newBloodRequest
 import com.example.blooddonationapp.global.data.errorMessage
+import com.example.blooddonationapp.global.data.infoMessage
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -168,6 +172,38 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                     }
             }
         } catch (e: Exception) {
+            errorMessage = e.message.toString()
+        }
+    }
+
+    fun newBloodReq(
+        goto_parentpage:()-> Unit
+    ){
+        try {
+            val datamap = mapOf(
+                "patient" to newBloodRequest.patientname,
+                "patientage" to newBloodRequest.patientage,
+                "patientgender" to newBloodRequest.patientgender,
+                "attendant" to newBloodRequest.attendantname,
+                "attendantphoneno" to newBloodRequest.attendantphoneno,
+                "bloodtype" to newBloodRequest.bloodgroup,
+                "hospital" to newBloodRequest.hospital,
+                "urgencylevel" to newBloodRequest.urgencylevel,
+                "unitsrequired" to newBloodRequest.unitsrequired,
+                "details" to newBloodRequest.details,
+                "date" to Timestamp.now()
+            )
+            _db.collection("pending_blood_requests").document()
+                .set(datamap, SetOptions.merge())
+                .addOnSuccessListener {
+                    ClearNewBloodReqObj()
+                    infoMessage = "Blood request submitted successfully.\n\nOur admins will review the response and post it globally in a short while."
+                    goto_parentpage()
+                }
+                .addOnFailureListener {
+                    errorMessage = it.message.toString()
+                }
+        }catch (e:Exception){
             errorMessage = e.message.toString()
         }
     }

@@ -133,9 +133,7 @@ fun bloodRequests(
                     }
                 }
             }
-
         }
-
     }
 }
 

@@ -7,9 +7,11 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,7 +24,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -211,6 +215,37 @@ fun AnimatedBloodGroupButton(
     ) {
         Text(
             text = bloodType,
+            color = textColor
+        )
+    }
+}
+
+
+@Composable
+fun AnimatedButton(
+    bloodType: String,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    //a smaller, concise version for various places
+    val containerColor by animateColorAsState(
+        targetValue = if (isSelected) Color(0xFFEB4335) else Color(0xFFf8dede),
+        animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+    )
+
+    val textColor by animateColorAsState(
+        targetValue = if (isSelected) Color(0xFFEB4335) else Color.Black,
+        animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+    )
+
+    IconButton (
+        modifier = modifier.fillMaxWidth(if (bloodType.length == 1) 0.25f else 0.32f),
+        onClick = onClick
+    ) {
+        Text(
+            text = bloodType,
+            fontWeight = FontWeight.ExtraBold,
             color = textColor
         )
     }
