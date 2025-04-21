@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,6 +26,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,15 +36,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.blooddonationapp.global.data.errorMessage
 import com.example.blooddonationapp.registration.data.tempRegistrationDetails
 import com.example.blooddonationapp.registration.interfaces.AnimatedBloodGroupButton
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun NewBloodRequest(
     adminViewmodel: AdminViewmodel = hiltViewModel()
 ){
     val positiveBloodGroups = listOf("A+", "B+", "AB+", "O+")
     val negativeBloodGroups = listOf("A-", "B-", "AB-", "O-")
+
+    val urgencyTypes = listOf("Emergency", "Within 24 Hours", "Routine")
+    val genderTypes = listOf("M", "F", "Others")
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -162,26 +172,56 @@ fun NewBloodRequest(
                                 modifier = Modifier.weight(1f)
                             ) {
                                 Text("Gender", fontWeight = FontWeight.Medium)
-                                TextField(
-                                    value = newBloodRequest.patientgender,
-                                    onValueChange = {
-                                        newBloodRequest.patientgender = it
-                                    },
-                                    placeholder = { Text("M/F/Other") },
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(vertical = 8.dp),
-                                    colors = TextFieldDefaults.colors(
-                                        unfocusedContainerColor = Color(0xFFF5F5F5),
-                                        focusedContainerColor = Color(0xFFF5F5F5),
-                                        unfocusedIndicatorColor = Color.Transparent,
-                                        focusedIndicatorColor = Color(0xFFEB4335),
-                                        focusedTextColor = Color.Black,
-                                        unfocusedTextColor = Color.Black,
-                                        disabledPlaceholderColor = Color.LightGray
+                                //selectable gender here
+                                Card(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    colors = CardDefaults.cardColors(
+                                        containerColor = Color(0xFFF5F5F5)
                                     ),
-                                    singleLine = true
-                                )
+                                    elevation = CardDefaults.cardElevation(0.dp)
+                                ) {
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 16.dp),
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                                    ) {
+                                        FlowRow(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.spacedBy(6.dp),
+                                        ) {
+                                            genderTypes.forEach { type->
+                                                AnimatedBloodGroupButton(
+                                                    bloodType = type,
+                                                    isSelected = newBloodRequest.patientgender == type,
+                                                    onClick = { newBloodRequest.patientgender = type}
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+
+//                                TextField(
+//                                    value = newBloodRequest.patientgender,
+//                                    onValueChange = {
+//                                        newBloodRequest.patientgender = it
+//                                    },
+//                                    placeholder = { Text("M/F/Other") },
+//                                    modifier = Modifier
+//                                        .fillMaxWidth()
+//                                        .padding(vertical = 8.dp),
+//                                    colors = TextFieldDefaults.colors(
+//                                        unfocusedContainerColor = Color(0xFFF5F5F5),
+//                                        focusedContainerColor = Color(0xFFF5F5F5),
+//                                        unfocusedIndicatorColor = Color.Transparent,
+//                                        focusedIndicatorColor = Color(0xFFEB4335),
+//                                        focusedTextColor = Color.Black,
+//                                        unfocusedTextColor = Color.Black,
+//                                        disabledPlaceholderColor = Color.LightGray
+//                                    ),
+//                                    singleLine = true
+//                                )
                             }
                         }
 
@@ -324,7 +364,7 @@ fun NewBloodRequest(
 
                         Spacer(Modifier.height(24.dp))
                         Text(
-                            "Additional Information",
+                            "Additional Information (Optional)",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFFEB4335)
@@ -333,6 +373,37 @@ fun NewBloodRequest(
                         Spacer(Modifier.height(8.dp))
                         Divider(color = Color(0xFFEEEEEE), thickness = 1.dp)
                         Spacer(Modifier.height(16.dp))
+
+                        //urgency level here
+                        Text("Urgency Level", fontWeight = FontWeight.Medium)
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = CardDefaults.cardColors(
+                                containerColor = Color(0xFFF5F5F5)
+                            ),
+                            elevation = CardDefaults.cardElevation(0.dp)
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 16.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.spacedBy(16.dp)
+                            ) {
+                                FlowRow(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                                ) {
+                                    urgencyTypes.forEach { type->
+                                        AnimatedBloodGroupButton(
+                                            bloodType = type,
+                                            isSelected = newBloodRequest.urgencylevel == type,
+                                            onClick = { newBloodRequest.urgencylevel = type}
+                                        )
+                                    }
+                                }
+                            }
+                        }
 
                         Text("Units of Blood Required", fontWeight = FontWeight.Medium)
                         TextField(
@@ -382,7 +453,17 @@ fun NewBloodRequest(
                         Spacer(Modifier.height(24.dp))
                         Button(
                             onClick = {
-                                adminViewmodel.newBloodReq()
+                                if (newBloodRequest.patientname.isNotEmpty() &&
+                                    newBloodRequest.patientage.isNotEmpty() &&
+                                    newBloodRequest.attendantname.isNotEmpty() &&
+                                    newBloodRequest.attendantphoneno.isNotEmpty() &&
+                                    newBloodRequest.hospital.isNotEmpty() &&
+                                    newBloodRequest.bloodgroup.isNotEmpty()){
+
+                                    adminViewmodel.newBloodReq()
+                                }else{
+                                    errorMessage = "Required fields are empty"
+                                }
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
