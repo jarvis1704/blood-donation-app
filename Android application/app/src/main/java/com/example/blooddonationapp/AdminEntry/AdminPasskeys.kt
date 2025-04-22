@@ -37,8 +37,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.blooddonationapp.global.data.NewGlobalAlert
-import com.example.blooddonationapp.global.data.errorMessage
-import com.example.blooddonationapp.global.data.isErrorDialogue
 
 
 @Composable
@@ -94,7 +92,8 @@ fun AdminPasskeys(
                     modifier = Modifier
                         .fillMaxWidth(1f)
                         .padding(horizontal = 16.dp)
-                        .align(Alignment.Center),
+                        .padding(top = 16.dp)
+                        .align(Alignment.TopCenter),
                     elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.White, contentColor = Color.Black)
                 ) {

@@ -4,10 +4,14 @@ import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.blooddonationapp.global.data.PhoneNo
+import com.example.blooddonationapp.global.data.PhoneNoList
 import com.example.blooddonationapp.global.data.errorMessage
 import com.example.blooddonationapp.global.data.infoMessage
+import com.example.blooddonationapp.home.data.HomeViewModel
 import com.example.blooddonationapp.home.data.TimestampToLocalDateTime
 import com.example.blooddonationapp.home.data.announcement
 import com.example.blooddonationapp.home.data.bloodRequest
@@ -248,6 +252,72 @@ class AdminViewmodel @Inject constructor():ViewModel() {
                     .addOnSuccessListener {
                         infoMessage = "Process Executed Successfully"
                         getPendingBloodRequests()
+                    }
+            }catch (e: Exception){
+                errorMessage = e.message.toString()
+            }
+        }
+    }
+
+    fun newContact(){
+        viewModelScope.launch {
+            try {
+                val datamap = mapOf(
+                    "name" to tempNewContact.name,
+                    "number" to tempNewContact.number,
+                )
+                db.collection("phone_nos").document()
+                    .set(datamap, SetOptions.merge())
+                    .addOnSuccessListener {
+                        ClearTempNewContact()
+                        isNewContactDialogue = false
+                        infoMessage = "Contact added successfully"
+                        GetImportantPhoneNo()
+                    }
+                    .addOnFailureListener {
+                        errorMessage = it.message.toString()
+                    }
+            }catch (e:Exception){
+                errorMessage = e.message.toString()
+            }
+        }
+    }
+
+    fun GetImportantPhoneNo(){
+        isFetchingNumbers = true
+        viewModelScope.launch {
+            try {
+                val list = db.collection("phone_nos").get().await()
+                if (list != null) {
+                    val List = list.documents.mapNotNull { doc ->
+                        val temp = doc.id
+                        val data = doc.data
+                        data?.let {
+                            PhoneNo(
+                                id = temp,
+                                name = it["name"].toString(),
+                                number = it["number"].toString()
+                            )
+                        }
+                    }
+                    PhoneNoList = List
+                }
+            } catch (e: Exception) {
+                errorMessage = e.message.toString()
+            } finally {
+                isFetchingNumbers = false
+            }
+        }
+    }
+
+    fun DeleteContact(id: String){
+        viewModelScope.launch {
+            try {
+                db.collection("phone_nos").document(id)
+                    .delete()
+                    .addOnSuccessListener {
+                        infoMessage = "Contact deleted successfully"
+                        GetImportantPhoneNo()
                     }
             }catch (e: Exception){
                 errorMessage = e.message.toString()
