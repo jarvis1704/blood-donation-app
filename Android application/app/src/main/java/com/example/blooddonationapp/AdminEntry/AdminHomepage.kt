@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AdminHomepage(
+    goto_bloodreqverification: () -> Unit,
     goto_aadharverification: () -> Unit,
     goto_newbloodreqpage: () -> Unit,
     goto_newannouncementpage: () -> Unit,
@@ -108,7 +109,9 @@ fun AdminHomepage(
 
                             AdminButton(
                                 text = "Pending Blood Requests",
-                                onClick = { /* Add functionality */ }
+                                onClick = {
+                                    goto_bloodreqverification()
+                                }
                             )
 
                             Spacer(Modifier.height(12.dp))
@@ -193,8 +196,17 @@ fun AdminHomepage(
                             Spacer(Modifier.height(12.dp))
 
                             AdminButton(
-                                text = "Manage Admin Passkeys",
+                                text = "Admin Passkeys",
                                 onClick = { goto_activeadminpasskeys() }
+                            )
+
+                            Spacer(Modifier.height(12.dp))
+
+                            AdminButton(
+                                text = "Edit helpline numbers",
+                                onClick = {
+                                    
+                                }
                             )
                         }
                     }

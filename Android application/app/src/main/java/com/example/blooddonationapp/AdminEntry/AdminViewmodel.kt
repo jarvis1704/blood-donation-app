@@ -202,4 +202,39 @@ class AdminViewmodel @Inject constructor():ViewModel() {
             errorMessage = "Key cannot be empty"
         }
     }
+
+    fun getPendingBloodRequests(){
+        viewModelScope.launch {
+            try {
+                val list = db.collection("pending_blood_requests").get().await()
+                if (list != null){
+                    val List = list.documents.mapNotNull { doc->
+                        val data = doc.data
+                        val id = doc.id
+                        data?.let {
+                            bloodRequest(
+                                id = id,
+                                patientname = it["patient"].toString(),
+                                patientage = it["patientage"].toString(),
+                                patientgender = it["patientgender"].toString(),
+                                attendantname = it["attendant"].toString(),
+                                attendantphoneno = it["attendantphoneno"].toString(),
+                                bloodtype = it["bloodtype"].toString(),
+                                hospital = it["hospital"].toString(),
+                                urgencylevel = it["urgencylevel"].toString(),
+                                unitsrequired = it["unitsrequired"].toString(),
+                                details = it["details"].toString(),
+                                date = (it["date"] as? Timestamp)?.let { timestamp ->
+                                    TimestampToLocalDateTime(timestamp)
+                                }
+                            )
+                        }
+                    }.sortedByDescending { it.date }
+                    bloodreqPendingList = List
+                }
+            }catch (e:Exception){
+                errorMessage=e.message.toString()
+            }
+        }
+    }
 }
