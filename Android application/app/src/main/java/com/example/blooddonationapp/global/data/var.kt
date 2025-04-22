@@ -73,6 +73,14 @@ var isErrorDialogue by mutableStateOf(false)   //no need to change value, launch
 var infoMessage by mutableStateOf("")
 var isInfoDialogue by mutableStateOf(false)
 
+//emergency phone numbers
+data class PhoneNo(
+    var id: String,
+    var name: String,
+    var number: String
+)
+var PhoneNoList by mutableStateOf(listOf<PhoneNo>())
+
 //for global alert dialogue
 var isAlertDialogue by mutableStateOf(false)   //need to change value
 object GlobalAlert{

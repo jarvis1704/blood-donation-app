@@ -68,6 +68,10 @@ var showDialog by mutableStateOf(false) // for time selector
 var ActivePasskeysList by mutableStateOf(listOf<Passkey>())
 var isFetchingPasskeys by mutableStateOf(false)
 
+var isFetchingNumbers by mutableStateOf(false)
+var isNewContactDialogue by mutableStateOf(false)
+
+
 data class Passkey(
     var id: String,
     var key: String
