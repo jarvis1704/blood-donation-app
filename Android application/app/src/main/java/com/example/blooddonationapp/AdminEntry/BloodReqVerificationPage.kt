@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.blooddonationapp.global.data.NewGlobalAlert
 import com.example.blooddonationapp.home.data.bloodRequest
 
 @Composable
@@ -217,18 +218,68 @@ fun showBloodreq(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
-                Button(
-                    onClick = {
-                        //todo
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEB4335))
-                ) {
-                    Text(
-                        "Push Blood Request",
-                        color = Color.White,
-                        modifier = Modifier.padding(vertical = 4.dp)
-                    )
+                Column (
+                    modifier = Modifier.fillMaxWidth()
+                ){
+                    Button(
+                        onClick = {
+                            NewGlobalAlert(
+                                title = "Push Blood Request",
+                                details = "Are you sure you want to push this request globally? This action cannot be undone.",
+                                onCancelClick = {},
+                                onConfirmClick = {
+                                    //push a new blood req, and delete this entry
+                                    ClearNewBloodReqObj()
+                                    newBloodRequest.patientage = request.patientage
+                                    newBloodRequest.patientname = request.patientname
+                                    newBloodRequest.patientgender = request.patientgender
+                                    newBloodRequest.attendantname = request.attendantname
+                                    newBloodRequest.attendantphoneno = request.attendantphoneno
+                                    newBloodRequest.hospital = request.hospital
+                                    newBloodRequest.bloodgroup = request.bloodtype
+                                    newBloodRequest.urgencylevel = request.urgencylevel
+                                    newBloodRequest.unitsrequired = request.unitsrequired
+                                    newBloodRequest.details = request.details
+
+                                    viewModel.newBloodReq(
+                                        onsuccess = {
+                                            viewModel.DeletePendingBloodReq(request.id)
+                                        }
+                                    )
+                                }
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEB4335))
+                    ) {
+                        Text(
+                            "Push Blood Request",
+                            color = Color.White,
+                            modifier = Modifier.padding(vertical = 4.dp)
+                        )
+                    }
+
+                    Button(
+                        onClick = {
+                            NewGlobalAlert(
+                                title = "Delete Blood Request",
+                                details = "Are you sure you want to DELETE this request? This action cannot be undone.",
+                                onCancelClick = {},
+                                onConfirmClick = {
+                                    //delete this entry
+                                    viewModel.DeletePendingBloodReq(request.id)
+                                }
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEB4335))
+                    ) {
+                        Text(
+                            "Delete Request",
+                            color = Color.White,
+                            modifier = Modifier.padding(vertical = 4.dp)
+                        )
+                    }
                 }
             }
         }
