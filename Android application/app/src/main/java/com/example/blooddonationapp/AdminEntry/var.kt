@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.example.blooddonationapp.global.data.PhoneNo
 import com.example.blooddonationapp.home.data.bloodRequest
 import java.time.LocalDate
 import java.time.LocalTime
@@ -79,3 +80,9 @@ data class Passkey(
 
 var isNewPasskeyDialogue by mutableStateOf(false)
 var tempNewPasskey by mutableStateOf("")
+
+var tempNewContact by mutableStateOf(PhoneNo("","",""))
+
+fun ClearTempNewContact(){
+    tempNewContact = tempNewContact.copy("","","")
+}

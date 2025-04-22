@@ -184,14 +184,14 @@ fun EmergencyNumbers(
                                                             details = "Are you sure you want to delete the contact? This cannot be undone.",
                                                             onCancelClick = {},
                                                             onConfirmClick = {
-//                                                                adminViewmodel.DeletePasskey(it)
+                                                                adminViewmodel.DeleteContact(it.id)
                                                             }
                                                         )
                                                     }
                                                 ) {
                                                     Icon(
                                                         imageVector = Icons.Default.Delete,
-                                                        contentDescription = "Delete request",
+                                                        contentDescription = "Delete",
                                                         tint = Color(0xFFEB4335)
                                                     )
                                                 }
@@ -222,7 +222,7 @@ fun EmergencyNumbers(
 fun NumberEditDialogue(
     adminViewmodel: AdminViewmodel = hiltViewModel()
 ) {
-    if (false) {
+    if (isNewContactDialogue) {
         AlertDialog(
             onDismissRequest = { isNewContactDialogue = false },
             title = {
@@ -241,16 +241,41 @@ fun NumberEditDialogue(
             text = {
                 Column {
                     Text(
-                        "Enter Passkey",
+                        "Enter Name",
                         fontWeight = FontWeight.Medium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     TextField(
-                        value = tempNewPasskey,
+                        value = tempNewContact.name,
                         onValueChange = {
-                            tempNewPasskey = it
+                            tempNewContact = tempNewContact.copy(name = it)
                         },
-                        placeholder = { Text("Enter secure passkey") },
+                        placeholder = { Text("Hospital/Contact Name") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = Color(0xFFF5F5F5),
+                            focusedContainerColor = Color(0xFFF5F5F5),
+                            unfocusedIndicatorColor = Color.Transparent,
+                            focusedIndicatorColor = Color(0xFFEB4335),
+                            focusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black,
+                            disabledPlaceholderColor = Color.LightGray
+                        ),
+                        singleLine = true
+                    )
+                    Text(
+                        "Enter Number",
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    TextField(
+                        value = tempNewContact.number,
+                        onValueChange = {
+                            tempNewContact = tempNewContact.copy(number = it)
+                        },
+                        placeholder = { Text("Phone Number") },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp),
@@ -276,7 +301,7 @@ fun NumberEditDialogue(
                 ) {
                     Button(
                         onClick = {
-                            isNewPasskeyDialogue = false
+                            isNewContactDialogue = false
                         },
                         modifier = Modifier
                             .weight(1f)
@@ -296,7 +321,12 @@ fun NumberEditDialogue(
                     }
                     Button(
                         onClick = {
-                            adminViewmodel.AddPasskey(tempNewPasskey)
+                            if (tempNewContact.name.isNotEmpty() && tempNewContact.number.isNotEmpty()){
+                                adminViewmodel.newContact()
+                            }else{
+                                errorMessage = "Required fields are empty"
+                            }
+//                            adminViewmodel.AddPasskey(tempNewPasskey)
                         },
                         modifier = Modifier
                             .weight(1f)
