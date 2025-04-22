@@ -39,7 +39,8 @@ fun AdminHomepage(
     goto_newannouncementpage: () -> Unit,
     goto_activebloodrequestspage: () -> Unit,
     goto_activeannouncementpage: () -> Unit,
-    goto_activeadminpasskeys: () -> Unit
+    goto_activeadminpasskeys: () -> Unit,
+    goto_emergencynumbers:() -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -205,7 +206,7 @@ fun AdminHomepage(
                             AdminButton(
                                 text = "Edit helpline numbers",
                                 onClick = {
-
+                                    goto_emergencynumbers()
                                 }
                             )
                         }

@@ -50,6 +50,7 @@ import com.example.blooddonationapp.AdminEntry.ActiveBloodRequests
 import com.example.blooddonationapp.AdminEntry.AdminHomepage
 import com.example.blooddonationapp.AdminEntry.AdminPasskeys
 import com.example.blooddonationapp.AdminEntry.BloodReqVerificationPage
+import com.example.blooddonationapp.AdminEntry.EmergencyNumbers
 import com.example.blooddonationapp.AdminEntry.NewAnnouncement
 import com.example.blooddonationapp.AdminEntry.NewBloodRequest
 import kotlinx.coroutines.delay
@@ -488,7 +489,8 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                 goto_newannouncementpage = { navController.navigate("newannouncementpage") },
                 goto_activebloodrequestspage = { navController.navigate("activebloodreqpage") },
                 goto_activeannouncementpage = {navController.navigate("activeannouncementpage")},
-                goto_activeadminpasskeys = {navController.navigate("activeadminpasskeys")}
+                goto_activeadminpasskeys = {navController.navigate("activeadminpasskeys")},
+                goto_emergencynumbers = {navController.navigate("emergencynumbers")}
             )
         }
         composable("welcomepage"){
@@ -530,6 +532,10 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         composable("bloodreqverification"){
             currentPage = "bloodreqverification"
             BloodReqVerificationPage()
+        }
+        composable("emergencynumbers"){
+            currentPage = "emergencynumbers"
+            EmergencyNumbers()
         }
     }
 }

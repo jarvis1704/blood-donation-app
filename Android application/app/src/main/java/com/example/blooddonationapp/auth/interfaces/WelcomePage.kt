@@ -23,6 +23,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.blooddonationapp.global.data.PhoneNoList
+import org.jetbrains.annotations.NotNull
 
 @Composable
 fun WelcomePage(
@@ -77,11 +79,18 @@ fun WelcomePage(
                             modifier = Modifier.fillMaxWidth().padding(16.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ){
-                            Text("Our helpline numbers:")
-                            Text("xxxxxxx")
-                            Text("xxxxxxx")
-                            Text("xxxxxxx")
-                            Text("xxxxxxx")
+                            when(true){
+                                PhoneNoList.isNotEmpty()  -> {
+                                    Text("Our helpline numbers:")
+                                    Spacer(modifier = Modifier.height(32.dp))
+                                    PhoneNoList.forEach { no->
+                                        Text(no.name+": "+no.number)
+                                    }
+                                }
+                                else -> {
+                                    Text("No emergency numbers available at this moment")
+                                }
+                            }
                         }
                     }
 
