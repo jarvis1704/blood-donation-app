@@ -49,6 +49,7 @@ import com.example.blooddonationapp.AdminEntry.ActiveAnnouncements
 import com.example.blooddonationapp.AdminEntry.ActiveBloodRequests
 import com.example.blooddonationapp.AdminEntry.AdminHomepage
 import com.example.blooddonationapp.AdminEntry.AdminPasskeys
+import com.example.blooddonationapp.AdminEntry.BloodReqVerificationPage
 import com.example.blooddonationapp.AdminEntry.NewAnnouncement
 import com.example.blooddonationapp.AdminEntry.NewBloodRequest
 import kotlinx.coroutines.delay
@@ -481,6 +482,7 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         composable("adminpannel"){
             currentPage= "adminpannel"
             AdminHomepage(
+                goto_bloodreqverification = {navController.navigate("bloodreqverification")},
                 goto_aadharverification = { navController.navigate("aadharverification") },
                 goto_newbloodreqpage = { navController.navigate("newbloodreqpage") },
                 goto_newannouncementpage = { navController.navigate("newannouncementpage") },
@@ -524,6 +526,10 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         composable("activeadminpasskeys"){
             currentPage = "activeadminpasskeys"
             AdminPasskeys()
+        }
+        composable("bloodreqverification"){
+            currentPage = "bloodreqverification"
+            BloodReqVerificationPage()
         }
     }
 }

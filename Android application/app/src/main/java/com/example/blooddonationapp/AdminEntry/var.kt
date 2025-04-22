@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.example.blooddonationapp.home.data.bloodRequest
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -61,6 +62,8 @@ data class aadharUser(
 )
 
 var aadharPendingList : List<aadharUser>? by mutableStateOf(null)
+var bloodreqPendingList : List<bloodRequest>? by mutableStateOf(null)
+
 var showDialog by mutableStateOf(false) // for time selector
 var ActivePasskeysList by mutableStateOf(listOf<Passkey>())
 var isFetchingPasskeys by mutableStateOf(false)

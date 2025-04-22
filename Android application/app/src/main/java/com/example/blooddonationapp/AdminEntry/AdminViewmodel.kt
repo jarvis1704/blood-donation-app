@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.blooddonationapp.global.data.errorMessage
+import com.example.blooddonationapp.global.data.infoMessage
 import com.example.blooddonationapp.home.data.TimestampToLocalDateTime
 import com.example.blooddonationapp.home.data.announcement
 import com.example.blooddonationapp.home.data.bloodRequest
@@ -29,7 +30,7 @@ class AdminViewmodel @Inject constructor():ViewModel() {
     private val db = FirebaseFirestore.getInstance()
 
 
-    fun newBloodReq(goto_activeBloodreqs:()-> Unit){
+    fun newBloodReq(goto_activeBloodreqs:()-> Unit = {}, onsuccess:()-> Unit={}){
         try {
             val datamap = mapOf(
                 "patient" to newBloodRequest.patientname,
@@ -47,6 +48,7 @@ class AdminViewmodel @Inject constructor():ViewModel() {
             db.collection("blood_requests").document()
                 .set(datamap, SetOptions.merge())
                 .addOnSuccessListener {
+                    onsuccess()
                     ClearNewBloodReqObj()
                     goto_activeBloodreqs()
                 }
@@ -200,6 +202,56 @@ class AdminViewmodel @Inject constructor():ViewModel() {
             }
         }else{
             errorMessage = "Key cannot be empty"
+        }
+    }
+
+    fun getPendingBloodRequests(){
+        viewModelScope.launch {
+            try {
+                val list = db.collection("pending_blood_requests").get().await()
+                if (list != null){
+                    val List = list.documents.mapNotNull { doc->
+                        val data = doc.data
+                        val id = doc.id
+                        data?.let {
+                            bloodRequest(
+                                id = id,
+                                patientname = it["patient"].toString(),
+                                patientage = it["patientage"].toString(),
+                                patientgender = it["patientgender"].toString(),
+                                attendantname = it["attendant"].toString(),
+                                attendantphoneno = it["attendantphoneno"].toString(),
+                                bloodtype = it["bloodtype"].toString(),
+                                hospital = it["hospital"].toString(),
+                                urgencylevel = it["urgencylevel"].toString(),
+                                unitsrequired = it["unitsrequired"].toString(),
+                                details = it["details"].toString(),
+                                date = (it["date"] as? Timestamp)?.let { timestamp ->
+                                    TimestampToLocalDateTime(timestamp)
+                                }
+                            )
+                        }
+                    }.sortedByDescending { it.date }
+                    bloodreqPendingList = List
+                }
+            }catch (e:Exception){
+                errorMessage=e.message.toString()
+            }
+        }
+    }
+
+    fun DeletePendingBloodReq(id: String){
+        viewModelScope.launch {
+            try {
+                db.collection("pending_blood_requests").document(id)
+                    .delete()
+                    .addOnSuccessListener {
+                        infoMessage = "Process Executed Successfully"
+                        getPendingBloodRequests()
+                    }
+            }catch (e: Exception){
+                errorMessage = e.message.toString()
+            }
         }
     }
 }

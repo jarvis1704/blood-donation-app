@@ -14,8 +14,5 @@ new homescreen (Done)
 TODO: admin panel
 
 todo: ui part:
-1) in "admin passkeys" it is set as horizontalAlignment.center instead of horizontalAlignment.start (Baad diya aitu UI jeh aru bhal koribo najau ene u poisa diya nai)
-2) in "new announcement" page, "selected date"  and "create announcement" needs respective spacers below
-3) also there, "event time" and current time will look better in a row instead of column (ik but making it in column will leave no space for the date picker, which is a issue.)
-4) in "new blood req" page, gender should be a selectable option ("M" "F" or "Others") like blood group (otherwise the fetching part will conflict), (Done)
-also "publish blood req" needs a spacer below
+1) welcome page
+2) blood req verification page
