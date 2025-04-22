@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -66,8 +67,24 @@ fun WelcomePage(
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                    verticalArrangement = Arrangement.Top
                 ) {
+                    //helpline card
+                    Card (
+                        modifier = Modifier.fillMaxWidth(0.7f).padding(vertical = 20.dp)
+                    ){
+                        Column (
+                            modifier = Modifier.fillMaxWidth().padding(16.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ){
+                            Text("Our helpline numbers:")
+                            Text("xxxxxxx")
+                            Text("xxxxxxx")
+                            Text("xxxxxxx")
+                            Text("xxxxxxx")
+                        }
+                    }
+
                     Button(onClick = {
                         goto_bloodreqform()
                     } ,
