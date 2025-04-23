@@ -1,6 +1,8 @@
 package com.example.blooddonationapp.AdminEntry
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -40,9 +42,13 @@ import com.example.blooddonationapp.global.data.NewGlobalAlert
 import com.example.blooddonationapp.home.data.HomeViewModel
 import com.example.blooddonationapp.home.data.bloodRequest
 import com.example.blooddonationapp.home.data.globalBloodRequestList
+import java.time.LocalDate
+import java.time.LocalDateTime
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ActiveBloodRequests(
+    adminViewmodel: AdminViewmodel = hiltViewModel(),
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
@@ -120,6 +126,11 @@ fun ActiveBloodRequests(
                             globalBloodRequestList?.let { requests ->
                                 if (requests.isNotEmpty()) {
                                     requests.forEach { req ->
+                                        //if request is older than a month, delete it
+                                        if (req.date?.isBefore(LocalDateTime.now().minusDays(30)) == true){
+                                            adminViewmodel.DeleteBloodRequest(req)
+                                        }
+
                                         BloodRequestEditComposable(req)
                                     }
                                 } else {
