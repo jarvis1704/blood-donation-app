@@ -1,4 +1,4 @@
-package com.example.blooddonationapp.AdminEntry
+package com.example.blooddonationapp.AdminEntry.data
 
 import android.annotation.SuppressLint
 import android.os.Build

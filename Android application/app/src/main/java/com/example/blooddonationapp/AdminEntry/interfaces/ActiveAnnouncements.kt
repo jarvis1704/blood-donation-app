@@ -1,4 +1,4 @@
-package com.example.blooddonationapp.AdminEntry
+package com.example.blooddonationapp.AdminEntry.interfaces
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,6 +18,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Card
@@ -35,24 +35,24 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.blooddonationapp.AdminEntry.data.AdminViewmodel
 import com.example.blooddonationapp.global.data.NewGlobalAlert
 import com.example.blooddonationapp.home.data.HomeViewModel
-import com.example.blooddonationapp.home.data.bloodRequest
-import com.example.blooddonationapp.home.data.globalBloodRequestList
-import java.time.LocalDate
+import com.example.blooddonationapp.home.data.announcement
+import com.example.blooddonationapp.home.data.globalAnnouncementList
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ActiveBloodRequests(
+fun ActiveAnnouncements(
     adminViewmodel: AdminViewmodel = hiltViewModel(),
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
-        homeViewModel.FetchBloodRequests()
+        homeViewModel.FetchAnnouncements()
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -71,14 +71,14 @@ fun ActiveBloodRequests(
                 ) {
                     Spacer(Modifier.height(30.dp))
                     Text(
-                        "Active Blood Requests",
+                        "Active Announcements",
                         fontSize = 32.sp,
                         color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(Modifier.height(8.dp))
                     Text(
-                        "Manage current blood donation requests",
+                        "Manage current announcements",
                         fontSize = 16.sp,
                         color = Color.White,
                         fontWeight = FontWeight.Medium
@@ -113,7 +113,7 @@ fun ActiveBloodRequests(
                                 .padding(16.dp)
                         ) {
                             Text(
-                                "All Active Requests",
+                                "All Active Announcements",
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 20.sp,
                                 color = Color(0xFFEB4335)
@@ -122,20 +122,22 @@ fun ActiveBloodRequests(
                             Divider(color = Color(0xFFEEEEEE), thickness = 1.dp)
                             Spacer(Modifier.height(16.dp))
 
-                            // Blood requests list
-                            globalBloodRequestList?.let { requests ->
-                                if (requests.isNotEmpty()) {
-                                    requests.forEach { req ->
-                                        //if request is older than a month, delete it
-                                        if (req.date?.isBefore(LocalDateTime.now().minusDays(30)) == true){
-                                            adminViewmodel.DeleteBloodRequest(req)
+                            // Announcements list
+                            globalAnnouncementList?.let { announcements ->
+                                if (announcements.isNotEmpty()) {
+                                    announcements.forEach { announcement ->
+                                        //if announcement is older than a month, delete it
+                                        if (announcement.dateAndTime?.isBefore(LocalDateTime.now().minusDays(30)) == true){
+                                            adminViewmodel.DeleteAnnouncement(announcement)
                                         }
 
-                                        BloodRequestEditComposable(req)
+                                        AnnouncementEdit(announcement)
+                                        Spacer(Modifier.height(16.dp))
                                     }
                                 } else {
+
                                     Text(
-                                        "No active blood requests",
+                                        "No active announcements",
                                         fontSize = 16.sp,
                                         color = Color.Gray,
                                         modifier = Modifier.padding(vertical = 16.dp)
@@ -143,7 +145,7 @@ fun ActiveBloodRequests(
                                 }
                             } ?: run {
                                 Text(
-                                    "Loading blood requests...",
+                                    "Loading announcements...",
                                     fontSize = 16.sp,
                                     color = Color.Gray,
                                     modifier = Modifier.padding(vertical = 16.dp)
@@ -159,14 +161,16 @@ fun ActiveBloodRequests(
 
 @SuppressLint("NewApi")
 @Composable
-fun BloodRequestEditComposable(
-    bloodRequest: bloodRequest,
+fun AnnouncementEdit(
+    announcement: announcement,
     adminViewmodel: AdminViewmodel = hiltViewModel()
 ) {
+    val formatter = DateTimeFormatter.ofPattern("hh:mm a")
+    val formattedTime = announcement.dateAndTime?.format(formatter)
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .defaultMinSize(minHeight = 150.dp)
             .padding(vertical = 8.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFFEB4335)
@@ -180,11 +184,10 @@ fun BloodRequestEditComposable(
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                "EMERGENCY ${bloodRequest.bloodtype} BLOOD NEEDED",
+                announcement.title,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White,
-                lineHeight = 1.25.em
+                color = Color.White
             )
 
             Spacer(Modifier.height(12.dp))
@@ -199,7 +202,7 @@ fun BloodRequestEditComposable(
                     tint = Color.White
                 )
                 Text(
-                    bloodRequest.hospital,
+                    announcement.location,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
                     color = Color.White
@@ -213,25 +216,47 @@ fun BloodRequestEditComposable(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    "${bloodRequest.date?.dayOfMonth} ${bloodRequest.date?.month}",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(Color(0x33FFFFFF))
-                        .padding(horizontal = 12.dp, vertical = 6.dp),
-                    color = Color.White
-                )
+                Column {
+                    Text(
+                        "${announcement.dateAndTime?.dayOfMonth} ${announcement.dateAndTime?.month}",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(Color(0x33FFFFFF))
+                            .padding(horizontal = 12.dp, vertical = 6.dp),
+                        color = Color.White
+                    )
+
+                    Spacer(Modifier.height(8.dp))
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.CheckCircle,
+                            contentDescription = "Time Icon",
+                            tint = Color.White,
+                            modifier = Modifier.padding(end = 4.dp)
+                        )
+                        Text(
+                            "$formattedTime Onwards",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.White
+                        )
+                    }
+                }
 
                 IconButton(
                     onClick = {
                         NewGlobalAlert(
-                            title = "Delete Blood Request",
-                            details = "Are you sure you want to delete the request? This cannot be undone.",
+                            title = "Delete Announcement",
+                            details = "Are you sure you want to delete the announcement? This cannot be undone.",
                             onCancelClick = {},
                             onConfirmClick = {
-                                adminViewmodel.DeleteBloodRequest(bloodRequest)
+                                adminViewmodel.DeleteAnnouncement(announcement)
                             }
                         )
                     },
@@ -241,7 +266,7 @@ fun BloodRequestEditComposable(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "Delete request",
+                        contentDescription = "Delete announcement",
                         tint = Color(0xFFEB4335)
                     )
                 }

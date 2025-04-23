@@ -1,4 +1,4 @@
-package com.example.blooddonationapp.AdminEntry
+package com.example.blooddonationapp.AdminEntry.interfaces
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -36,17 +36,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.blooddonationapp.AdminEntry.data.AdminViewmodel
+import com.example.blooddonationapp.AdminEntry.data.isFetchingNumbers
+import com.example.blooddonationapp.AdminEntry.data.isNewContactDialogue
+import com.example.blooddonationapp.AdminEntry.data.tempNewContact
+import com.example.blooddonationapp.auth.data.EmailLoginViewModel
 import com.example.blooddonationapp.global.data.NewGlobalAlert
+import com.example.blooddonationapp.global.data.PhoneNoList
+import com.example.blooddonationapp.global.data.errorMessage
 
 
 @Composable
-fun AdminPasskeys(
-    adminViewmodel: AdminViewmodel = hiltViewModel()
+fun EmergencyNumbers(
+    adminViewmodel: AdminViewmodel = hiltViewModel(),
+    emailLoginViewModel: EmailLoginViewModel = hiltViewModel()
 ){
-    NewPasskey()
+    NumberEditDialogue()
     LaunchedEffect(Unit) {
-        isFetchingPasskeys = true
-        adminViewmodel.GetActivePasskeys()
+        isFetchingNumbers = true
+        emailLoginViewModel.GetImportantPhoneNo()
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -66,14 +74,14 @@ fun AdminPasskeys(
                 ) {
                     Spacer(Modifier.height(30.dp))
                     Text(
-                        "Admin Passkeys",
+                        "Helpline Numbers",
                         fontSize = 32.sp,
                         color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(Modifier.height(8.dp))
                     Text(
-                        "Manage Admin Access Credentials",
+                        "Edit Emergency Numbers Here",
                         fontSize = 16.sp,
                         color = Color.White,
                         fontWeight = FontWeight.Medium
@@ -108,19 +116,19 @@ fun AdminPasskeys(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                "Active Admin Passkeys",
+                                "Active Contacts",
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFFEB4335)
                             )
                             IconButton(
                                 onClick = {
-                                    isNewPasskeyDialogue = true
+                                    isNewContactDialogue = true
                                 }
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Add,
-                                    contentDescription = "Add key",
+                                    contentDescription = "Add Number",
                                     tint = Color(0xFFEB4335)
                                 )
                             }
@@ -130,10 +138,10 @@ fun AdminPasskeys(
                         Divider(color = Color(0xFFEEEEEE), thickness = 1.dp)
                         Spacer(Modifier.height(16.dp))
 
-                        when (isFetchingPasskeys) {
+                        when (isFetchingNumbers) {
                             true -> {
                                 Text(
-                                    "Loading passkeys...",
+                                    "Loading contacts...",
                                     fontSize = 16.sp,
                                     color = Color.Gray,
                                     modifier = Modifier.padding(vertical = 16.dp)
@@ -151,7 +159,7 @@ fun AdminPasskeys(
                                     Column(
                                         modifier = Modifier.fillMaxWidth()
                                     ) {
-                                        ActivePasskeysList.forEach {
+                                        PhoneNoList.forEach {
                                             Row(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
@@ -159,32 +167,39 @@ fun AdminPasskeys(
                                                 horizontalArrangement = Arrangement.SpaceBetween,
                                                 verticalAlignment = Alignment.CenterVertically
                                             ) {
-                                                Text(
-                                                    it.key,
-                                                    fontSize = 16.sp,
-                                                    fontWeight = FontWeight.Medium
-                                                )
+                                                Column {
+                                                    Text(
+                                                        it.name,
+                                                        fontSize = 16.sp,
+                                                        fontWeight = FontWeight.Medium
+                                                    )
+                                                    Text(
+                                                        it.number,
+                                                        fontSize = 16.sp,
+                                                        fontWeight = FontWeight.Medium
+                                                    )
+                                                }
                                                 IconButton(
                                                     onClick = {
                                                         NewGlobalAlert(
-                                                            title = "Delete Admin Passkey",
-                                                            details = "Are you sure you want to delete the passkey? This cannot be undone.",
+                                                            title = "Delete contact",
+                                                            details = "Are you sure you want to delete the contact? This cannot be undone.",
                                                             onCancelClick = {},
                                                             onConfirmClick = {
-                                                                adminViewmodel.DeletePasskey(it)
+                                                                adminViewmodel.DeleteContact(it.id)
                                                             }
                                                         )
                                                     }
                                                 ) {
                                                     Icon(
                                                         imageVector = Icons.Default.Delete,
-                                                        contentDescription = "Delete request",
+                                                        contentDescription = "Delete",
                                                         tint = Color(0xFFEB4335)
                                                     )
                                                 }
                                             }
                                             // Add a divider between items except for the last one
-                                            if (it != ActivePasskeysList.last()) {
+                                            if (it != PhoneNoList.last()) {
                                                 Divider(
                                                     color = Color(0xFFE0E0E0),
                                                     thickness = 1.dp,
@@ -206,19 +221,19 @@ fun AdminPasskeys(
 
 
 @Composable
-fun NewPasskey(
+fun NumberEditDialogue(
     adminViewmodel: AdminViewmodel = hiltViewModel()
 ) {
-    if (isNewPasskeyDialogue) {
+    if (isNewContactDialogue) {
         AlertDialog(
-            onDismissRequest = { isNewPasskeyDialogue = false },
+            onDismissRequest = { isNewContactDialogue = false },
             title = {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "New Passkey",
+                        text = "New Contact",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFFEB4335)
@@ -228,16 +243,41 @@ fun NewPasskey(
             text = {
                 Column {
                     Text(
-                        "Enter Passkey",
+                        "Enter Name",
                         fontWeight = FontWeight.Medium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     TextField(
-                        value = tempNewPasskey,
+                        value = tempNewContact.name,
                         onValueChange = {
-                            tempNewPasskey = it
+                            tempNewContact = tempNewContact.copy(name = it)
                         },
-                        placeholder = { Text("Enter secure passkey") },
+                        placeholder = { Text("Hospital/Contact Name") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = Color(0xFFF5F5F5),
+                            focusedContainerColor = Color(0xFFF5F5F5),
+                            unfocusedIndicatorColor = Color.Transparent,
+                            focusedIndicatorColor = Color(0xFFEB4335),
+                            focusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black,
+                            disabledPlaceholderColor = Color.LightGray
+                        ),
+                        singleLine = true
+                    )
+                    Text(
+                        "Enter Number",
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    TextField(
+                        value = tempNewContact.number,
+                        onValueChange = {
+                            tempNewContact = tempNewContact.copy(number = it)
+                        },
+                        placeholder = { Text("Phone Number") },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp),
@@ -263,7 +303,7 @@ fun NewPasskey(
                 ) {
                     Button(
                         onClick = {
-                            isNewPasskeyDialogue = false
+                            isNewContactDialogue = false
                         },
                         modifier = Modifier
                             .weight(1f)
@@ -283,7 +323,12 @@ fun NewPasskey(
                     }
                     Button(
                         onClick = {
-                            adminViewmodel.AddPasskey(tempNewPasskey)
+                            if (tempNewContact.name.isNotEmpty() && tempNewContact.number.isNotEmpty()){
+                                adminViewmodel.newContact()
+                            }else{
+                                errorMessage = "Required fields are empty"
+                            }
+//                            adminViewmodel.AddPasskey(tempNewPasskey)
                         },
                         modifier = Modifier
                             .weight(1f)

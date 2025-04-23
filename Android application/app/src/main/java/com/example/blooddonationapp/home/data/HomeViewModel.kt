@@ -1,13 +1,10 @@
 package com.example.blooddonationapp.home.data
 
 import android.annotation.SuppressLint
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.blooddonationapp.AdminEntry.ClearNewBloodReqObj
-import com.example.blooddonationapp.AdminEntry.newBloodRequest
+import com.example.blooddonationapp.AdminEntry.data.ClearNewBloodReqObj
+import com.example.blooddonationapp.AdminEntry.data.newBloodRequest
 import com.example.blooddonationapp.global.data.errorMessage
 import com.example.blooddonationapp.global.data.infoMessage
 import com.google.firebase.Timestamp
@@ -17,7 +14,6 @@ import com.google.firebase.firestore.SetOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
