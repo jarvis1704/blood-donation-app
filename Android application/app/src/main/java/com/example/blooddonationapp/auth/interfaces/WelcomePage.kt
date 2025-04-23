@@ -1,9 +1,12 @@
 package com.example.blooddonationapp.auth.interfaces
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -38,6 +43,7 @@ private val primaryRed = Color(0xFFEB4335)
 private val lightRed = Color(0xFFF5948C)
 private val paleRed = Color(0xFFFAD5D1)
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun WelcomePage(
     goto_bloodreqform: () -> Unit,
@@ -54,7 +60,7 @@ fun WelcomePage(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(0.2f)
+//                    .weight(0.2f)
                     .background(primaryRed)
             ) {
                 Column(
@@ -79,21 +85,23 @@ fun WelcomePage(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(0.8f)
+//                    .weight(0.8f)
                     .background(Color.White)
             ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth()
                         .padding(horizontal = 24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Top
                 ) {
+                    Spacer(Modifier.height(20.dp))
                     // Helpline card with improved styling
                     Card(
                         modifier = Modifier
-                            .size(width = 320.dp, height = 250.dp)
+                            .width(320.dp)
                             .padding(vertical = 24.dp)
+                            .border(5.dp, primaryRed, RoundedCornerShape(16.dp))
                             .shadow(8.dp, RoundedCornerShape(16.dp)),
                         colors = CardDefaults.cardColors(
                             containerColor = Color.White
@@ -102,11 +110,9 @@ fun WelcomePage(
                     ) {
                         Box(
                             modifier = Modifier
-                                .fillMaxSize()
+                                .fillMaxWidth()
                                 .background(
-                                    brush = Brush.horizontalGradient(
-                                        colors = listOf(lightRed, paleRed)
-                                    )
+                                    color = Color.White
                                 )
                                 .padding(4.dp)
                         ) {
@@ -116,44 +122,73 @@ fun WelcomePage(
                                     .padding(20.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                Text(
-                                    when (PhoneNoList.isNotEmpty()) {
-                                        true -> "Our Helpline Numbers"
-                                        else -> "No Emergency Numbers Available"
-                                    },
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 18.sp,
-                                    color = Color(0xFF333333)
-                                )
-
-                                Spacer(modifier = Modifier.height(32.dp))
-
-                                if (PhoneNoList.isNotEmpty()) {
-                                    PhoneNoList.forEach { no ->
-                                        Text(
-                                            "${no.name}: ${no.number}",
-                                            fontSize = 16.sp,
-                                            fontWeight = FontWeight.Medium,
-                                            textAlign = TextAlign.Center,
-                                            modifier = Modifier.padding(vertical = 4.dp)
-                                        )
-                                    }
-                                } else {
+                                Column (
+                                    horizontalAlignment = Alignment.Start
+                                ){
                                     Text(
-                                        "Please check back later for assistance contact information",
-                                        textAlign = TextAlign.Center,
-                                        fontSize = 16.sp
+                                        when (PhoneNoList.isNotEmpty()) {
+                                            true -> "Our Helpline Numbers"
+                                            else -> "No Emergency Numbers Available"
+                                        },
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 18.sp,
+                                        color = Color(0xFF333333)
                                     )
+
+                                    Spacer(modifier = Modifier.height(18.dp))
+
+                                    if (PhoneNoList.isNotEmpty()) {
+                                        FlowRow (
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            maxItemsInEachRow = 2
+                                        ){
+                                            PhoneNoList.forEach { no ->
+
+                                                Column (
+                                                    modifier = Modifier.fillMaxWidth(0.45f).padding(bottom = 8.dp)
+                                                ){
+                                                    Text(
+                                                        no.name,
+                                                        fontSize = 16.sp,
+                                                        fontWeight = FontWeight.Medium,
+                                                        lineHeight = 20.sp,
+                                                        textAlign = TextAlign.Start,
+                                                        color = Color.Black.copy(0.6f),
+                                                        modifier = Modifier.padding(top = 4.dp)
+                                                    )
+                                                    Text(
+                                                        no.number,
+                                                        fontSize = 16.sp,
+                                                        lineHeight = 20.sp,
+                                                        fontWeight = FontWeight.Medium,
+                                                        textAlign = TextAlign.Center,
+                                                        modifier = Modifier.padding(vertical = 4.dp)
+                                                    )
+                                                }
+                                            }
+
+                                        }
+                                    }
+//                                else {
+//                                    Text(
+//                                        "Please check back later for assistance contact information",
+//                                        textAlign = TextAlign.Center,
+//                                        fontSize = 16.sp
+//                                    )
+//                                }
                                 }
                             }
                         }
                     }
+                    Spacer(Modifier.height(10.dp))
+
 
                     // Emergency blood button with improved styling
                     Button(
                         onClick = { goto_bloodreqform() },
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .fillMaxWidth(0.8f)
                             .height(56.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = primaryRed
@@ -182,7 +217,7 @@ fun WelcomePage(
                     Button(
                         onClick = { goto_loginpage() },
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .fillMaxWidth(0.8f)
                             .height(56.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = primaryRed
