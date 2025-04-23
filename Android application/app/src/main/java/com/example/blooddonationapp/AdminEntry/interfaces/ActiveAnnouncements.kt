@@ -1,6 +1,8 @@
-package com.example.blooddonationapp.AdminEntry
+package com.example.blooddonationapp.AdminEntry.interfaces
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,14 +37,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.blooddonationapp.AdminEntry.data.AdminViewmodel
 import com.example.blooddonationapp.global.data.NewGlobalAlert
 import com.example.blooddonationapp.home.data.HomeViewModel
 import com.example.blooddonationapp.home.data.announcement
 import com.example.blooddonationapp.home.data.globalAnnouncementList
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ActiveAnnouncements(
+    adminViewmodel: AdminViewmodel = hiltViewModel(),
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
@@ -120,10 +126,16 @@ fun ActiveAnnouncements(
                             globalAnnouncementList?.let { announcements ->
                                 if (announcements.isNotEmpty()) {
                                     announcements.forEach { announcement ->
+                                        //if announcement is older than a month, delete it
+                                        if (announcement.dateAndTime?.isBefore(LocalDateTime.now().minusDays(30)) == true){
+                                            adminViewmodel.DeleteAnnouncement(announcement)
+                                        }
+
                                         AnnouncementEdit(announcement)
                                         Spacer(Modifier.height(16.dp))
                                     }
                                 } else {
+
                                     Text(
                                         "No active announcements",
                                         fontSize = 16.sp,

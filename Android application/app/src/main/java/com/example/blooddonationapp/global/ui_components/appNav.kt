@@ -44,16 +44,15 @@ import com.example.blooddonationapp.registration.interfaces.donorDetails
 import com.example.blooddonationapp.registration.interfaces.verifyAadhar
 import com.example.blooddonationapp.settings.interfaces.AboutUs
 import com.example.blooddonationapp.settings.interfaces.SettingsAndPreferences
-import com.example.blooddonationapp.AdminEntry.AadharVerificationPage
-import com.example.blooddonationapp.AdminEntry.ActiveAnnouncements
-import com.example.blooddonationapp.AdminEntry.ActiveBloodRequests
-import com.example.blooddonationapp.AdminEntry.AdminHomepage
-import com.example.blooddonationapp.AdminEntry.AdminPasskeys
-import com.example.blooddonationapp.AdminEntry.BloodReqVerificationPage
-import com.example.blooddonationapp.AdminEntry.EmergencyNumbers
-import com.example.blooddonationapp.AdminEntry.NewAnnouncement
-import com.example.blooddonationapp.AdminEntry.NewBloodRequest
-import kotlinx.coroutines.delay
+import com.example.blooddonationapp.AdminEntry.interfaces.AadharVerificationPage
+import com.example.blooddonationapp.AdminEntry.interfaces.ActiveAnnouncements
+import com.example.blooddonationapp.AdminEntry.interfaces.ActiveBloodRequests
+import com.example.blooddonationapp.AdminEntry.interfaces.AdminHomepage
+import com.example.blooddonationapp.AdminEntry.interfaces.AdminPasskeys
+import com.example.blooddonationapp.AdminEntry.interfaces.BloodReqVerificationPage
+import com.example.blooddonationapp.AdminEntry.interfaces.EmergencyNumbers
+import com.example.blooddonationapp.AdminEntry.interfaces.NewAnnouncement
+import com.example.blooddonationapp.AdminEntry.interfaces.NewBloodRequest
 import kotlinx.coroutines.launch
 
 
@@ -156,8 +155,12 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         ){
             currentPage = "loadingpage"
             loadingpage(
-                goto_welcomepage = {navController.navigate("welcomepage")},
-                goto_homepage = {navController.navigate("homepage")}
+                goto_welcomepage = {navController.navigate("welcomepage") {
+                    popUpTo("loadingpage") {inclusive = true}
+                } },
+                goto_homepage = {navController.navigate("homepage") {
+                    popUpTo("loadingpage") {inclusive = true}
+                } }
             )
         }
 
@@ -229,7 +232,7 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
 
             loginpage(
                 goto_homepage = {navController.navigate("homepage"){
-                    popUpTo("loginpage") { inclusive = true }
+                    popUpTo(0) { inclusive = true }
                 } },
                 goto_signuppage = {navController.navigate("signuppage")},
                 goto_loadingpage = {navController.navigate("loadingpage")},
@@ -370,7 +373,9 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         ){
             currentPage = "signuppage"
             signuppage(
-                goto_homepage = {navController.navigate("homepage")},
+                goto_homepage = {navController.navigate("homepage") {
+                    popUpTo(0) {inclusive = true}
+                } },
                 goto_loginpage = {navController.navigate("loginpage")},
                 goto_loadingpage = {navController.navigate("loadingpage")})
         }
@@ -477,7 +482,9 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         composable("adminloginpage"){
             currentPage= "adminloginpage"
             AdminLoginPage(
-                goto_adminpannel = {navController.navigate("adminpannel")}
+                goto_adminpannel = {navController.navigate("adminpannel"){
+                    popUpTo("adminloginpage"){inclusive= true}
+                } }
             )
         }
         composable("adminpannel"){

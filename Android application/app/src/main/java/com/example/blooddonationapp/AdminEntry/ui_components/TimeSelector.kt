@@ -1,4 +1,4 @@
-package com.example.blooddonationapp.AdminEntry
+package com.example.blooddonationapp.AdminEntry.ui_components
 
 import android.annotation.SuppressLint
 import android.app.TimePickerDialog
@@ -10,6 +10,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import com.example.blooddonationapp.AdminEntry.data.showDialog
 import java.time.LocalTime
 
 

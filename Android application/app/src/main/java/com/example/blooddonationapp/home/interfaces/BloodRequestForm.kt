@@ -33,9 +33,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.blooddonationapp.AdminEntry.newBloodRequest
+import com.example.blooddonationapp.AdminEntry.data.newBloodRequest
 import com.example.blooddonationapp.global.data.errorMessage
-import com.example.blooddonationapp.global.data.infoMessage
 import com.example.blooddonationapp.home.data.HomeViewModel
 import com.example.blooddonationapp.registration.interfaces.AnimatedBloodGroupButton
 import com.example.blooddonationapp.registration.interfaces.AnimatedButton

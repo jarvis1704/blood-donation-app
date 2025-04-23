@@ -1,6 +1,8 @@
-package com.example.blooddonationapp.AdminEntry
+package com.example.blooddonationapp.AdminEntry.interfaces
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,13 +38,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.blooddonationapp.AdminEntry.data.AdminViewmodel
 import com.example.blooddonationapp.global.data.NewGlobalAlert
 import com.example.blooddonationapp.home.data.HomeViewModel
 import com.example.blooddonationapp.home.data.bloodRequest
 import com.example.blooddonationapp.home.data.globalBloodRequestList
+import java.time.LocalDateTime
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ActiveBloodRequests(
+    adminViewmodel: AdminViewmodel = hiltViewModel(),
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
@@ -120,6 +126,11 @@ fun ActiveBloodRequests(
                             globalBloodRequestList?.let { requests ->
                                 if (requests.isNotEmpty()) {
                                     requests.forEach { req ->
+                                        //if request is older than a month, delete it
+                                        if (req.date?.isBefore(LocalDateTime.now().minusDays(30)) == true){
+                                            adminViewmodel.DeleteBloodRequest(req)
+                                        }
+
                                         BloodRequestEditComposable(req)
                                     }
                                 } else {

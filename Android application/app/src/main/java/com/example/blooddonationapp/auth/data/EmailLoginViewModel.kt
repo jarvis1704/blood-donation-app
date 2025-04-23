@@ -1,24 +1,17 @@
 package com.example.blooddonationapp.auth.data
 
-import android.provider.ContactsContract.Data
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.blooddonationapp.AdminEntry.isFetchingNumbers
-import com.example.blooddonationapp.AdminEntry.isFetchingPasskeys
+import com.example.blooddonationapp.AdminEntry.data.isFetchingNumbers
 import com.example.blooddonationapp.global.data.PhoneNo
 import com.example.blooddonationapp.global.data.PhoneNoList
 import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.global.data.errorMessage
-import com.example.blooddonationapp.home.data.TimestampToLocalDateTime
-import com.example.blooddonationapp.home.data.bloodRequest
-import com.example.blooddonationapp.home.data.globalBloodRequestList
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject

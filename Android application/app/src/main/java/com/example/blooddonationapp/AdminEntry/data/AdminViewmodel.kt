@@ -1,17 +1,13 @@
-package com.example.blooddonationapp.AdminEntry
+package com.example.blooddonationapp.AdminEntry.data
 
 import android.os.Build
-import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.blooddonationapp.global.data.PhoneNo
 import com.example.blooddonationapp.global.data.PhoneNoList
 import com.example.blooddonationapp.global.data.errorMessage
 import com.example.blooddonationapp.global.data.infoMessage
-import com.example.blooddonationapp.home.data.HomeViewModel
 import com.example.blooddonationapp.home.data.TimestampToLocalDateTime
 import com.example.blooddonationapp.home.data.announcement
 import com.example.blooddonationapp.home.data.bloodRequest
@@ -22,14 +18,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.time.ZoneId
 import javax.inject.Inject
 
 @HiltViewModel
-class AdminViewmodel @Inject constructor():ViewModel() {
+class AdminViewmodel @Inject constructor(): ViewModel() {
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
 
@@ -47,7 +42,7 @@ class AdminViewmodel @Inject constructor():ViewModel() {
                 "urgencylevel" to newBloodRequest.urgencylevel,
                 "unitsrequired" to newBloodRequest.unitsrequired,
                 "details" to newBloodRequest.details,
-                "date" to Timestamp.now()
+                "date" to Timestamp.Companion.now()
             )
             db.collection("blood_requests").document()
                 .set(datamap, SetOptions.merge())
@@ -112,12 +107,12 @@ class AdminViewmodel @Inject constructor():ViewModel() {
                     aadharPendingList = aadharList
                 }
             }catch (e:Exception){
-                errorMessage=e.message.toString()
+                errorMessage =e.message.toString()
             }
         }
     }
 
-    fun DeleteBloodRequest(req:bloodRequest){
+    fun DeleteBloodRequest(req: bloodRequest){
         viewModelScope.launch {
             try {
                 db.collection("blood_requests").document(req.id)
@@ -239,7 +234,7 @@ class AdminViewmodel @Inject constructor():ViewModel() {
                     bloodreqPendingList = List
                 }
             }catch (e:Exception){
-                errorMessage=e.message.toString()
+                errorMessage =e.message.toString()
             }
         }
     }

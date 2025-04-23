@@ -1,4 +1,4 @@
-package com.example.blooddonationapp.AdminEntry
+package com.example.blooddonationapp.AdminEntry.interfaces
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -35,6 +35,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.blooddonationapp.AdminEntry.data.AdminViewmodel
+import com.example.blooddonationapp.AdminEntry.data.aadharPendingList
+import com.example.blooddonationapp.AdminEntry.data.aadharUser
 
 @Composable
 fun AadharVerificationPage(
