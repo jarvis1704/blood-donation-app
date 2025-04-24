@@ -40,7 +40,8 @@ import com.example.blooddonationapp.home.ui_components.AnnouncementCard
 @Composable
 fun homepage(
     goto_bloodreqform:()->Unit,
-    viewModel: EmailLoginViewModel = hiltViewModel()
+    viewModel: EmailLoginViewModel = hiltViewModel(),
+    goto_donorform: ()-> Unit
 ){
 //    var viewmodel: emailLoginViewmodel = viewModel()
     updateCurrentUser()
@@ -95,7 +96,7 @@ fun homepage(
                             colors = CardDefaults.cardColors(
                                 Color.White
                             ),
-                            onClick = {/*todo donate button implementation*/}
+                            onClick = {goto_donorform()}
                         ) {
                             Column(
                                 modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),

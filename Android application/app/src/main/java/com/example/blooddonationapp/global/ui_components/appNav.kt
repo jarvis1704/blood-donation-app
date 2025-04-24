@@ -53,6 +53,7 @@ import com.example.blooddonationapp.AdminEntry.interfaces.BloodReqVerificationPa
 import com.example.blooddonationapp.AdminEntry.interfaces.EmergencyNumbers
 import com.example.blooddonationapp.AdminEntry.interfaces.NewAnnouncement
 import com.example.blooddonationapp.AdminEntry.interfaces.NewBloodRequest
+import com.example.blooddonationapp.home.interfaces.BloodDonorForm
 import kotlinx.coroutines.launch
 
 
@@ -324,7 +325,8 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                 currentPage = route
                 when (route) {
                     "homepage" -> homepage(
-                        goto_bloodreqform = {navController.navigate("bloodreqform")}
+                        goto_bloodreqform = { navController.navigate("bloodreqform") },
+                        goto_donorform = {navController.navigate("donorform")}
                     )
                     "userprofile" -> userProfile(
                         goto_loadingpage = { navController.navigate("loadingpage") },
@@ -543,6 +545,11 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         composable("emergencynumbers"){
             currentPage = "emergencynumbers"
             EmergencyNumbers()
+        }
+
+        composable("donorform"){
+            currentPage = "donorform"
+            BloodDonorForm()
         }
     }
 }
