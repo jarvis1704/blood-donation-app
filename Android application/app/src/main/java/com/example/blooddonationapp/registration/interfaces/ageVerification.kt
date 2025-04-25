@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.registration.data.RegistrationViewModel
 import com.example.blooddonationapp.registration.data.tempRegistrationDetails
 import com.example.blooddonationapp.registration.ui_components.dateYearSelector
@@ -42,7 +43,7 @@ fun ageVerification(
     goto_donordetails: () -> Unit,
     viewModel: RegistrationViewModel = hiltViewModel()
 ) {
-
+    tempRegistrationDetails.birthDate = LocalDate.from(currentUser.birthDate)
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier.fillMaxSize()
@@ -92,7 +93,7 @@ fun ageVerification(
             }
             dateYearSelector(
                 dateToBeUpdated = birthDateState,
-                selectedDate = LocalDate.now()
+                selectedDate = birthDateState.value
             )
             Spacer(Modifier.height(8.dp))
             Button(

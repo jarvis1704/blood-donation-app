@@ -1,6 +1,8 @@
 package com.example.blooddonationapp.home.data
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.blooddonationapp.AdminEntry.data.ClearNewBloodReqObj
@@ -11,9 +13,11 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.getField
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,6 +41,25 @@ class HomeViewModel @Inject constructor(): ViewModel() {
             }
         }
         return ""
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun GetUserBirthdate(): LocalDateTime{
+        if (_auth.currentUser != null){
+            try {
+                val document = _auth.currentUser?.let { _db.collection("userdetails").document(it.uid) }
+                    ?.get()?.await()
+                if (document !=null){
+                    val temp = document.getTimestamp("birthdate") as Timestamp
+                    return TimestampToLocalDateTime(temp)
+                }else{
+                    return LocalDateTime.now()
+                }
+            }catch (e: Exception){
+                errorMessage = e.message.toString()
+            }
+        }
+        return LocalDateTime.now()
     }
 
     suspend fun getAadharDetails(

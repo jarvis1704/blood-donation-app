@@ -1,6 +1,8 @@
 package com.example.blooddonationapp.home.interfaces
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,6 +31,7 @@ import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -54,16 +57,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.blooddonationapp.R
 import com.example.blooddonationapp.auth.data.EmailLoginViewModel
 import com.example.blooddonationapp.global.data.NewGlobalAlert
+import com.example.blooddonationapp.global.data.currentPage
 import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.global.data.errorMessage
 import com.example.blooddonationapp.global.data.updateCurrentUser
 import com.example.blooddonationapp.home.data.HomeViewModel
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun userProfile(
@@ -130,25 +136,26 @@ fun userProfile(
                         ) {
                             Spacer(Modifier.height(26.dp))
                             when (currentUser.profilePic) {
-                                "" -> {
-                                    Image(
-                                        painterResource(id = R.drawable.default_user_icon),
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .size(
-                                                min(
-                                                    200.dp,
-                                                    dimensionResource(id = R.dimen.profile_pic_size)
-                                                )
-                                            )
-                                            .clip(CircleShape)
-                                    )
-                                }
+//                                "" -> {
+//                                    Image(
+//                                        painterResource(id = R.drawable.default_user_icon),
+//                                        contentDescription = null,
+//                                        modifier = Modifier
+//                                            .size(
+//                                                min(
+//                                                    200.dp,
+//                                                    dimensionResource(id = R.dimen.profile_pic_size)
+//                                                )
+//                                            )
+//                                            .clip(CircleShape)
+//                                    )
+//                                }
 
                                 else -> {
-                                    Image(
-                                        painter = rememberAsyncImagePainter(model = currentUser.profilePic),
+                                    AsyncImage(
+                                        model = currentUser.profilePic,
                                         contentDescription = null,
+                                        placeholder = painterResource(R.drawable.default_user_icon),
                                         modifier = Modifier
                                             .size(
                                                 min(
@@ -158,6 +165,18 @@ fun userProfile(
                                             )
                                             .clip(CircleShape)
                                     )
+//                                    Image(
+//                                        painter = rememberAsyncImagePainter(model = currentUser.profilePic),
+//                                        contentDescription = null,
+//                                        modifier = Modifier
+//                                            .size(
+//                                                min(
+//                                                    200.dp,
+//                                                    dimensionResource(id = R.dimen.profile_pic_size)
+//                                                )
+//                                            )
+//                                            .clip(CircleShape)
+//                                    )
                                 }
                             }
                             Spacer(Modifier.height(8.dp))
@@ -300,7 +319,7 @@ fun userProfile(
                                 horizontalArrangement = Arrangement.SpaceEvenly,
                                 modifier = Modifier.fillMaxWidth()
                             ) {
-                                InfoColumn(label = "Blood Group", value = currentUser.bloodGroup)
+                                InfoColumn(label = "Blood Group", value = if (currentUser.bloodGroup.isNotEmpty())currentUser.bloodGroup else "??")
                                 InfoColumn(label = "Donated", value = "2")
                                 InfoColumn(label = "Last Donated", value = "0 Days")
                             }
@@ -337,6 +356,15 @@ fun userProfile(
                                 .fillMaxWidth()
                                 .padding(16.dp)
                         ) {
+                            MenuRow(
+                                icon = Icons.Default.Person,
+                                text = "EDIT PERSONAL DATA",
+                                onClick = { goto_ageverification() }
+                            )
+                            Divider(
+                                modifier = Modifier.padding(vertical = 12.dp),
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
+                            )
                             MenuRow(
                                 icon = Icons.Default.Settings,
                                 text = "SETTINGS & PREFERENCES",
