@@ -1,5 +1,7 @@
 package com.example.blooddonationapp.home.interfaces
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,11 +39,14 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.blooddonationapp.R
 import com.example.blooddonationapp.auth.data.EmailLoginViewModel
+import com.example.blooddonationapp.global.data.NewGlobalAlert
 import com.example.blooddonationapp.global.data.currentUser
+import com.example.blooddonationapp.global.data.infoMessage
 import com.example.blooddonationapp.global.data.updateCurrentUser
 import com.example.blooddonationapp.home.data.globalAnnouncementList
 import com.example.blooddonationapp.home.ui_components.AnnouncementCard
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun homepage(
     goto_registration:()-> Unit,
@@ -103,7 +108,21 @@ fun homepage(
                             colors = CardDefaults.cardColors(
                                 Color.White
                             ),
-                            onClick = {goto_donorform()}
+                            onClick = {
+                                if (currentUser.registrationType != "registered"){
+                                    NewGlobalAlert(
+                                        title = "Blood Donation",
+                                        details = "Oops, you need to complete the registration details first to be able to apply for donation.\n\nDo you want to go to the registration?",
+                                        onCancelClick = {},
+                                        onConfirmClick = {
+                                            goto_registration()
+                                        }
+                                    )
+                                }
+                                else{
+                                    goto_donorform()
+                                }
+                            }
                         ) {
                             Column(
                                 modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),

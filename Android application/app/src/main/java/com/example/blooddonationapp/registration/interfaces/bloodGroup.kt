@@ -36,6 +36,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.blooddonationapp.global.data.currentPage
+import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.home.data.HomeViewModel
 import com.example.blooddonationapp.registration.data.RegistrationViewModel
 import com.example.blooddonationapp.registration.data.tempRegistrationDetails
@@ -47,6 +49,7 @@ import kotlinx.coroutines.launch
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BloodGroup(
+    goto_homepage:()-> Unit,
     goto_verifyadhaar: () -> Unit,
     viewModel: RegistrationViewModel = hiltViewModel(),
     dataViewModel: HomeViewModel = hiltViewModel()
@@ -171,7 +174,13 @@ fun BloodGroup(
                         viewModel.saveRegistrationEntryByString(
                             "bloodGroup",
                             tempRegistrationDetails.bloodGroup,
-                            goto_verifyadhaar
+
+                            //now, if aadhar not submitted, go to aadhar, else return to homepage
+                            if (currentUser.aadharStatus !in "submitted verified"){
+                                goto_verifyadhaar
+                            }else{
+                                goto_homepage
+                            }
                         )
                     }
                 },

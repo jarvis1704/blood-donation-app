@@ -2,6 +2,7 @@ package com.example.blooddonationapp.global.data
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,11 +16,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Date
 
 //to keep track of the current user logged in
+@RequiresApi(Build.VERSION_CODES.O)
 object currentUser{
     var isSearching by mutableStateOf(true)
     var isLoggedIn by mutableStateOf(false)
@@ -30,7 +33,7 @@ object currentUser{
      "registered" = goto homepage directly */
 
     //below data will be fetched from either email or registration pages
-    var birthDate by mutableStateOf("")
+    var birthDate by mutableStateOf(LocalDateTime.now())
     var username by mutableStateOf("User!")
     var gender by mutableStateOf("")
     var area by mutableStateOf("")
@@ -45,6 +48,7 @@ object currentUser{
     var isBloodTypeFilter by mutableStateOf(false)
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun updateCurrentUser(){
@@ -54,6 +58,7 @@ fun updateCurrentUser(){
         viewmodel.FetchAnnouncements()
         LaunchedEffect(currentPage){
             CoroutineScope(Dispatchers.IO).launch {
+                currentUser.birthDate = viewmodel.GetUserBirthdate()
                 currentUser.username = viewmodel.getRegistrationEntryByString("username")
                 currentUser.gender = viewmodel.getRegistrationEntryByString("gender")
                 currentUser.area = viewmodel.getRegistrationEntryByString("area")

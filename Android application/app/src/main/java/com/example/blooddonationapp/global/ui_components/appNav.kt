@@ -430,8 +430,14 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                 when (route) {
                     "ageverification" -> ageVerification(goto_donordetails = { navController.navigate("donordetails") })
                     "donordetails" -> donorDetails(goto_bloodgroup = { navController.navigate("bloodgroup") })
-                    "bloodgroup" -> BloodGroup(goto_verifyadhaar = { navController.navigate("verifyaadhar") })
-                    "verifyaadhar" -> verifyAadhar(goto_homepage = { navController.navigate("homepage") })
+                    "bloodgroup" -> BloodGroup(
+                        goto_homepage = {navController.navigate("homepage"){
+                            popUpTo(0){inclusive=true}
+                        } },
+                        goto_verifyadhaar = { navController.navigate("verifyaadhar") })
+                    "verifyaadhar" -> verifyAadhar(goto_homepage = { navController.navigate("homepage") {
+                        popUpTo(0){inclusive = true}
+                    } })
                 }
             }
         }
