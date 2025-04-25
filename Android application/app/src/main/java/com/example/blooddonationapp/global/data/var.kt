@@ -27,7 +27,6 @@ object currentUser{
     var registrationType by mutableStateOf("")
     /* we fetch this string at runtime
      null = not registered, so goto registration page
-     "signup" = only email and password is registered, other data need to be uploaded
      "registered" = goto homepage directly */
 
     //below data will be fetched from either email or registration pages
@@ -60,6 +59,7 @@ fun updateCurrentUser(){
                 currentUser.area = viewmodel.getRegistrationEntryByString("area")
                 currentUser.profilePic = viewmodel.getRegistrationEntryByString("profilepic")
                 currentUser.bloodGroup = viewmodel.getRegistrationEntryByString("bloodGroup")
+                currentUser.registrationType = viewmodel.getRegistrationEntryByString("registration_type")
                 currentUser.aadharStatus = viewmodel.getAadharDetails("aadharStatus").toString()
             }
         }

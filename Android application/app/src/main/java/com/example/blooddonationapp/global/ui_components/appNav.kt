@@ -325,6 +325,8 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                 currentPage = route
                 when (route) {
                     "homepage" -> homepage(
+                        goto_registration = {navController.navigate("ageverification")},
+                        goto_aadharregistration = {navController.navigate("verifyaadhar")},
                         goto_bloodreqform = { navController.navigate("bloodreqform") },
                         goto_donorform = {navController.navigate("donorform")}
                     )
