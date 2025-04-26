@@ -45,145 +45,153 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun dateYearSelector(
     dateToBeUpdated: MutableState<LocalDate>,
-    selectedDate: LocalDate) {
+    selectedDate: LocalDate
+) {
     var displayedMonth by remember { mutableStateOf(YearMonth.from(selectedDate)) }
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        elevation = CardDefaults.cardElevation(4.dp)
-    ) {
-        Column(
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(16.dp),
+            elevation = CardDefaults.cardElevation(4.dp)
         ) {
-            // Month and Year Row
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
             ) {
-                // Month Selector
+                // Month and Year Row
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    IconButton(onClick = { displayedMonth = displayedMonth.minusMonths(1) }) {
-                        Icon(
-                            imageVector = Icons.Default.KeyboardArrowLeft,
-                            contentDescription = "Previous Month",
-                            tint = Color(0xFFEB4335)
+                    // Month Selector
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        IconButton(onClick = { displayedMonth = displayedMonth.minusMonths(1) }) {
+                            Icon(
+                                imageVector = Icons.Default.KeyboardArrowLeft,
+                                contentDescription = "Previous Month",
+                                tint = Color(0xFFEB4335)
+                            )
+                        }
+                        Text(
+                            text = displayedMonth.month.getDisplayName(
+                                TextStyle.FULL,
+                                Locale.getDefault()
+                            ),
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.padding(horizontal = 8.dp)
                         )
+                        IconButton(onClick = { displayedMonth = displayedMonth.plusMonths(1) }) {
+                            Icon(
+                                imageVector = Icons.Default.KeyboardArrowRight,
+                                contentDescription = "Next Month",
+                                tint = Color(0xFFEB4335)
+                            )
+                        }
                     }
-                    Text(
-                        text = displayedMonth.month.getDisplayName(TextStyle.FULL, Locale.getDefault()),
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(horizontal = 8.dp)
-                    )
-                    IconButton(onClick = { displayedMonth = displayedMonth.plusMonths(1) }) {
-                        Icon(
-                            imageVector = Icons.Default.KeyboardArrowRight,
-                            contentDescription = "Next Month",
-                            tint = Color(0xFFEB4335)
+
+                    // Year Selector
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        IconButton(onClick = { displayedMonth = displayedMonth.minusYears(1) }) {
+                            Icon(
+                                imageVector = Icons.Default.KeyboardArrowLeft,
+                                contentDescription = "Previous Year",
+                                tint = Color(0xFFEB4335)
+                            )
+                        }
+                        Text(
+                            text = "${displayedMonth.year}",
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.padding(horizontal = 8.dp)
                         )
+                        IconButton(onClick = { displayedMonth = displayedMonth.plusYears(1) }) {
+                            Icon(
+                                imageVector = Icons.Default.KeyboardArrowRight,
+                                contentDescription = "Next Year",
+                                tint = Color(0xFFEB4335)
+                            )
+                        }
                     }
                 }
 
-                // Year Selector
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Week Header
                 Row(
-                    verticalAlignment = Alignment.CenterVertically
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    IconButton(onClick = { displayedMonth = displayedMonth.minusYears(1) }) {
-                        Icon(
-                            imageVector = Icons.Default.KeyboardArrowLeft,
-                            contentDescription = "Previous Year",
-                            tint = Color(0xFFEB4335)
-                        )
-                    }
-                    Text(
-                        text = "${displayedMonth.year}",
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(horizontal = 8.dp)
-                    )
-                    IconButton(onClick = { displayedMonth = displayedMonth.plusYears(1) }) {
-                        Icon(
-                            imageVector = Icons.Default.KeyboardArrowRight,
-                            contentDescription = "Next Year",
-                            tint = Color(0xFFEB4335)
+                    DayOfWeek.values().forEach { dayOfWeek ->
+                        Text(
+                            text = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = Color.Gray,
+                            modifier = Modifier.weight(1f),
+                            textAlign = TextAlign.Center
                         )
                     }
                 }
-            }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-            // Week Header
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                DayOfWeek.values().forEach { dayOfWeek ->
-                    Text(
-                        text = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = Color.Gray,
-                        modifier = Modifier.weight(1f),
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
+                val firstDayOfMonth = displayedMonth.atDay(1)
+                val firstDayOfGrid =
+                    firstDayOfMonth.minusDays(firstDayOfMonth.dayOfWeek.value.toLong() - 1)
 
-            Spacer(modifier = Modifier.height(8.dp))
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(7),
+                    modifier = Modifier.height(280.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    items(42) { index ->
+                        val date = firstDayOfGrid.plusDays(index.toLong())
+                        val isCurrentMonth = date.month == displayedMonth.month
+                        val isSelected = date == dateToBeUpdated.value
 
-            val firstDayOfMonth = displayedMonth.atDay(1)
-            val firstDayOfGrid = firstDayOfMonth.minusDays(firstDayOfMonth.dayOfWeek.value.toLong() - 1)
-
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(7),
-                modifier = Modifier.height(280.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                items(42) { index ->
-                    val date = firstDayOfGrid.plusDays(index.toLong())
-                    val isCurrentMonth = date.month == displayedMonth.month
-                    val isSelected = date == dateToBeUpdated.value
-
-                    Box(
-                        modifier = Modifier
-                            .aspectRatio(1f)
-                            .padding(4.dp)
-                            .clip(CircleShape)
-                            .background(
-                                when {
-                                    isSelected -> Color(0xFFEB4335)
-                                    isCurrentMonth -> Color.Transparent
-                                    else -> Color.Transparent
+                        Box(
+                            modifier = Modifier
+                                .aspectRatio(1f)
+                                .padding(4.dp)
+                                .clip(CircleShape)
+                                .background(
+                                    when {
+                                        isSelected -> Color(0xFFEB4335)
+                                        isCurrentMonth -> Color.Transparent
+                                        else -> Color.Transparent
+                                    }
+                                )
+                                .clickable(enabled = isCurrentMonth) {
+                                    dateToBeUpdated.value = date
+                                },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = date.dayOfMonth.toString(),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = when {
+                                    isSelected -> Color.White
+                                    isCurrentMonth -> Color.Black
+                                    else -> Color.LightGray
                                 }
                             )
-                            .clickable(enabled = isCurrentMonth) {
-                                dateToBeUpdated.value = date
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = date.dayOfMonth.toString(),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = when {
-                                isSelected -> Color.White
-                                isCurrentMonth -> Color.Black
-                                else -> Color.LightGray
-                            }
-                        )
+                        }
                     }
                 }
             }
         }
+        Text(text = "Selected Date: ${dateToBeUpdated.value.dayOfMonth} ${dateToBeUpdated.value.month}, ${dateToBeUpdated.value.year}")
     }
-    Text(text = "Selected Date: ${dateToBeUpdated.value.dayOfMonth} ${dateToBeUpdated.value.month}, ${dateToBeUpdated.value.year}")
+
+
 }

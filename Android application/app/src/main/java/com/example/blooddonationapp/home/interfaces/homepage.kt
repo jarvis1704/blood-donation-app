@@ -20,10 +20,12 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
@@ -33,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,15 +52,15 @@ import com.example.blooddonationapp.home.ui_components.AnnouncementCard
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun homepage(
-    goto_registration:()-> Unit,
-    goto_aadharregistration:()-> Unit,
-    goto_bloodreqform:()->Unit,
+    goto_registration: () -> Unit,
+    goto_aadharregistration: () -> Unit,
+    goto_bloodreqform: () -> Unit,
     viewModel: EmailLoginViewModel = hiltViewModel(),
-    goto_donorform: ()-> Unit
-){
+    goto_donorform: () -> Unit
+) {
 //    var viewmodel: emailLoginViewmodel = viewModel()
     updateCurrentUser()
-    Box(modifier = Modifier.fillMaxSize()){
+    Box(modifier = Modifier.fillMaxSize()) {
 
         Column(modifier = Modifier.fillMaxSize()) {
             Box(
@@ -66,7 +69,7 @@ fun homepage(
                     .weight(0.3f)
                     .background(Color(0xFFEB4335))
 
-            ){
+            ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -74,12 +77,27 @@ fun homepage(
                         .padding(top = 50.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
                         Column {
-                            Text("Welcome", fontSize = 32.sp, fontWeight = FontWeight.Medium, color = Color.White)
+                            Text(
+                                "Welcome",
+                                fontSize = 32.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.White
+                            )
                             Spacer(Modifier.height(8.dp))
                             //replace it with user name variable
-                            Text(currentUser.username, fontSize = 40.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
+                            Text(
+                                currentUser.username,
+                                fontSize = 40.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = Color.White
+                            )
                         }
 //                        IconButton({/*todo Notification inplementation*/}) {
 //                            Icon(imageVector = Icons.Filled.Notifications, contentDescription = "Notification Icon", tint = Color.White)
@@ -92,16 +110,23 @@ fun homepage(
                     .fillMaxWidth()
                     .weight(0.7f)
                     .background(Color.White)
-            ){
+            ) {
                 Column(
-                    modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp).navigationBarsPadding()
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp)
+                        .navigationBarsPadding()
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().offset(y = (-50).dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .offset(y = (-50).dp),
                         horizontalArrangement = Arrangement.spacedBy(24.dp)
                     ) {
                         Card(
-                            modifier = Modifier.weight(1f).aspectRatio(1.6f),
+                            modifier = Modifier
+                                .weight(1f)
+                                .aspectRatio(1.6f),
                             elevation = CardDefaults.cardElevation(
                                 8.dp
                             ),
@@ -109,7 +134,7 @@ fun homepage(
                                 Color.White
                             ),
                             onClick = {
-                                if (currentUser.registrationType != "registered"){
+                                if (currentUser.registrationType != "registered") {
                                     NewGlobalAlert(
                                         title = "Blood Donation",
                                         details = "Oops, you need to complete the registration details first to be able to apply for donation.\n\nDo you want to go to the registration?",
@@ -118,23 +143,33 @@ fun homepage(
                                             goto_registration()
                                         }
                                     )
-                                }
-                                else{
+                                } else {
                                     goto_donorform()
                                 }
                             }
                         ) {
                             Column(
-                                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
                             ) {
-                                Image(painter = painterResource(R.drawable.home_page_logo1), contentDescription = "ButtonLogo", modifier = Modifier.height(50.dp).width(25.dp))
+                                Image(
+                                    painter = painterResource(R.drawable.home_page_logo1),
+                                    contentDescription = "ButtonLogo",
+                                    modifier = Modifier
+                                        .height(50.dp)
+                                        .width(25.dp)
+                                )
                                 Spacer(Modifier.height(8.dp))
                                 Text("DONATE")
                             }
                         }
                         Card(
-                            modifier = Modifier.weight(1f).aspectRatio(1.6f),
+                            modifier = Modifier
+                                .weight(1f)
+                                .aspectRatio(1.6f),
                             elevation = CardDefaults.cardElevation(
                                 8.dp
                             ),
@@ -146,55 +181,77 @@ fun homepage(
                             }
                         ) {
                             Column(
-                                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
                             ) {
-                                Image(painter = painterResource(R.drawable.home_page_logo2), contentDescription = "ButtonLogo", modifier = Modifier.height(50.dp).width(30.dp))
+                                Image(
+                                    painter = painterResource(R.drawable.home_page_logo2),
+                                    contentDescription = "ButtonLogo",
+                                    modifier = Modifier
+                                        .height(50.dp)
+                                        .width(30.dp)
+                                )
                                 Spacer(Modifier.height(8.dp))
                                 Text("Find Donor")
                             }
                         }
                     }
-                    Text("See What's new!", fontSize = 32.sp, modifier = Modifier.padding(vertical = 16.dp), fontWeight = FontWeight.Bold)
+                    Text(
+                        "See What's new!",
+                        fontSize = 32.sp,
+                        modifier = Modifier.padding(vertical = 16.dp),
+                        fontWeight = FontWeight.Bold
+                    )
                     //vertical scrollable column
                     LazyColumn(
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         item {
-                            when{
-                                currentUser.registrationType != "registered"->{
+                            when {
+                                currentUser.registrationType != "registered" -> {
                                     //registration reminder
-                                    Card (
-                                        modifier = Modifier.height(50.dp)
-                                            .clickable(
-                                                onClick = {goto_registration()}
-                                            )
-                                    ){
-                                        Text("Complete your registration details ->")
+                                    FilledTonalButton(
+                                        onClick = { goto_registration() }
+                                    ) {
+                                        Text(
+                                            text = "Complete your registration details ->",
+                                            fontSize = 16.sp,
+                                            fontFamily = FontFamily.SansSerif,
+                                        )
                                     }
                                 }
-                                (!(currentUser.aadharStatus == "submitted" || currentUser.aadharStatus == "verified" || currentUser.aadharStatus == "rejected")) && (currentUser.registrationType == "registered")->{
+
+                                (!(currentUser.aadharStatus == "submitted" || currentUser.aadharStatus == "verified" || currentUser.aadharStatus == "rejected")) && (currentUser.registrationType == "registered") -> {
                                     //aadhar reminder
-                                    Card (
-                                        modifier = Modifier.height(50.dp)
+                                    Card(
+                                        modifier = Modifier
+                                            .height(50.dp)
                                             .clickable(
-                                                onClick = {goto_aadharregistration()}
+                                                onClick = { goto_aadharregistration() }
                                             )
-                                    ){
+                                    ) {
                                         Text("Complete your aadhar details ->")
                                     }
                                 }
-                                else->{
+
+                                else -> {
 
                                 }
                             }
                         }
                         globalAnnouncementList?.let {
-                            items(it.toList()){ item ->
+                            items(it.toList()) { item ->
                                 AnnouncementCard(item)
                             }
                             item {
-                                Spacer(modifier = Modifier.fillMaxWidth().padding(25.dp))
+                                Spacer(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(25.dp)
+                                )
                             }
                         }
                     }

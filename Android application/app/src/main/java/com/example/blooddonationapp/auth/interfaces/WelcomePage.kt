@@ -196,7 +196,7 @@ fun WelcomePage(
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Text(
-                            "Need Emergency Blood? Click here!",
+                            "Request Emergency Blood",
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -239,7 +239,7 @@ fun WelcomePage(
                         modifier = Modifier.padding(8.dp)
                     ) {
                         Text(
-                            "Admin? Click Here",
+                            "Admin Login",
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                             color = primaryRed
