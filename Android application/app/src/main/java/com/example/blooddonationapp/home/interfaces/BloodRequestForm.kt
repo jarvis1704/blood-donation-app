@@ -21,7 +21,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -42,9 +42,9 @@ import com.example.blooddonationapp.registration.interfaces.AnimatedButton
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun BloodRequestForm(
-    goto_parentpage:()-> Unit,
+    goto_parentpage: () -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel()
-){
+) {
     val positiveBloodGroups = listOf("A+", "B+", "AB+", "O+")
     val negativeBloodGroups = listOf("A-", "B-", "AB-", "O-")
 
@@ -94,10 +94,14 @@ fun BloodRequestForm(
                     modifier = Modifier
                         .fillMaxWidth(1f)
                         .padding(horizontal = 16.dp)
-                        .align(Alignment.Center).offset(y = (-24).dp)
+                        .align(Alignment.Center)
+                        .offset(y = (-24).dp)
                         .verticalScroll(rememberScrollState()),
                     elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White, contentColor = Color.Black)
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White,
+                        contentColor = Color.Black
+                    )
                 ) {
                     Column(
                         modifier = Modifier
@@ -112,7 +116,7 @@ fun BloodRequestForm(
                         )
 
                         Spacer(Modifier.height(8.dp))
-                        Divider(color = Color(0xFFEEEEEE), thickness = 1.dp)
+                        HorizontalDivider(color = Color(0xFFEEEEEE), thickness = 1.dp)
                         Spacer(Modifier.height(16.dp))
 
                         Text("Patient Name", fontWeight = FontWeight.Medium)
@@ -143,7 +147,7 @@ fun BloodRequestForm(
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Column(
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(0.3f)
                             ) {
                                 Text("Patient Age", fontWeight = FontWeight.Medium)
                                 TextField(
@@ -169,7 +173,7 @@ fun BloodRequestForm(
                             }
 
                             Column(
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(0.7f)
                             ) {
                                 Text("Gender", fontWeight = FontWeight.Medium)
                                 //selectable gender here
@@ -189,13 +193,16 @@ fun BloodRequestForm(
                                     ) {
                                         FlowRow(
                                             modifier = Modifier.fillMaxWidth(),
-                                            horizontalArrangement = Arrangement.spacedBy(1.dp),
+                                            horizontalArrangement = Arrangement.SpaceEvenly,
+                                            maxLines = 1
                                         ) {
-                                            genderTypes.forEach { type->
+                                            genderTypes.forEach { type ->
                                                 AnimatedButton(
                                                     bloodType = type,
                                                     isSelected = newBloodRequest.patientgender == type,
-                                                    onClick = { newBloodRequest.patientgender = type}
+                                                    onClick = {
+                                                        newBloodRequest.patientgender = type
+                                                    }
                                                 )
                                             }
                                         }
@@ -234,7 +241,7 @@ fun BloodRequestForm(
                         )
 
                         Spacer(Modifier.height(8.dp))
-                        Divider(color = Color(0xFFEEEEEE), thickness = 1.dp)
+                        HorizontalDivider(color = Color(0xFFEEEEEE), thickness = 1.dp)
                         Spacer(Modifier.height(16.dp))
 
                         Text("Attendant Name", fontWeight = FontWeight.Medium)
@@ -314,7 +321,7 @@ fun BloodRequestForm(
                         )
 
                         Spacer(Modifier.height(8.dp))
-                        Divider(color = Color(0xFFEEEEEE), thickness = 1.dp)
+                        HorizontalDivider(color = Color(0xFFEEEEEE), thickness = 1.dp)
                         Spacer(Modifier.height(16.dp))
 
                         Text("Select Blood Group", fontWeight = FontWeight.Medium)
@@ -371,7 +378,10 @@ fun BloodRequestForm(
                         )
 
                         Spacer(Modifier.height(8.dp))
-                        Divider(color = Color(0xFFEEEEEE), thickness = 1.dp)
+                        HorizontalDivider(
+                            thickness = 1.dp,
+                            color = Color(0xFFEEEEEE)
+                        )
                         Spacer(Modifier.height(16.dp))
 
                         //urgency level here
@@ -392,13 +402,13 @@ fun BloodRequestForm(
                             ) {
                                 FlowRow(
                                     modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.spacedBy(1.dp),
+                                    horizontalArrangement = Arrangement.SpaceEvenly,
                                 ) {
-                                    urgencyTypes.forEach { type->
+                                    urgencyTypes.forEach { type ->
                                         AnimatedButton(
                                             bloodType = type,
                                             isSelected = newBloodRequest.urgencylevel == type,
-                                            onClick = { newBloodRequest.urgencylevel = type}
+                                            onClick = { newBloodRequest.urgencylevel = type }
                                         )
                                     }
                                 }
@@ -458,10 +468,11 @@ fun BloodRequestForm(
                                     newBloodRequest.attendantname.isNotEmpty() &&
                                     newBloodRequest.attendantphoneno.isNotEmpty() &&
                                     newBloodRequest.hospital.isNotEmpty() &&
-                                    newBloodRequest.bloodgroup.isNotEmpty()){
+                                    newBloodRequest.bloodgroup.isNotEmpty()
+                                ) {
 
                                     homeViewModel.newBloodReq(goto_parentpage)
-                                }else{
+                                } else {
                                     errorMessage = "Required fields are empty"
                                 }
                             },
