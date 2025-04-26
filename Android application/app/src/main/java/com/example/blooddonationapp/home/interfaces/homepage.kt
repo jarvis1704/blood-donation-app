@@ -173,7 +173,7 @@ fun homepage(
                                         Text("Complete your registration details ->")
                                     }
                                 }
-                                currentUser.aadharStatus !in "submitted verified" && currentUser.registrationType == "registered"->{
+                                (!(currentUser.aadharStatus == "submitted" || currentUser.aadharStatus == "verified" || currentUser.aadharStatus == "rejected")) && (currentUser.registrationType == "registered")->{
                                     //aadhar reminder
                                     Card (
                                         modifier = Modifier.height(50.dp)

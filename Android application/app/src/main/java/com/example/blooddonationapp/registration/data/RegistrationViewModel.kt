@@ -181,20 +181,14 @@ class RegistrationViewModel @Inject constructor(): ViewModel(){
 
     @SuppressLint("NewApi")
     fun saveAadharData(goto_nextpage: () -> Unit = {}){
-        val data1 = mapOf("aadharNo" to tempRegistrationDetails.aadharNo)
+        val data = mapOf(
+            "aadharNo" to tempRegistrationDetails.aadharNo,
+            "aadharDOB" to tempRegistrationDetails.aadharDOB,
+            "useruid" to _auth.currentUser?.uid
+        )
         if (_auth.currentUser != null){
             _db.collection("aadhardetails").document(_auth.currentUser!!.uid)
-                .set(data1, SetOptions.merge())
-                .addOnSuccessListener {
-                    goto_nextpage()
-                }.addOnFailureListener {
-                    errorMessage = it.message.toString()
-                }
-        }
-        val data2 = mapOf("aadharDOB" to tempRegistrationDetails.aadharDOB)
-        if (_auth.currentUser != null){
-            _db.collection("aadhardetails").document(_auth.currentUser!!.uid)
-                .set(data2, SetOptions.merge())
+                .set(data, SetOptions.merge())
                 .addOnSuccessListener {
                     goto_nextpage()
                 }.addOnFailureListener {
