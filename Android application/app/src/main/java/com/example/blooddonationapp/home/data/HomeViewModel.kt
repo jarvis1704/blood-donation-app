@@ -50,7 +50,7 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 val document = _auth.currentUser?.let { _db.collection("userdetails").document(it.uid) }
                     ?.get()?.await()
                 if (document !=null){
-                    val temp = document.getTimestamp("birthdate") as Timestamp
+                    val temp = document.getTimestamp("birthdate") ?: Timestamp.now()
                     return TimestampToLocalDateTime(temp)
                 }else{
                     return LocalDateTime.now()

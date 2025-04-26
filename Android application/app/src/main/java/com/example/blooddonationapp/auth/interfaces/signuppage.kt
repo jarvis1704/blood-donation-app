@@ -1,6 +1,8 @@
 package com.example.blooddonationapp.auth.interfaces
 
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -41,6 +43,7 @@ import com.example.blooddonationapp.auth.data.tempUserObj
 
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun signuppage(
@@ -204,7 +207,7 @@ fun signuppage(
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(
                             onClick = {
-                                viewModel.signup(tempUserObj.email, tempUserObj.password, tempUserObj.confirmpassword, goto_loadingpage)
+                                viewModel.signup(tempUserObj.email, tempUserObj.password, tempUserObj.name, tempUserObj.confirmpassword, goto_loadingpage)
                             },
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEB4335))
