@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import com.example.blooddonationapp.global.data.errorMessage
+import com.example.blooddonationapp.global.data.infoMessage
 import com.example.blooddonationapp.home.data.TimestampToLocalDate
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -203,7 +204,9 @@ class RegistrationViewModel @Inject constructor(): ViewModel(){
             _db.collection("aadhardetails").document(_auth.currentUser!!.uid)
                 .set(data, SetOptions.merge())
                 .addOnSuccessListener {
-
+                    if (status=="submitted"){
+                        infoMessage="Your details are submitted and will be verified shortly.\nThank You"
+                    }
                 }.addOnFailureListener {
                     errorMessage = it.message.toString()
                 }

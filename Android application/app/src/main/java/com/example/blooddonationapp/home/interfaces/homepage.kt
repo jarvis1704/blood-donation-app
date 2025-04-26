@@ -45,6 +45,7 @@ import com.example.blooddonationapp.auth.data.EmailLoginViewModel
 import com.example.blooddonationapp.global.data.NewGlobalAlert
 import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.global.data.infoMessage
+import com.example.blooddonationapp.global.data.isDataUpdating
 import com.example.blooddonationapp.global.data.updateCurrentUser
 import com.example.blooddonationapp.home.data.globalAnnouncementList
 import com.example.blooddonationapp.home.ui_components.AnnouncementCard
@@ -224,7 +225,9 @@ fun homepage(
                                     }
                                 }
 
-                                (!(currentUser.aadharStatus == "submitted" || currentUser.aadharStatus == "verified" || currentUser.aadharStatus == "rejected")) && (currentUser.registrationType == "registered") -> {
+                                (!(currentUser.aadharStatus == "submitted" || currentUser.aadharStatus == "verified" || currentUser.aadharStatus == "rejected"))
+                                        && (currentUser.registrationType == "registered")
+                                        && !isDataUpdating -> {
                                     //aadhar reminder
                                     Card(
                                         modifier = Modifier

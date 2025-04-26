@@ -54,6 +54,7 @@ import com.example.blooddonationapp.AdminEntry.interfaces.EmergencyNumbers
 import com.example.blooddonationapp.AdminEntry.interfaces.NewAnnouncement
 import com.example.blooddonationapp.AdminEntry.interfaces.NewBloodRequest
 import com.example.blooddonationapp.home.interfaces.BloodDonorForm
+import com.example.blooddonationapp.home.interfaces.BloodRequestDetails
 import kotlinx.coroutines.launch
 
 
@@ -236,7 +237,9 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                     popUpTo(0) { inclusive = true }
                 } },
                 goto_signuppage = {navController.navigate("signuppage")},
-                goto_loadingpage = {navController.navigate("loadingpage")},
+                goto_loadingpage = {navController.navigate("loadingpage"){
+                    popUpTo(0){inclusive=true}
+                } },
                 //for login with google
                 state = state,
                 onSignInClick = {
@@ -331,13 +334,18 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                         goto_donorform = {navController.navigate("donorform")}
                     )
                     "userprofile" -> userProfile(
-                        goto_loadingpage = { navController.navigate("loadingpage") },
+                        goto_loadingpage = { navController.navigate("loadingpage") {
+                            popUpTo(0){inclusive=true}
+                        } },
                         goto_settings = { navController.navigate("settingsandpreferences") },
                         goto_aboutus = { navController.navigate("aboutus") },
                         goto_ageverification = {navController.navigate("ageverification")}
                     )
                     "notificationspage" -> NotificationsPage({ navController.navigate("homepage") })
-                    "bloodrequests" -> bloodRequests({ navController.navigate("homepage") })
+                    "bloodrequests" -> bloodRequests(
+                        goto_homepage = { navController.navigate("homepage") },
+                        goto_bloodreqdetails = {navController.navigate("bloodreqdetails")}
+                    )
                 }
             }
         }
@@ -381,7 +389,9 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                     popUpTo(0) {inclusive = true}
                 } },
                 goto_loginpage = {navController.navigate("loginpage")},
-                goto_loadingpage = {navController.navigate("loadingpage")})
+                goto_loadingpage = {navController.navigate("loadingpage"){
+                    popUpTo(0){inclusive=true}
+                } })
         }
 
         // Sequential registration flow screens - use left/right animations for a smooth flow
@@ -476,7 +486,9 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                 currentPage = route
                 when (route) {
                     "settingsandpreferences" -> SettingsAndPreferences(
-                        goto_loadingpage = { navController.navigate("loadingpage") },
+                        goto_loadingpage = { navController.navigate("loadingpage") {
+                            popUpTo(0){inclusive=true}
+                        } },
                         goto_userProfile = { navController.navigate("userprofile") }
                     )
                     "aboutus" -> AboutUs(goto_userProfile = { navController.navigate("userprofile") })
@@ -558,6 +570,10 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         composable("donorform"){
             currentPage = "donorform"
             BloodDonorForm()
+        }
+        composable("bloodreqdetails"){
+            currentPage = "bloodreqdetails"
+            BloodRequestDetails()
         }
     }
 }

@@ -52,6 +52,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.global.data.updateCurrentUser
 import com.example.blooddonationapp.home.data.HomeViewModel
+import com.example.blooddonationapp.home.data.UpdateRequestToShow
 import com.example.blooddonationapp.home.data.announcement
 import com.example.blooddonationapp.home.data.bloodRequest
 import com.example.blooddonationapp.home.data.globalBloodRequestList
@@ -67,6 +68,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun bloodRequests(
     goto_homepage:()->Unit,
+    goto_bloodreqdetails: () -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel()
 ){
     updateCurrentUser()
@@ -133,10 +135,10 @@ fun bloodRequests(
                             items(it.toList()){item->
                                 if (currentUser.isBloodTypeFilter){
                                     if (item.bloodtype == currentUser.bloodGroup){
-                                        BloodRequestAnouncementCard(item)
+                                        BloodRequestAnouncementCard(goto_bloodreqdetails, item)
                                     }
                                 }else{
-                                    BloodRequestAnouncementCard(item)
+                                    BloodRequestAnouncementCard(goto_bloodreqdetails, item)
                                 }
                             }
                         }
@@ -149,21 +151,40 @@ fun bloodRequests(
 
 @SuppressLint("NewApi")
 @Composable
-fun BloodRequestAnouncementCard(bloodRequest: bloodRequest) {
+fun BloodRequestAnouncementCard(
+    goto_bloodreqdetails:()-> Unit,
+    bloodRequest: bloodRequest) {
     Card(
         modifier= Modifier.defaultMinSize(minWidth = 393.dp, minHeight = 180.dp),
         colors = CardDefaults.cardColors(
-            Color(0xFFEB4335)
+            when (bloodRequest.urgencylevel){
+                "Emergency"->Color(0xFFEB4335)
+                "Routine"->Color.DarkGray
+                else -> Color(0xFFFF7043)
+            }
         ),
         elevation = CardDefaults.elevatedCardElevation(
             8.dp
         ),
-        onClick = {/*todo AnnouncementCard implementation*/}
+        onClick = {
+            UpdateRequestToShow(bloodRequest)
+            goto_bloodreqdetails()
+        }
     ) {
         Column(
             modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)
         ) {
-            Text("EMERGENCY ${bloodRequest.bloodtype} BLOOD NEEDED", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.White, lineHeight = 1.25.em)
+            Text("${bloodRequest.bloodtype} BLOOD NEEDED",
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                lineHeight = 1.25.em)
+            Spacer(Modifier.height(3.dp))
+            Text(bloodRequest.urgencylevel.uppercase(),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                lineHeight = 1.25.em)
             Spacer(Modifier.height(8.dp))
             Row(
                 verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)
