@@ -173,15 +173,15 @@ fun BloodGroup(
                     if (tempRegistrationDetails.bloodGroup != "") {
                         viewModel.saveRegistrationEntryByString(
                             "bloodGroup",
-                            tempRegistrationDetails.bloodGroup,
+                            tempRegistrationDetails.bloodGroup)
+                        viewModel.saveRegistrationType("registered")
 
                             //now, if aadhar not submitted, go to aadhar, else return to homepage
                             if (currentUser.aadharStatus !in "submitted verified"){
-                                goto_verifyadhaar
+                                goto_verifyadhaar()
                             }else{
-                                goto_homepage
+                                goto_homepage()
                             }
-                        )
                     }
                 },
                 modifier = Modifier
