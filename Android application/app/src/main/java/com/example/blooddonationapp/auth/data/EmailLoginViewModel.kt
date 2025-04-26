@@ -1,6 +1,8 @@
 package com.example.blooddonationapp.auth.data
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.blooddonationapp.AdminEntry.data.isFetchingNumbers
@@ -8,6 +10,7 @@ import com.example.blooddonationapp.global.data.PhoneNo
 import com.example.blooddonationapp.global.data.PhoneNoList
 import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.global.data.errorMessage
+import com.example.blooddonationapp.registration.data.tempRegistrationDetails
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -16,6 +19,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
+@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class EmailLoginViewModel @Inject constructor() : ViewModel() {
     private val _auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -62,6 +66,7 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun checkLoginStatus() {
         val auth = FirebaseAuth.getInstance()
         Log.d("checkLogin", auth.currentUser?.displayName.toString())
@@ -101,6 +106,7 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
     fun signup(
         email: String,
         password: String,
+        username: String,
         confirmpassword: String,
         goto_loadingpage: () -> Unit
     ) {
@@ -110,6 +116,13 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
                     _auth.createUserWithEmailAndPassword(email, password)
                         .addOnSuccessListener {
                             currentUser.isSearching = true
+                            //save username to firebase
+                            val datamap = mapOf(
+                                "username" to username
+                            )
+                            _db.collection("userdetails").document(_auth.currentUser!!.uid)
+                                .set(datamap, SetOptions.merge())
+
                             goto_loadingpage()
                         }.addOnFailureListener {
                             errorMessage = it.message.toString()

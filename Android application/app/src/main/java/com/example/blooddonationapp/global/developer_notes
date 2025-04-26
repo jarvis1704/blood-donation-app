@@ -5,12 +5,16 @@ todo:
 2) sending form to admin(firebase) (done)
 3) navigation (done)
 4) new screens for admin (done)
-5) settings option to edit personal data
+5) settings option to edit personal data (done)
 6) auto deletion of blood reqs and announcements (done)
 7) notifications
 8) admin packaging (done)
 9) deleting unnecessary imports at the end
-10) aadhar veriffication system
+10) aadhaar verification system
+11) save username on profile creation via email (done)
+12) check firebase timestamp error (done)
+13) add blood req empty list text (done)
+14) modify "last donated" and "location" in userprofile
 
 screens to be made:
 new homescreen (Done)

@@ -1,6 +1,8 @@
 package com.example.blooddonationapp.home.interfaces
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
@@ -60,6 +62,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun bloodRequests(
@@ -98,27 +101,34 @@ fun bloodRequests(
                 ) {
                     Text(text = "BLOOD REQUESTS NEAR YOU", fontSize = 24.sp, fontWeight = FontWeight.Bold)
                     Spacer(Modifier.height(3.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(text = "Filter By Your Blood Group: ${currentUser.bloodGroup}", fontSize = 18.sp, fontWeight = FontWeight.Medium, color = Color.Gray)
-                        Switch(
-                            checked = currentUser.isBloodTypeFilter,
-                            onCheckedChange = {
-                                currentUser.isBloodTypeFilter = !currentUser.isBloodTypeFilter
-                            },
-                            colors = SwitchDefaults.colors(
-                                checkedTrackColor = BloodDonationAppColor.BloodRed,
+                    if (currentUser.bloodGroup.isNotEmpty()){
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(text = "Filter By Your Blood Group: ${currentUser.bloodGroup}", fontSize = 18.sp, fontWeight = FontWeight.Medium, color = Color.Gray)
+                            Switch(
+                                checked = currentUser.isBloodTypeFilter,
+                                onCheckedChange = {
+                                    currentUser.isBloodTypeFilter = !currentUser.isBloodTypeFilter
+                                },
+                                colors = SwitchDefaults.colors(
+                                    checkedTrackColor = BloodDonationAppColor.BloodRed,
 
+                                    )
                             )
-                        )
+                        }
                     }
                     Spacer(Modifier.height(16.dp))
                     LazyColumn(
                         modifier = Modifier.fillMaxSize()
                     ) {
+                        if (globalBloodRequestList?.isEmpty() == true){
+                            item {
+                                Text("No Active Blood Requests at the moment!!")
+                            }
+                        }
                         globalBloodRequestList?.let {
                             items(it.toList()){item->
                                 if (currentUser.isBloodTypeFilter){
@@ -148,7 +158,7 @@ fun BloodRequestAnouncementCard(bloodRequest: bloodRequest) {
         elevation = CardDefaults.elevatedCardElevation(
             8.dp
         ),
-        onClick = {/*todo AnnounmentCard implementation*/}
+        onClick = {/*todo AnnouncementCard implementation*/}
     ) {
         Column(
             modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)

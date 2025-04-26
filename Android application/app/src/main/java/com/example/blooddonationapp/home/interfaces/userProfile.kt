@@ -26,6 +26,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Info
@@ -136,21 +137,20 @@ fun userProfile(
                         ) {
                             Spacer(Modifier.height(26.dp))
                             when (currentUser.profilePic) {
-//                                "" -> {
-//                                    Image(
-//                                        painterResource(id = R.drawable.default_user_icon),
-//                                        contentDescription = null,
-//                                        modifier = Modifier
-//                                            .size(
-//                                                min(
-//                                                    200.dp,
-//                                                    dimensionResource(id = R.dimen.profile_pic_size)
-//                                                )
-//                                            )
-//                                            .clip(CircleShape)
-//                                    )
-//                                }
-
+                                "" -> {
+                                    Image(
+                                        painterResource(id = R.drawable.default_user_icon),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .size(
+                                                min(
+                                                    200.dp,
+                                                    dimensionResource(id = R.dimen.profile_pic_size)
+                                                )
+                                            )
+                                            .clip(CircleShape)
+                                    )
+                                }
                                 else -> {
                                     AsyncImage(
                                         model = currentUser.profilePic,
@@ -249,6 +249,41 @@ fun userProfile(
                                     }
                                 }
 
+                                "rejected"->{
+                                    Surface(
+                                        shape = RoundedCornerShape(16.dp),
+                                        color = Color.Black.copy(alpha = 0f),
+                                        border = BorderStroke(2.dp, Color(0xFFEB4335)),
+                                        contentColor = Color.Black,
+                                        modifier = Modifier
+                                            .height(30.dp)
+                                            .clickable {
+                                                goto_ageverification()
+                                            }
+                                            .fillMaxWidth(0.4f),
+                                    ) {
+                                        Row(
+                                            horizontalArrangement = Arrangement.Center,
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            modifier = Modifier.fillMaxWidth()
+                                        ) {
+                                            Text(
+                                                " Verification Rejected",
+                                                Modifier.padding(horizontal = 4.dp),
+                                                fontSize = 12.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                color = Color(0xFFEB4335)
+                                            )
+                                            Icon(
+                                                imageVector = Icons.Default.Close,
+                                                contentDescription = "verification failed",
+                                                tint = Color(0xFFEB4335),
+                                                modifier = Modifier.size(17.dp)
+                                            )
+                                        }
+                                    }
+                                }
+
                                 else -> {
                                     //doc is not submitted
                                     Surface(
@@ -324,22 +359,24 @@ fun userProfile(
                                 InfoColumn(label = "Last Donated", value = "0 Days")
                             }
                             Spacer(Modifier.height(16.dp))
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.LocationOn,
-                                    contentDescription = "Location Icon",
-                                    tint = Color.Black
-                                )
-                                Text(
-                                    currentUser.area,
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.SemiBold,
-                                    textAlign = TextAlign.Center
-                                )
+                            if (currentUser.area.isNotEmpty()){
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.Center
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.LocationOn,
+                                        contentDescription = "Location Icon",
+                                        tint = Color.Black
+                                    )
+                                    Text(
+                                        currentUser.area,
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.SemiBold,
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
                             }
                         }
                     }
