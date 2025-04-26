@@ -281,7 +281,7 @@ fun verifyAadhar(
                                 if (photoUploadStatus=="Uploaded Successfully"){
                                     registrationViewModel.saveAadharData()
                                     registrationViewModel.saveAadharStatus("submitted")
-                                    registrationViewModel.saveRegistrationType("registered", goto_homepage)
+                                    goto_homepage()
                                 }else{
                                     errorMessage = "Error: Photo is not uploaded"
                                 }
@@ -298,8 +298,7 @@ fun verifyAadhar(
                     //skip for now button
                     Button(
                         onClick = {
-                            //tod
-                            registrationViewModel.saveRegistrationType("registered", goto_homepage)
+                            goto_homepage()
                         },
                         modifier = Modifier.fillMaxWidth(0.5f),
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEB4335))

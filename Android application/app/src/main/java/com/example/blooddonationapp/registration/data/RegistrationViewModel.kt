@@ -23,7 +23,7 @@ class RegistrationViewModel @Inject constructor(): ViewModel(){
     private val _auth : FirebaseAuth = FirebaseAuth.getInstance()
     private val _db : FirebaseFirestore = FirebaseFirestore.getInstance()
 
-    fun saveRegistrationType(type:String, goto_homepage:()->Unit){
+    fun saveRegistrationType(type:String, goto_homepage:()->Unit={}){
         val datamap = mapOf("registration_type" to type)
         if (_auth.currentUser != null){
             _db.collection("userdetails").document(_auth.currentUser!!.uid)
