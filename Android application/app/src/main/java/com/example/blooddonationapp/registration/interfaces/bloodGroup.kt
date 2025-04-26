@@ -178,10 +178,10 @@ fun BloodGroup(
                         viewModel.saveRegistrationType("registered")
 
                             //now, if aadhar not submitted, go to aadhar, else return to homepage
-                            if (currentUser.aadharStatus !in "submitted verified"){
-                                goto_verifyadhaar()
-                            }else{
+                            if (currentUser.aadharStatus == "submitted" || currentUser.aadharStatus=="verified" || currentUser.aadharStatus=="rejected"){
                                 goto_homepage()
+                            }else{
+                                goto_verifyadhaar()
                             }
                     }
                 },

@@ -236,7 +236,9 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                     popUpTo(0) { inclusive = true }
                 } },
                 goto_signuppage = {navController.navigate("signuppage")},
-                goto_loadingpage = {navController.navigate("loadingpage")},
+                goto_loadingpage = {navController.navigate("loadingpage"){
+                    popUpTo(0){inclusive=true}
+                } },
                 //for login with google
                 state = state,
                 onSignInClick = {
@@ -331,7 +333,9 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                         goto_donorform = {navController.navigate("donorform")}
                     )
                     "userprofile" -> userProfile(
-                        goto_loadingpage = { navController.navigate("loadingpage") },
+                        goto_loadingpage = { navController.navigate("loadingpage") {
+                            popUpTo(0){inclusive=true}
+                        } },
                         goto_settings = { navController.navigate("settingsandpreferences") },
                         goto_aboutus = { navController.navigate("aboutus") },
                         goto_ageverification = {navController.navigate("ageverification")}
@@ -381,7 +385,9 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                     popUpTo(0) {inclusive = true}
                 } },
                 goto_loginpage = {navController.navigate("loginpage")},
-                goto_loadingpage = {navController.navigate("loadingpage")})
+                goto_loadingpage = {navController.navigate("loadingpage"){
+                    popUpTo(0){inclusive=true}
+                } })
         }
 
         // Sequential registration flow screens - use left/right animations for a smooth flow
@@ -476,7 +482,9 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                 currentPage = route
                 when (route) {
                     "settingsandpreferences" -> SettingsAndPreferences(
-                        goto_loadingpage = { navController.navigate("loadingpage") },
+                        goto_loadingpage = { navController.navigate("loadingpage") {
+                            popUpTo(0){inclusive=true}
+                        } },
                         goto_userProfile = { navController.navigate("userprofile") }
                     )
                     "aboutus" -> AboutUs(goto_userProfile = { navController.navigate("userprofile") })

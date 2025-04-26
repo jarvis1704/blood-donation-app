@@ -198,7 +198,7 @@ fun userProfile(
                                             .height(30.dp)
                                             .fillMaxWidth(0.45f)
                                             .clickable {
-                                                goto_ageverification()
+//                                                goto_ageverification()
                                             },
                                     ) {
                                         Row(
@@ -225,7 +225,7 @@ fun userProfile(
                                         modifier = Modifier
                                             .height(30.dp)
                                             .clickable {
-                                                goto_ageverification()
+//                                                goto_ageverification()
                                             }
                                             .fillMaxWidth(0.35f),
                                     ) {
@@ -258,7 +258,7 @@ fun userProfile(
                                         modifier = Modifier
                                             .height(30.dp)
                                             .clickable {
-                                                goto_ageverification()
+//                                                goto_ageverification()
                                             }
                                             .fillMaxWidth(0.4f),
                                     ) {
@@ -268,7 +268,7 @@ fun userProfile(
                                             modifier = Modifier.fillMaxWidth()
                                         ) {
                                             Text(
-                                                " Verification Rejected",
+                                                "Verification Rejected",
                                                 Modifier.padding(horizontal = 4.dp),
                                                 fontSize = 12.sp,
                                                 fontWeight = FontWeight.Bold,

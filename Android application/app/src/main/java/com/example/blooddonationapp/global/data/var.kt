@@ -48,10 +48,12 @@ object currentUser{
     var isBloodTypeFilter by mutableStateOf(false)
 }
 
+var isDataUpdating by mutableStateOf(false)
 @RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun updateCurrentUser(){
+    isDataUpdating = true
     var viewmodel: HomeViewModel = viewModel()
     if (currentPage in "homepage bloodrequests userprofile"){
         viewmodel.FetchBloodRequests()
@@ -67,6 +69,7 @@ fun updateCurrentUser(){
                 currentUser.registrationType = viewmodel.getRegistrationEntryByString("registration_type")
                 currentUser.aadharStatus = viewmodel.getAadharDetails("aadharStatus").toString()
             }
+            isDataUpdating = false
         }
     }
 }

@@ -153,7 +153,11 @@ fun BloodRequestAnouncementCard(bloodRequest: bloodRequest) {
     Card(
         modifier= Modifier.defaultMinSize(minWidth = 393.dp, minHeight = 180.dp),
         colors = CardDefaults.cardColors(
-            Color(0xFFEB4335)
+            when (bloodRequest.urgencylevel){
+                "Emergency"->Color(0xFFEB4335)
+                "Routine"->Color.DarkGray
+                else -> Color(0xFFFF7043)
+            }
         ),
         elevation = CardDefaults.elevatedCardElevation(
             8.dp
@@ -163,7 +167,17 @@ fun BloodRequestAnouncementCard(bloodRequest: bloodRequest) {
         Column(
             modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)
         ) {
-            Text("EMERGENCY ${bloodRequest.bloodtype} BLOOD NEEDED", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.White, lineHeight = 1.25.em)
+            Text("${bloodRequest.bloodtype} BLOOD NEEDED",
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                lineHeight = 1.25.em)
+            Spacer(Modifier.height(3.dp))
+            Text(bloodRequest.urgencylevel.uppercase(),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                lineHeight = 1.25.em)
             Spacer(Modifier.height(8.dp))
             Row(
                 verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)
