@@ -54,6 +54,7 @@ import com.example.blooddonationapp.AdminEntry.interfaces.EmergencyNumbers
 import com.example.blooddonationapp.AdminEntry.interfaces.NewAnnouncement
 import com.example.blooddonationapp.AdminEntry.interfaces.NewBloodRequest
 import com.example.blooddonationapp.home.interfaces.BloodDonorForm
+import com.example.blooddonationapp.home.interfaces.BloodRequestDetails
 import kotlinx.coroutines.launch
 
 
@@ -341,7 +342,10 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                         goto_ageverification = {navController.navigate("ageverification")}
                     )
                     "notificationspage" -> NotificationsPage({ navController.navigate("homepage") })
-                    "bloodrequests" -> bloodRequests({ navController.navigate("homepage") })
+                    "bloodrequests" -> bloodRequests(
+                        goto_homepage = { navController.navigate("homepage") },
+                        goto_bloodreqdetails = {navController.navigate("bloodreqdetails")}
+                    )
                 }
             }
         }
@@ -566,6 +570,10 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         composable("donorform"){
             currentPage = "donorform"
             BloodDonorForm()
+        }
+        composable("bloodreqdetails"){
+            currentPage = "bloodreqdetails"
+            BloodRequestDetails()
         }
     }
 }

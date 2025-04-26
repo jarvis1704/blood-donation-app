@@ -52,6 +52,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.global.data.updateCurrentUser
 import com.example.blooddonationapp.home.data.HomeViewModel
+import com.example.blooddonationapp.home.data.UpdateRequestToShow
 import com.example.blooddonationapp.home.data.announcement
 import com.example.blooddonationapp.home.data.bloodRequest
 import com.example.blooddonationapp.home.data.globalBloodRequestList
@@ -67,6 +68,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun bloodRequests(
     goto_homepage:()->Unit,
+    goto_bloodreqdetails: () -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel()
 ){
     updateCurrentUser()
@@ -133,10 +135,10 @@ fun bloodRequests(
                             items(it.toList()){item->
                                 if (currentUser.isBloodTypeFilter){
                                     if (item.bloodtype == currentUser.bloodGroup){
-                                        BloodRequestAnouncementCard(item)
+                                        BloodRequestAnouncementCard(goto_bloodreqdetails, item)
                                     }
                                 }else{
-                                    BloodRequestAnouncementCard(item)
+                                    BloodRequestAnouncementCard(goto_bloodreqdetails, item)
                                 }
                             }
                         }
@@ -149,7 +151,9 @@ fun bloodRequests(
 
 @SuppressLint("NewApi")
 @Composable
-fun BloodRequestAnouncementCard(bloodRequest: bloodRequest) {
+fun BloodRequestAnouncementCard(
+    goto_bloodreqdetails:()-> Unit,
+    bloodRequest: bloodRequest) {
     Card(
         modifier= Modifier.defaultMinSize(minWidth = 393.dp, minHeight = 180.dp),
         colors = CardDefaults.cardColors(
@@ -162,7 +166,10 @@ fun BloodRequestAnouncementCard(bloodRequest: bloodRequest) {
         elevation = CardDefaults.elevatedCardElevation(
             8.dp
         ),
-        onClick = {/*todo AnnouncementCard implementation*/}
+        onClick = {
+            UpdateRequestToShow(bloodRequest)
+            goto_bloodreqdetails()
+        }
     ) {
         Column(
             modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)

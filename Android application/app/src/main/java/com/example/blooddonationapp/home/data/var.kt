@@ -1,6 +1,8 @@
 package com.example.blooddonationapp.home.data
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -61,3 +63,22 @@ data class announcement(
 )
 
 var globalAnnouncementList: List<announcement>? by mutableStateOf(null)
+
+@RequiresApi(Build.VERSION_CODES.O)
+var requestToShow = bloodRequest("","","","","","","","","","","", LocalDateTime.now())
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun UpdateRequestToShow(req:bloodRequest){
+    requestToShow = requestToShow.copy(
+        req.id,
+        req.patientname,
+        req.patientage,
+        req.patientgender,
+        req.attendantname,
+        req.attendantphoneno,
+        req.bloodtype,req.hospital,
+        req.urgencylevel,
+        req.unitsrequired,
+        req.details,
+        req.date)
+}
