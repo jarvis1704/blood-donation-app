@@ -1,5 +1,7 @@
 package com.example.blooddonationapp.home.interfaces
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
@@ -37,14 +39,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import com.example.blooddonationapp.global.data.errorMessage
 import com.example.blooddonationapp.home.data.bloodRequest
 import com.example.blooddonationapp.home.data.requestToShow
 import com.example.blooddonationapp.ui.theme.BloodDonationAppColor
+import dagger.hilt.android.qualifiers.ApplicationContext
+import androidx.core.net.toUri
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -52,6 +58,7 @@ fun BloodRequestDetails(
     goto_bloodrequests: () -> Unit = {},
     bloodRequest: bloodRequest
 ) {
+    val context = LocalContext.current
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
             // Header section with red background - matching the BloodRequests page
@@ -273,7 +280,11 @@ fun BloodRequestDetails(
 
                     // Action button - styled like the form
                     Button(
-                        onClick = { /* Call action */ },
+                        onClick = {
+                            val launchPhone = Intent(Intent.ACTION_DIAL)
+                            launchPhone.data = "tel:${requestToShow.attendantphoneno}".toUri()
+                            context.startActivity(launchPhone)
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),

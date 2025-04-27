@@ -5,6 +5,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -18,10 +19,11 @@ import com.example.blooddonationapp.global.data.currentPage
 fun bottomBar(
     goto_homepage:()->Unit,
     goto_bloodrequests:()->Unit,
+    goto_emergencycontacts:()-> Unit,
     goto_userprofile:()->Unit,
 ){
     when (currentPage) {
-        "homepage", "bloodrequests", "userprofile", "notificationspage" -> {
+        "homepage", "bloodrequests", "userprofile", "emergencypage" -> {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -67,6 +69,25 @@ fun bottomBar(
                                     modifier = Modifier.size(25.dp),
                                     contentDescription = "Blood Requests",
                                     tint = if (currentPage == "bloodrequests")
+                                        Color(0xFFEB4335)
+                                    else
+                                        MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            },
+                            colors = NavigationBarItemDefaults.colors(
+                                indicatorColor = Color.Transparent
+                            )
+                        )
+
+                        NavigationBarItem(
+                            selected = currentPage == "emergencypage",
+                            onClick = goto_emergencycontacts,
+                            icon = {
+                                Icon(
+                                    imageVector = Icons.Default.Warning,
+                                    modifier = Modifier.size(25.dp),
+                                    contentDescription = "Emergency Contacts",
+                                    tint = if (currentPage == "emergencypage")
                                         Color(0xFFEB4335)
                                     else
                                         MaterialTheme.colorScheme.onSurfaceVariant

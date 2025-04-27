@@ -56,6 +56,7 @@ import com.example.blooddonationapp.AdminEntry.interfaces.NewBloodRequest
 import com.example.blooddonationapp.home.data.requestToShow
 import com.example.blooddonationapp.home.interfaces.BloodDonorForm
 import com.example.blooddonationapp.home.interfaces.BloodRequestDetails
+import com.example.blooddonationapp.home.interfaces.EmergencyContacts
 import kotlinx.coroutines.launch
 
 
@@ -72,7 +73,7 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         startDestination = "loadingpage",
         enterTransition = {
             when (initialState.destination.route) {
-                "homepage", "userprofile", "notificationspage", "bloodrequests" ->
+                "homepage", "userprofile", "emergencypage", "bloodrequests" ->
                     slideIntoContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.Start,
                         animationSpec = tween(400, easing = FastOutSlowInEasing)
@@ -86,7 +87,7 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         },
         exitTransition = {
             when (targetState.destination.route) {
-                "homepage", "userprofile", "notificationspage", "bloodrequests" ->
+                "homepage", "userprofile", "emergencypage", "bloodrequests" ->
                     slideOutOfContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.End,
                         animationSpec = tween(400, easing = FastOutSlowInEasing)
@@ -100,7 +101,7 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         },
         popEnterTransition = {
             when (initialState.destination.route) {
-                "homepage", "userprofile", "notificationspage", "bloodrequests" ->
+                "homepage", "userprofile", "emergencypage", "bloodrequests" ->
                     slideIntoContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.End,
                         animationSpec = tween(400, easing = FastOutSlowInEasing)
@@ -114,7 +115,7 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         },
         popExitTransition = {
             when (targetState.destination.route) {
-                "homepage", "userprofile", "notificationspage", "bloodrequests" ->
+                "homepage", "userprofile", "emergencypage", "bloodrequests" ->
                     slideOutOfContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.Start,
                         animationSpec = tween(400, easing = FastOutSlowInEasing)
@@ -128,7 +129,7 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         },
     ) {
 
-        val mainScreens = listOf("homepage", "userprofile", "notificationspage", "bloodrequests")
+        val mainScreens = listOf("homepage", "userprofile", "emergencypage", "bloodrequests")
 
         composable(route = "loadingpage",
             enterTransition = {
@@ -342,7 +343,7 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
                         goto_aboutus = { navController.navigate("aboutus") },
                         goto_ageverification = {navController.navigate("ageverification")}
                     )
-                    "notificationspage" -> NotificationsPage({ navController.navigate("homepage") })
+                    "emergencypage" -> EmergencyContacts()
                     "bloodrequests" -> bloodRequests(
                         goto_homepage = { navController.navigate("homepage") },
                         goto_bloodreqdetails = {navController.navigate("bloodreqdetails")}

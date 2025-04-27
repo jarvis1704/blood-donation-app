@@ -84,7 +84,8 @@ class MainActivity : ComponentActivity() {
                         bottomBar(
                             goto_homepage = { navCtrl.navigate("homepage") },
                             goto_bloodrequests = { navCtrl.navigate("bloodrequests") },
-                            goto_userprofile = { navCtrl.navigate("userprofile") }
+                            goto_userprofile = { navCtrl.navigate("userprofile") },
+                            goto_emergencycontacts = {navCtrl.navigate("emergencypage")}
                         )
                     }) { _ ->
                     askNotificationPermission()
