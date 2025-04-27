@@ -18,6 +18,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.rpc.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -92,13 +93,17 @@ class AdminViewmodel @Inject constructor(): ViewModel() {
     fun getPendingAadhar(){
         viewModelScope.launch {
             try {
-                val aadharlist = db.collection("aadhardetails").get().await()
+                val aadharlist = db.collection("aadhardetails")
+                    .whereEqualTo("aadharStatus", "submitted")
+                    .get().await()
                 if (aadharlist != null){
                     val aadharList = aadharlist.documents.mapNotNull { doc->
                         val data = doc.data
+                        val temp = doc.id
                         data?.let {
                             aadharUser(
-                                id = it["useruid"].toString(),
+                                id = temp,
+                                userid = it["useruid"].toString(),
                                 useremail = it["useremail"].toString(),
                                 aadharNo = it["aadharNo"].toString().toLongOrNull(),
                                 aadharDOB = it["aadharDOB"].toString().toLongOrNull(),
@@ -351,7 +356,22 @@ class AdminViewmodel @Inject constructor(): ViewModel() {
         }
     }
 
-    fun SetUserAadhaarStatus(){
-
+    fun SetUserAadhaarStatus(id: String, status: String){
+        viewModelScope.launch {
+            try {
+                val data = db.collection("aadhardetails").document(id)
+                data.set(
+                    hashMapOf(
+                        "aadharStatus" to status
+                    )
+                ).addOnSuccessListener {
+                    getPendingAadhar()
+                    infoMessage = "Updated successfully"
+                }
+                    .await()
+            }catch (e: Exception){
+                errorMessage = e.message.toString()
+            }
+        }
     }
 }

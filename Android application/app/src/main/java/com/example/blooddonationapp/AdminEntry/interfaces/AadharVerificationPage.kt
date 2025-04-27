@@ -50,8 +50,10 @@ import com.example.blooddonationapp.AdminEntry.data.AdminViewmodel
 import com.example.blooddonationapp.AdminEntry.data.AppUser
 import com.example.blooddonationapp.AdminEntry.data.aadharPendingList
 import com.example.blooddonationapp.AdminEntry.data.aadharUser
+import com.example.blooddonationapp.global.data.NewGlobalAlert
 import java.time.LocalDateTime
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AadharVerificationPage(
     AdminViewmodel: AdminViewmodel = hiltViewModel()
@@ -121,7 +123,7 @@ fun showAadharUser(user: aadharUser, viewModel: AdminViewmodel) {
     var isDataFound = remember { mutableStateOf(false) }
 
     var userdetails = remember { mutableStateOf<AppUser>(AppUser("","","","","", LocalDateTime.now())) }
-    viewModel.GetUserData(user.id,isDataFound,userdetails)
+    viewModel.GetUserData(user.userid,isDataFound,userdetails)
 
     Card(
         modifier = Modifier
@@ -143,7 +145,7 @@ fun showAadharUser(user: aadharUser, viewModel: AdminViewmodel) {
                 true->{
 
                     //visible content here
-                    
+
                     Text("user details:")
                     Text(userdetails.value.username)
                     Text(userdetails.value.gender)
@@ -245,8 +247,14 @@ fun showAadharUser(user: aadharUser, viewModel: AdminViewmodel) {
                         ){
                             Button(
                                 onClick = {
-                                    // Add verification approval logic here
-                                    // viewModel.approveAadhar(user.useremail)
+                                    NewGlobalAlert(
+                                        title = "Reject Aadhaar",
+                                        details = "Are you sure you want to disapprove the request?\n\nThe request will be deleted and cannot be undone.",
+                                        onCancelClick = {},
+                                        onConfirmClick = {
+                                            viewModel.SetUserAadhaarStatus(user.id,"rejected")
+                                        }
+                                    )
                                 },
                                 modifier = Modifier,
                                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEB4335))
@@ -265,8 +273,14 @@ fun showAadharUser(user: aadharUser, viewModel: AdminViewmodel) {
                             }
                             Button(
                                 onClick = {
-                                    // Add verification approval logic here
-                                    // viewModel.approveAadhar(user.useremail)
+                                    NewGlobalAlert(
+                                        title = "Approve Aadhaar",
+                                        details = "Are you sure you want to approve the request?\n\nThis action cannot be undone.",
+                                        onCancelClick = {},
+                                        onConfirmClick = {
+                                            viewModel.SetUserAadhaarStatus(user.id,"verified")
+                                        }
+                                    )
                                 },
                                 modifier = Modifier,
                                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEB4335))

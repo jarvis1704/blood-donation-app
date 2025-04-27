@@ -57,6 +57,7 @@ fun ClearNewAnnouncementObj(){
 
 data class aadharUser(
     var id: String,
+    var userid: String,
     var useremail:String,
     var aadharStatus : String,
     var aadharNo : Long?,
