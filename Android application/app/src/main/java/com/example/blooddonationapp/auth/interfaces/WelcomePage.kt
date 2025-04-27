@@ -51,7 +51,7 @@ fun WelcomePage(
     goto_adminloginpage: () -> Unit
 ) {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().background(color = Color.White),
     ) {
         Column(
             Modifier.fillMaxSize(),
@@ -245,7 +245,7 @@ fun WelcomePage(
                             color = primaryRed
                         )
                     }
-                    Spacer(Modifier.height(60.dp))
+                    Spacer(Modifier.height(20.dp))
                     //an idea to increase our teams reach
                     Text(
                         "Made with ❤️ by Prudam, Biprangshu, Chayan and Sujal",
