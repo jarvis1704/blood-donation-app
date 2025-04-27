@@ -53,6 +53,7 @@ import com.example.blooddonationapp.AdminEntry.interfaces.BloodReqVerificationPa
 import com.example.blooddonationapp.AdminEntry.interfaces.EmergencyNumbers
 import com.example.blooddonationapp.AdminEntry.interfaces.NewAnnouncement
 import com.example.blooddonationapp.AdminEntry.interfaces.NewBloodRequest
+import com.example.blooddonationapp.home.data.requestToShow
 import com.example.blooddonationapp.home.interfaces.BloodDonorForm
 import com.example.blooddonationapp.home.interfaces.BloodRequestDetails
 import kotlinx.coroutines.launch
@@ -573,7 +574,10 @@ fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient)
         }
         composable("bloodreqdetails"){
             currentPage = "bloodreqdetails"
-            BloodRequestDetails()
+            BloodRequestDetails(
+                goto_bloodrequests = {navController.navigate("bloodrequests")},
+                bloodRequest = requestToShow
+            )
         }
     }
 }
