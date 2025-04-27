@@ -2,6 +2,7 @@ package com.example.blooddonationapp.AdminEntry.data
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.blooddonationapp.global.data.PhoneNo
@@ -20,6 +21,7 @@ import com.google.firebase.firestore.SetOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.time.LocalDateTime
 import java.time.ZoneId
 import javax.inject.Inject
 
@@ -96,6 +98,7 @@ class AdminViewmodel @Inject constructor(): ViewModel() {
                         val data = doc.data
                         data?.let {
                             aadharUser(
+                                id = it["useruid"].toString(),
                                 useremail = it["useremail"].toString(),
                                 aadharNo = it["aadharNo"].toString().toLongOrNull(),
                                 aadharDOB = it["aadharDOB"].toString().toLongOrNull(),
@@ -294,6 +297,7 @@ class AdminViewmodel @Inject constructor(): ViewModel() {
                                 number = it["number"].toString()
                             )
                         }
+
                     }
                     PhoneNoList = List
                 }
@@ -318,5 +322,36 @@ class AdminViewmodel @Inject constructor(): ViewModel() {
                 errorMessage = e.message.toString()
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun GetUserData(id: String, isDataLoaded: MutableState<Boolean>, userstate: MutableState<AppUser>){
+        var temp = AppUser("","","","","", LocalDateTime.now())
+        viewModelScope.launch {
+            try {
+                val list = db.collection("userdetails").document(id)
+                    .get().await()
+                val data = list.data
+                data?.let {
+                    temp = AppUser(
+                        username = it["username"].toString(),
+                        phoneno = it["phoneNo"].toString(),
+                        gender = it["gender"].toString(),
+                        bloodGroup = it["bloodGroup"].toString(),
+                        area = it["area"].toString(),
+                        birthdate = TimestampToLocalDateTime(it["birthdate"] as Timestamp)
+                    )
+                }
+            }catch (e: Exception){
+                errorMessage=e.message.toString()
+            }finally {
+                isDataLoaded.value = true
+                userstate.value = userstate.value.copy(temp.username, temp.phoneno, temp.gender, temp.bloodGroup, temp.area, temp.birthdate)
+            }
+        }
+    }
+
+    fun SetUserAadhaarStatus(){
+
     }
 }

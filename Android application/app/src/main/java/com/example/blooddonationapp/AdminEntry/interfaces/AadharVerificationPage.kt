@@ -2,12 +2,16 @@ package com.example.blooddonationapp.AdminEntry.interfaces
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.util.Base64
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,14 +22,21 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,8 +47,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.blooddonationapp.AdminEntry.data.AdminViewmodel
+import com.example.blooddonationapp.AdminEntry.data.AppUser
 import com.example.blooddonationapp.AdminEntry.data.aadharPendingList
 import com.example.blooddonationapp.AdminEntry.data.aadharUser
+import java.time.LocalDateTime
 
 @Composable
 fun AadharVerificationPage(
@@ -102,8 +115,14 @@ fun AadharVerificationPage(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun showAadharUser(user: aadharUser, viewModel: AdminViewmodel) {
+    var isDataFound = remember { mutableStateOf(false) }
+
+    var userdetails = remember { mutableStateOf<AppUser>(AppUser("","","","","", LocalDateTime.now())) }
+    viewModel.GetUserData(user.id,isDataFound,userdetails)
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -116,109 +135,150 @@ fun showAadharUser(user: aadharUser, viewModel: AdminViewmodel) {
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Text(
-                "User Email",
-                fontWeight = FontWeight.Medium,
-                color = Color(0xFF757575),
-                fontSize = 14.sp
-            )
-            Text(
-                user.useremail,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
 
-            Spacer(modifier = Modifier.height(12.dp))
-            Divider(color = Color(0xFFEEEEEE), thickness = 1.dp)
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Text(
-                "Aadhar Number",
-                fontWeight = FontWeight.Medium,
-                color = Color(0xFF757575),
-                fontSize = 14.sp
-            )
-            Text(
-                user.aadharNo.toString(),
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Text(
-                "Date of Birth",
-                fontWeight = FontWeight.Medium,
-                color = Color(0xFF757575),
-                fontSize = 14.sp
-            )
-            Text(
-                user.aadharDOB.toString(),
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Text(
-                "Status",
-                fontWeight = FontWeight.Medium,
-                color = Color(0xFF757575),
-                fontSize = 14.sp
-            )
-            Text(
-                user.aadharStatus,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                color = when(user.aadharStatus) {
-                    "Pending" -> Color(0xFFFFA000)
-                    "Approved" -> Color(0xFF4CAF50)
-                    "Rejected" -> Color(0xFFD32F2F)
-                    else -> Color.Black
+            when(isDataFound.value){
+                false->{
+                    CircularProgressIndicator()
                 }
-            )
+                true->{
 
-            Spacer(modifier = Modifier.height(16.dp))
+                    //visible content here
+                    
+                    Text("user details:")
+                    Text(userdetails.value.username)
+                    Text(userdetails.value.gender)
+                    Text(userdetails.value.phoneno)
 
-            Text(
-                "Aadhar Card Image",
-                fontWeight = FontWeight.Medium,
-                color = Color(0xFF757575),
-                fontSize = 14.sp
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(8.dp))
-                    .border(1.dp, Color(0xFFEEEEEE), RoundedCornerShape(8.dp))
-                    .padding(8.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                DisplayImageFromBase64(user.aadharPhotoString)
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Action buttons
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                Button(
-                    onClick = {
-                        // Add verification approval logic here
-                        // viewModel.approveAadhar(user.useremail)
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEB4335))
-                ) {
                     Text(
-                        "Verify Aadhar",
-                        color = Color.White,
-                        modifier = Modifier.padding(vertical = 4.dp)
+                        "User Email",
+                        fontWeight = FontWeight.Medium,
+                        color = Color(0xFF757575),
+                        fontSize = 14.sp
                     )
+                    Text(
+                        user.useremail,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Divider(color = Color(0xFFEEEEEE), thickness = 1.dp)
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Text(
+                        "Aadhar Number",
+                        fontWeight = FontWeight.Medium,
+                        color = Color(0xFF757575),
+                        fontSize = 14.sp
+                    )
+                    Text(
+                        user.aadharNo.toString(),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Text(
+                        "Date of Birth",
+                        fontWeight = FontWeight.Medium,
+                        color = Color(0xFF757575),
+                        fontSize = 14.sp
+                    )
+                    Text(
+                        user.aadharDOB.toString(),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Text(
+                        "Status",
+                        fontWeight = FontWeight.Medium,
+                        color = Color(0xFF757575),
+                        fontSize = 14.sp
+                    )
+                    Text(
+                        user.aadharStatus,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        color = when(user.aadharStatus) {
+                            "Pending" -> Color(0xFFFFA000)
+                            "Approved" -> Color(0xFF4CAF50)
+                            "Rejected" -> Color(0xFFD32F2F)
+                            else -> Color.Black
+                        }
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(
+                        "Aadhar Card Image",
+                        fontWeight = FontWeight.Medium,
+                        color = Color(0xFF757575),
+                        fontSize = 14.sp
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(8.dp))
+                            .border(1.dp, Color(0xFFEEEEEE), RoundedCornerShape(8.dp))
+                            .padding(8.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        DisplayImageFromBase64(user.aadharPhotoString)
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Action buttons
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Row (
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ){
+                            Button(
+                                onClick = {
+                                    // Add verification approval logic here
+                                    // viewModel.approveAadhar(user.useremail)
+                                },
+                                modifier = Modifier,
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEB4335))
+                            ) {
+                                Text(
+                                    "Reject",
+                                    color = Color.White,
+                                    modifier = Modifier.padding(vertical = 4.dp)
+                                )
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = "Reject",
+                                    Modifier.size(17.dp),
+                                    tint = Color.White
+                                )
+                            }
+                            Button(
+                                onClick = {
+                                    // Add verification approval logic here
+                                    // viewModel.approveAadhar(user.useremail)
+                                },
+                                modifier = Modifier,
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEB4335))
+                            ) {
+                                Text(
+                                    "Approve",
+                                    color = Color.White,
+                                    modifier = Modifier.padding(vertical = 4.dp)
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }

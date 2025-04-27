@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import com.example.blooddonationapp.global.data.PhoneNo
 import com.example.blooddonationapp.home.data.bloodRequest
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 object newBloodRequest{
@@ -55,6 +56,7 @@ fun ClearNewAnnouncementObj(){
 }
 
 data class aadharUser(
+    var id: String,
     var useremail:String,
     var aadharStatus : String,
     var aadharNo : Long?,
@@ -86,3 +88,12 @@ var tempNewContact by mutableStateOf(PhoneNo("","",""))
 fun ClearTempNewContact(){
     tempNewContact = tempNewContact.copy("","","")
 }
+
+data class AppUser(
+    var username: String,
+    var phoneno: String,
+    var gender: String,
+    var bloodGroup: String,
+    var area: String,
+    var birthdate: LocalDateTime
+)
