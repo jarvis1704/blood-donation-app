@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.blooddonationapp.AdminEntry.data.AdminViewmodel
+import com.example.blooddonationapp.AdminEntry.data.AdminViewModel
 import com.example.blooddonationapp.global.data.NewGlobalAlert
 import com.example.blooddonationapp.home.data.HomeViewModel
 import com.example.blooddonationapp.home.data.bloodRequest
@@ -48,7 +48,7 @@ import java.time.LocalDateTime
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ActiveBloodRequests(
-    adminViewmodel: AdminViewmodel = hiltViewModel(),
+    adminViewmodel: AdminViewModel = hiltViewModel(),
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
@@ -161,7 +161,7 @@ fun ActiveBloodRequests(
 @Composable
 fun BloodRequestEditComposable(
     bloodRequest: bloodRequest,
-    adminViewmodel: AdminViewmodel = hiltViewModel()
+    adminViewmodel: AdminViewModel = hiltViewModel()
 ) {
     Card(
         modifier = Modifier

@@ -3,7 +3,6 @@ package com.example.blooddonationapp.auth.data
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
-import android.util.Log
 import com.example.blooddonationapp.R
 import com.example.blooddonationapp.global.data.errorMessage
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
@@ -15,7 +14,7 @@ import kotlinx.coroutines.tasks.await
 import kotlin.coroutines.cancellation.CancellationException
 
 
-class googleAuthClient(
+class GoogleAuthClient(
     private val context: Context,
     private val oneTapClient: SignInClient
 ) {

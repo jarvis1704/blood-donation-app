@@ -1,5 +1,7 @@
 package com.example.blooddonationapp.AdminEntry.interfaces
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.blooddonationapp.AdminEntry.data.AdminViewmodel
+import com.example.blooddonationapp.AdminEntry.data.AdminViewModel
 import com.example.blooddonationapp.AdminEntry.data.isFetchingNumbers
 import com.example.blooddonationapp.AdminEntry.data.isNewContactDialogue
 import com.example.blooddonationapp.AdminEntry.data.tempNewContact
@@ -46,9 +48,10 @@ import com.example.blooddonationapp.global.data.PhoneNoList
 import com.example.blooddonationapp.global.data.errorMessage
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun EmergencyNumbers(
-    adminViewmodel: AdminViewmodel = hiltViewModel(),
+    adminViewmodel: AdminViewModel = hiltViewModel(),
     emailLoginViewModel: EmailLoginViewModel = hiltViewModel()
 ){
     NumberEditDialogue()
@@ -222,7 +225,7 @@ fun EmergencyNumbers(
 
 @Composable
 fun NumberEditDialogue(
-    adminViewmodel: AdminViewmodel = hiltViewModel()
+    adminViewmodel: AdminViewModel = hiltViewModel()
 ) {
     if (isNewContactDialogue) {
         AlertDialog(

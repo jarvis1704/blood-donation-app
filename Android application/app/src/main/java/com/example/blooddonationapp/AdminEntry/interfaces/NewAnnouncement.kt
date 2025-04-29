@@ -31,7 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.blooddonationapp.AdminEntry.data.AdminViewmodel
+import com.example.blooddonationapp.AdminEntry.data.AdminViewModel
 import com.example.blooddonationapp.AdminEntry.ui_components.TimeSelector
 import com.example.blooddonationapp.AdminEntry.data.newAnnouncement
 import com.example.blooddonationapp.AdminEntry.data.showDialog
@@ -45,7 +45,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun NewAnnouncement(
     goto_activeAnnouncements:()-> Unit,
-    adminViewmodel: AdminViewmodel = hiltViewModel()
+    adminViewmodel: AdminViewModel = hiltViewModel()
 ){
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {

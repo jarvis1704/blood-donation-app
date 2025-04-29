@@ -23,7 +23,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.blooddonationapp.auth.data.EmailLoginViewModel
-import com.example.blooddonationapp.auth.data.googleAuthClient
+import com.example.blooddonationapp.auth.data.GoogleAuthClient
 import com.example.blooddonationapp.auth.data.GoogleAuthViewModel
 import com.example.blooddonationapp.auth.interfaces.AdminLoginPage
 import com.example.blooddonationapp.auth.interfaces.WelcomePage
@@ -36,7 +36,6 @@ import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.global.data.errorMessage
 import com.example.blooddonationapp.home.interfaces.BloodRequestForm
 import com.example.blooddonationapp.home.interfaces.bloodRequests
-import com.example.blooddonationapp.home.interfaces.NotificationsPage
 import com.example.blooddonationapp.home.interfaces.userProfile
 import com.example.blooddonationapp.registration.interfaces.ageVerification
 import com.example.blooddonationapp.registration.interfaces.BloodGroup
@@ -62,7 +61,7 @@ import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun appNav(navController: NavHostController, googleAuthClient: googleAuthClient){
+fun appNav(navController: NavHostController, googleAuthClient: GoogleAuthClient){
     val navController = navController
     val coroutineScope = rememberCoroutineScope()
     val viewmodel: EmailLoginViewModel = viewModel() //this is required, do not remove ("init" is called in vm)

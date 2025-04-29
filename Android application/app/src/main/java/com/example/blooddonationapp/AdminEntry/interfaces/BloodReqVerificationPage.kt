@@ -26,7 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.blooddonationapp.AdminEntry.data.AdminViewmodel
+import com.example.blooddonationapp.AdminEntry.data.AdminViewModel
 import com.example.blooddonationapp.AdminEntry.data.ClearNewBloodReqObj
 import com.example.blooddonationapp.AdminEntry.data.bloodreqPendingList
 import com.example.blooddonationapp.AdminEntry.data.newBloodRequest
@@ -35,7 +35,7 @@ import com.example.blooddonationapp.home.data.bloodRequest
 
 @Composable
 fun BloodReqVerificationPage(
-    AdminViewmodel: AdminViewmodel = hiltViewModel()
+    AdminViewmodel: AdminViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
         AdminViewmodel.getPendingBloodRequests()
@@ -99,7 +99,7 @@ fun BloodReqVerificationPage(
 @Composable
 fun showBloodreq(
     request: bloodRequest,
-    viewModel: AdminViewmodel = hiltViewModel()) {
+    viewModel: AdminViewModel = hiltViewModel()) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

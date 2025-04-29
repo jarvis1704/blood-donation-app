@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.blooddonationapp.AdminEntry.data.ActivePasskeysList
-import com.example.blooddonationapp.AdminEntry.data.AdminViewmodel
+import com.example.blooddonationapp.AdminEntry.data.AdminViewModel
 import com.example.blooddonationapp.AdminEntry.data.isFetchingPasskeys
 import com.example.blooddonationapp.AdminEntry.data.isNewPasskeyDialogue
 import com.example.blooddonationapp.AdminEntry.data.tempNewPasskey
@@ -46,7 +46,7 @@ import com.example.blooddonationapp.global.data.NewGlobalAlert
 
 @Composable
 fun AdminPasskeys(
-    adminViewmodel: AdminViewmodel = hiltViewModel()
+    adminViewmodel: AdminViewModel = hiltViewModel()
 ){
     NewPasskey()
     LaunchedEffect(Unit) {
@@ -212,7 +212,7 @@ fun AdminPasskeys(
 
 @Composable
 fun NewPasskey(
-    adminViewmodel: AdminViewmodel = hiltViewModel()
+    adminViewmodel: AdminViewModel = hiltViewModel()
 ) {
     if (isNewPasskeyDialogue) {
         AlertDialog(

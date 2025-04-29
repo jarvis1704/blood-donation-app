@@ -33,7 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.blooddonationapp.AdminEntry.data.AdminViewmodel
+import com.example.blooddonationapp.AdminEntry.data.AdminViewModel
 import com.example.blooddonationapp.AdminEntry.data.newBloodRequest
 import com.example.blooddonationapp.global.data.errorMessage
 import com.example.blooddonationapp.registration.interfaces.AnimatedBloodGroupButton
@@ -43,7 +43,7 @@ import com.example.blooddonationapp.registration.interfaces.AnimatedButton
 @Composable
 fun NewBloodRequest(
     goto_activeBloodreqs: () -> Unit,
-    adminViewmodel: AdminViewmodel = hiltViewModel()
+    adminViewmodel: AdminViewModel = hiltViewModel()
 ) {
     val positiveBloodGroups = listOf("A+", "B+", "AB+", "O+")
     val negativeBloodGroups = listOf("A-", "B-", "AB-", "O-")

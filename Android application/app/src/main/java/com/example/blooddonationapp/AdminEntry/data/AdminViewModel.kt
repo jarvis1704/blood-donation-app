@@ -18,7 +18,6 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.google.rpc.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -27,10 +26,10 @@ import java.time.ZoneId
 import javax.inject.Inject
 
 @HiltViewModel
-class AdminViewmodel @Inject constructor(): ViewModel() {
-    private val auth = FirebaseAuth.getInstance()
-    private val db = FirebaseFirestore.getInstance()
-
+class AdminViewModel @Inject constructor(
+    private val auth: FirebaseAuth,
+    private val db: FirebaseFirestore
+): ViewModel() {
 
     fun newBloodReq(goto_activeBloodreqs:()-> Unit = {}, onsuccess:()-> Unit={}){
         try {

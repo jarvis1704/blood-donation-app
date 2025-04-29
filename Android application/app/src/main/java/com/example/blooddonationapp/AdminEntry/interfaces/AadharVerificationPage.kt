@@ -23,7 +23,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -46,7 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.blooddonationapp.AdminEntry.data.AdminViewmodel
+import com.example.blooddonationapp.AdminEntry.data.AdminViewModel
 import com.example.blooddonationapp.AdminEntry.data.AppUser
 import com.example.blooddonationapp.AdminEntry.data.aadharPendingList
 import com.example.blooddonationapp.AdminEntry.data.aadharUser
@@ -56,7 +55,7 @@ import java.time.LocalDateTime
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AadharVerificationPage(
-    AdminViewmodel: AdminViewmodel = hiltViewModel()
+    AdminViewmodel: AdminViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
         AdminViewmodel.getPendingAadhar()
@@ -119,7 +118,7 @@ fun AadharVerificationPage(
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun showAadharUser(user: aadharUser, viewModel: AdminViewmodel) {
+fun showAadharUser(user: aadharUser, viewModel: AdminViewModel) {
     var isDataFound = remember { mutableStateOf(false) }
 
     var userdetails = remember { mutableStateOf<AppUser>(AppUser("","","","","", LocalDateTime.now())) }
