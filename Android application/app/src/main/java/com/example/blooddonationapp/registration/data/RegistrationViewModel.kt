@@ -2,7 +2,6 @@ package com.example.blooddonationapp.registration.data
 
 import android.annotation.SuppressLint
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import com.example.blooddonationapp.global.data.errorMessage
@@ -20,14 +19,15 @@ import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
-class RegistrationViewModel @Inject constructor(): ViewModel(){
-    private val _auth : FirebaseAuth = FirebaseAuth.getInstance()
-    private val _db : FirebaseFirestore = FirebaseFirestore.getInstance()
+class RegistrationViewModel @Inject constructor(
+    private val auth: FirebaseAuth,
+    private val db: FirebaseFirestore
+): ViewModel(){
 
     fun saveRegistrationType(type:String, goto_homepage:()->Unit={}){
         val datamap = mapOf("registration_type" to type)
-        if (_auth.currentUser != null){
-            _db.collection("userdetails").document(_auth.currentUser!!.uid)
+        if (auth.currentUser != null){
+            db.collection("userdetails").document(auth.currentUser!!.uid)
                 .set(datamap, SetOptions.merge())
                 .addOnSuccessListener {
                     goto_homepage()
@@ -45,16 +45,16 @@ class RegistrationViewModel @Inject constructor(): ViewModel(){
         val date = mapOf(
             "birthdate" to timestamp
         )
-        if (_auth.currentUser != null){
+        if (auth.currentUser != null){
             //first check if birthdate already exists
             try {
-                val document = _auth.currentUser?.let { _db.collection("userdetails").document(it.uid) }
+                val document = auth.currentUser?.let { db.collection("userdetails").document(it.uid) }
                     ?.get()?.await()
                 if (document != null){
                     val previousBirthDate = document.getDate("birthdate")
                     if (previousBirthDate != null){
                         //update the existing birthdate
-                        _db.collection("userdetails").document(_auth.currentUser!!.uid)
+                        db.collection("userdetails").document(auth.currentUser!!.uid)
                             .update("birthdate", timestamp)
                             .addOnSuccessListener {
                                 goto_nextpage()
@@ -64,7 +64,7 @@ class RegistrationViewModel @Inject constructor(): ViewModel(){
                     }
                     else{
                         //add new birthdate
-                        _db.collection("userdetails").document(_auth.currentUser!!.uid)
+                        db.collection("userdetails").document(auth.currentUser!!.uid)
                             .set(date, SetOptions.merge())
                             .addOnSuccessListener {
                                 goto_nextpage()
@@ -81,10 +81,10 @@ class RegistrationViewModel @Inject constructor(): ViewModel(){
 
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getBirthdate(): LocalDate?{
-        if (_auth.currentUser != null){
+        if (auth.currentUser != null){
             //first check if birthdate exists
             try {
-                val document = _auth.currentUser?.let { _db.collection("userdetails").document(it.uid) }
+                val document = auth.currentUser?.let { db.collection("userdetails").document(it.uid) }
                     ?.get()?.await()
                 if (document != null){
                     val previousBirthDate = document.getTimestamp("birthdate")
@@ -109,16 +109,16 @@ class RegistrationViewModel @Inject constructor(): ViewModel(){
         val date = mapOf(
             "lastDonationDate" to timestamp
         )
-        if (_auth.currentUser != null){
+        if (auth.currentUser != null){
             //first check if last donation date already exists
             try {
-                val document = _auth.currentUser?.let { _db.collection("userdetails").document(it.uid) }
+                val document = auth.currentUser?.let { db.collection("userdetails").document(it.uid) }
                     ?.get()?.await()
                 if (document != null){
                     val previousLastDate = document.getDate("lastDonationDate")
                     if (previousLastDate != null){
                         //update the existing last date
-                        _db.collection("userdetails").document(_auth.currentUser!!.uid)
+                        db.collection("userdetails").document(auth.currentUser!!.uid)
                             .update("lastDonationDate", timestamp)
                             .addOnSuccessListener {
                                 goto_nextpage()
@@ -128,7 +128,7 @@ class RegistrationViewModel @Inject constructor(): ViewModel(){
                     }
                     else{
                         //add new last date
-                        _db.collection("userdetails").document(_auth.currentUser!!.uid)
+                        db.collection("userdetails").document(auth.currentUser!!.uid)
                             .set(date, SetOptions.merge())
                             .addOnSuccessListener {
                                 goto_nextpage()
@@ -150,8 +150,8 @@ class RegistrationViewModel @Inject constructor(): ViewModel(){
         when (entry){
             "username", "gender", "area", "phoneNo", "bloodGroup"->{
                 val datamap = mapOf(entry to data)
-                if (_auth.currentUser != null){
-                    _db.collection("userdetails").document(_auth.currentUser!!.uid)
+                if (auth.currentUser != null){
+                    db.collection("userdetails").document(auth.currentUser!!.uid)
                         .set(datamap, SetOptions.merge())
                         .addOnSuccessListener {
                             goto_nextpage()
@@ -168,7 +168,7 @@ class RegistrationViewModel @Inject constructor(): ViewModel(){
 
     suspend fun getRegistrationType():String{
         try {
-            val document = _auth.currentUser?.let { _db.collection("userdetails").document(it.uid) }
+            val document = auth.currentUser?.let { db.collection("userdetails").document(it.uid) }
                 ?.get()?.await()
             if (document != null){
                 return document.getString("registration_type").toString()
@@ -185,10 +185,10 @@ class RegistrationViewModel @Inject constructor(): ViewModel(){
         val data = mapOf(
             "aadharNo" to tempRegistrationDetails.aadharNo,
             "aadharDOB" to tempRegistrationDetails.aadharDOB,
-            "useruid" to _auth.currentUser?.uid
+            "useruid" to auth.currentUser?.uid
         )
-        if (_auth.currentUser != null){
-            _db.collection("aadhardetails").document(_auth.currentUser!!.uid)
+        if (auth.currentUser != null){
+            db.collection("aadhardetails").document(auth.currentUser!!.uid)
                 .set(data, SetOptions.merge())
                 .addOnSuccessListener {
                     goto_nextpage()
@@ -200,8 +200,8 @@ class RegistrationViewModel @Inject constructor(): ViewModel(){
 
     fun saveAadharStatus(status:String) {
         val data = mapOf("aadharStatus" to status)
-        if (_auth.currentUser != null) {
-            _db.collection("aadhardetails").document(_auth.currentUser!!.uid)
+        if (auth.currentUser != null) {
+            db.collection("aadhardetails").document(auth.currentUser!!.uid)
                 .set(data, SetOptions.merge())
                 .addOnSuccessListener {
                     if (status=="submitted"){

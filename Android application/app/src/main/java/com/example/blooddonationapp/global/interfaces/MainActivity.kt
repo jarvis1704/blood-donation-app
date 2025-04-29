@@ -15,7 +15,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
-import com.example.blooddonationapp.auth.data.googleAuthClient
+import com.example.blooddonationapp.auth.data.GoogleAuthClient
 import com.example.blooddonationapp.global.ui_components.appNav
 import com.example.blooddonationapp.global.ui_components.errorAlert
 import com.example.blooddonationapp.global.ui_components.globalAlert
@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
 
     //for google auth
     private val googleAuthUiClient by lazy {
-        googleAuthClient(
+        GoogleAuthClient(
             context = applicationContext,
             oneTapClient = Identity.getSignInClient(applicationContext)
         )

@@ -9,6 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.blooddonationapp.home.data.HomeViewModel
 import com.google.firebase.Timestamp
@@ -54,7 +55,7 @@ var isDataUpdating by mutableStateOf(false)
 @Composable
 fun updateCurrentUser(){
     isDataUpdating = true
-    var viewmodel: HomeViewModel = viewModel()
+    var viewmodel: HomeViewModel = hiltViewModel()
     if (currentPage in "homepage bloodrequests userprofile"){
         viewmodel.FetchBloodRequests()
         viewmodel.FetchAnnouncements()

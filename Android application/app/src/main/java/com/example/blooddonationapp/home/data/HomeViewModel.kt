@@ -13,7 +13,6 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.google.firebase.firestore.getField
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -21,17 +20,18 @@ import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(): ViewModel() {
-    private val _auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val _db: FirebaseFirestore = FirebaseFirestore.getInstance()
+class HomeViewModel @Inject constructor(
+    private val auth: FirebaseAuth,
+    private val db: FirebaseFirestore,
+): ViewModel() {
 
     suspend fun getRegistrationEntryByString(
         entry: String,                                 //what type of entry we want to get, username, gender, area etc
     ): String {
-        if (_auth.currentUser != null) {
+        if (auth.currentUser != null) {
             try {
                 val document =
-                    _auth.currentUser?.let { _db.collection("userdetails").document(it.uid) }
+                    auth.currentUser?.let { db.collection("userdetails").document(it.uid) }
                         ?.get()?.await()
                 if (document != null) {
                     return document.getString(entry) ?: ""
@@ -45,9 +45,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun GetUserBirthdate(): LocalDateTime{
-        if (_auth.currentUser != null){
+        if (auth.currentUser != null){
             try {
-                val document = _auth.currentUser?.let { _db.collection("userdetails").document(it.uid) }
+                val document = auth.currentUser?.let { db.collection("userdetails").document(it.uid) }
                     ?.get()?.await()
                 if (document !=null){
                     val temp = document.getTimestamp("birthdate") ?: Timestamp.now()
@@ -65,10 +65,10 @@ class HomeViewModel @Inject constructor(): ViewModel() {
     suspend fun getAadharDetails(
         entry: String
     ):Any{
-        if (_auth.currentUser != null) {
+        if (auth.currentUser != null) {
             try {
                 val document =
-                    _auth.currentUser?.let { _db.collection("aadhardetails").document(it.uid) }
+                    auth.currentUser?.let { db.collection("aadhardetails").document(it.uid) }
                         ?.get()?.await()
                 if (document != null) {
                     return document.getString(entry) ?: ""
@@ -82,10 +82,10 @@ class HomeViewModel @Inject constructor(): ViewModel() {
 
     suspend fun saveBoolean(collection: String, field:String, value: Boolean){
         try {
-            val document = _auth.currentUser?.let { _db.collection(collection).document(it.uid) }
+            val document = auth.currentUser?.let { db.collection(collection).document(it.uid) }
                 ?.get()?.await()
             if (document != null) {
-                _db.collection(collection).document(_auth.currentUser!!.uid)
+                db.collection(collection).document(auth.currentUser!!.uid)
                     .update(field, true)
                     .addOnSuccessListener {
 
@@ -101,7 +101,7 @@ class HomeViewModel @Inject constructor(): ViewModel() {
     suspend fun getBoolean(collection: String, field: String):Boolean{
         try {
             val document =
-                _auth.currentUser?.let { _db.collection(collection).document(it.uid) }
+                auth.currentUser?.let { db.collection(collection).document(it.uid) }
                     ?.get()?.await()
             if (document != null) {
                 return document.getBoolean(field)?:false
@@ -116,7 +116,7 @@ class HomeViewModel @Inject constructor(): ViewModel() {
         viewModelScope.launch {
             try {
                 //get all blood req
-                val list = _db.collection("blood_requests").get().await()
+                val list = db.collection("blood_requests").get().await()
                 if (list != null) {
                     val bloodReqList = list.documents.mapNotNull { doc ->
                         val temp = doc.id
@@ -151,7 +151,7 @@ class HomeViewModel @Inject constructor(): ViewModel() {
     fun FetchAnnouncements() {
         viewModelScope.launch {
             try {
-                val list = _db.collection("announcements").get().await()
+                val list = db.collection("announcements").get().await()
                 if (list != null) {
                     val announcementList = list.documents.mapNotNull { doc ->
                         val data = doc.data
@@ -179,10 +179,10 @@ class HomeViewModel @Inject constructor(): ViewModel() {
     suspend fun updateNotificationLastSeen() {
         var timestamp: Timestamp = Timestamp.now()
         try {
-            val document = _auth.currentUser?.let { _db.collection("userdetails").document(it.uid) }
+            val document = auth.currentUser?.let { db.collection("userdetails").document(it.uid) }
                 ?.get()?.await()
             if (document != null) {
-                _db.collection("userdetails").document(_auth.currentUser!!.uid)
+                db.collection("userdetails").document(auth.currentUser!!.uid)
                     .update("lastNotificationSeen", timestamp)
                     .addOnSuccessListener {
 
@@ -212,7 +212,7 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 "details" to newBloodRequest.details,
                 "date" to Timestamp.now()
             )
-            _db.collection("pending_blood_requests").document()
+            db.collection("pending_blood_requests").document()
                 .set(datamap, SetOptions.merge())
                 .addOnSuccessListener {
                     ClearNewBloodReqObj()

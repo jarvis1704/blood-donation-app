@@ -10,7 +10,6 @@ import com.example.blooddonationapp.global.data.PhoneNo
 import com.example.blooddonationapp.global.data.PhoneNoList
 import com.example.blooddonationapp.global.data.currentUser
 import com.example.blooddonationapp.global.data.errorMessage
-import com.example.blooddonationapp.registration.data.tempRegistrationDetails
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -21,9 +20,10 @@ import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
-class EmailLoginViewModel @Inject constructor() : ViewModel() {
-    private val _auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val _db : FirebaseFirestore = FirebaseFirestore.getInstance()
+class EmailLoginViewModel @Inject constructor(
+    private val auth: FirebaseAuth,
+    private val db: FirebaseFirestore
+) : ViewModel() {
 
     //on initialization, checks if logged in
     init {
@@ -34,11 +34,11 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
     //when logged in, for the first time, save username and profile pic from google to database
     suspend fun saveGoogleCredential() {
         val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-        if (_auth.currentUser != null) {
+        if (auth.currentUser != null) {
             //first check if the user is already registered, if already registered, do not change values
             try {
                 val document =
-                    _auth.currentUser?.let { db.collection("userdetails").document(it.uid) }
+                    auth.currentUser?.let { db.collection("userdetails").document(it.uid) }
                         ?.get()?.await()
                 if (document != null) {
                     val registrationType = document.getString("registration_type")
@@ -47,13 +47,13 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
                     } else {
                         //upload username and profile pic
                         val datamap = mapOf("username" to googleUsername)
-                        db.collection("userdetails").document(_auth.currentUser!!.uid)
+                        db.collection("userdetails").document(auth.currentUser!!.uid)
                             .set(datamap, SetOptions.merge())
                             .addOnFailureListener {
                                 errorMessage = it.message.toString()
                             }
                         val datamap2 = mapOf("profilepic" to googleProfilePic)
-                        db.collection("userdetails").document(_auth.currentUser!!.uid)
+                        db.collection("userdetails").document(auth.currentUser!!.uid)
                             .set(datamap2, SetOptions.merge())
                             .addOnFailureListener {
                                 errorMessage = it.message.toString()
@@ -68,7 +68,6 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun checkLoginStatus() {
-        val auth = FirebaseAuth.getInstance()
         Log.d("checkLogin", auth.currentUser?.displayName.toString())
         if (auth != null) {
             Log.d("checkLogin", "auth is not null")
@@ -113,14 +112,14 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
         if (email.isNotEmpty() && password.isNotEmpty()) {
             if (password == confirmpassword) {
                 try {
-                    _auth.createUserWithEmailAndPassword(email, password)
+                    auth.createUserWithEmailAndPassword(email, password)
                         .addOnSuccessListener {
                             currentUser.isSearching = true
                             //save username to firebase
                             val datamap = mapOf(
                                 "username" to username
                             )
-                            _db.collection("userdetails").document(_auth.currentUser!!.uid)
+                            db.collection("userdetails").document(auth.currentUser!!.uid)
                                 .set(datamap, SetOptions.merge())
 
                             goto_loadingpage()
@@ -141,7 +140,7 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
     fun login(email: String, password: String, goto_loadingpage: () -> Unit) {
         if (email.isNotEmpty() && password.isNotEmpty()) {
             try {
-                _auth.signInWithEmailAndPassword(email, password)
+                auth.signInWithEmailAndPassword(email, password)
                     .addOnSuccessListener {
                         goto_loadingpage()
                     }.addOnFailureListener {
@@ -156,7 +155,7 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
     }
 
     fun signout(goto_loadingpage: () -> Unit) {
-        _auth.signOut()
+        auth.signOut()
         currentUser.isLoggedIn = false
         goto_loadingpage()
         //todo clear temp user data
@@ -165,7 +164,7 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
     suspend fun CheckAdminPasskey(key:String, goto_adminpage:()->Unit){
         var DatabaseKeys = mutableListOf<String>()
         try {
-            val document = _db.collection("passkey").get().await()
+            val document = db.collection("passkey").get().await()
             document.documents.forEach{doc->
                 val temp = doc.getString("passkey")
                 if (temp != null) {
@@ -189,7 +188,7 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
         isFetchingNumbers = true
         viewModelScope.launch {
             try {
-                val list = _db.collection("phone_nos").get().await()
+                val list = db.collection("phone_nos").get().await()
                 if (list != null) {
                     val List = list.documents.mapNotNull { doc ->
                         val temp = doc.id

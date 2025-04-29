@@ -37,7 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.blooddonationapp.AdminEntry.data.AdminViewmodel
+import com.example.blooddonationapp.AdminEntry.data.AdminViewModel
 import com.example.blooddonationapp.global.data.NewGlobalAlert
 import com.example.blooddonationapp.home.data.HomeViewModel
 import com.example.blooddonationapp.home.data.announcement
@@ -48,7 +48,7 @@ import java.time.format.DateTimeFormatter
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ActiveAnnouncements(
-    adminViewmodel: AdminViewmodel = hiltViewModel(),
+    adminViewmodel: AdminViewModel = hiltViewModel(),
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
@@ -163,7 +163,7 @@ fun ActiveAnnouncements(
 @Composable
 fun AnnouncementEdit(
     announcement: announcement,
-    adminViewmodel: AdminViewmodel = hiltViewModel()
+    adminViewmodel: AdminViewModel = hiltViewModel()
 ) {
     val formatter = DateTimeFormatter.ofPattern("hh:mm a")
     val formattedTime = announcement.dateAndTime?.format(formatter)
