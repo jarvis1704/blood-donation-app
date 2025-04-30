@@ -27,6 +27,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Info
@@ -78,6 +79,7 @@ fun userProfile(
     goto_settings: () -> Unit,
     goto_aboutus: () -> Unit,
     goto_ageverification: () -> Unit,
+    goto_aadharverification:()-> Unit,
     emailLoginViewModel: EmailLoginViewModel = hiltViewModel(),
 ) {
     updateCurrentUser()
@@ -444,6 +446,29 @@ fun userProfile(
                                 onClick = { goto_aboutus() }
                             )
 
+                            if (currentUser.aadharStatus == "verified" || currentUser.aadharStatus=="rejected"){
+                                Divider(
+                                    modifier = Modifier.padding(vertical = 12.dp),
+                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
+                                )
+
+                                MenuRow(
+                                    icon = Icons.Default.DateRange,
+                                    text = "RE-VERIFY AADHAAR !!",
+                                    onClick = {
+                                        NewGlobalAlert(
+                                            title = "Re-verify Aadhaar !!",
+                                            details = "Are you sure you want to re-verify your aadhaar? This will remove your current verification status from your account.",
+                                            onCancelClick = {},
+                                            onConfirmClick = {
+                                                goto_aadharverification()
+                                            }
+                                        )
+                                    },
+                                    color = Color(0xFFEB4335)
+                                )
+                            }
+
                             Divider(
                                 modifier = Modifier.padding(vertical = 12.dp),
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
@@ -500,7 +525,8 @@ private fun InfoColumn(
 private fun MenuRow(
     icon: ImageVector,
     text: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    color: Color = Color.Black
 ) {
     Column(
         modifier = Modifier.clickable { onClick() }
@@ -515,7 +541,7 @@ private fun MenuRow(
                 imageVector = icon,
                 contentDescription = text,
                 modifier = Modifier.size(24.dp),
-                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                tint = if (color == Color.Black) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f) else color
             )
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -524,7 +550,7 @@ private fun MenuRow(
                 text = text,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface
+                color = if (color == Color.Black) MaterialTheme.colorScheme.onSurface else color
             )
         }
     }

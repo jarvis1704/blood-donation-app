@@ -53,27 +53,27 @@ fun AboutUs(
             Modifier.fillMaxSize()
         ) {
             // Header
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(0.15f)
-                    .background(primaryRed)
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(
-                        top = dimensionResource(id = R.dimen.profile_top_padding),
-                        start = 16.dp
-                    )
-                ) {
-                    IconButton({
-                        goto_userProfile()
-                    }) {
-                        Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "Back Button", tint = Color.White)
-                    }
-                    Text("About Us", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                }
-            }
+//            Box(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .weight(0.15f)
+//                    .background(primaryRed)
+//            ) {
+//                Row(
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    modifier = Modifier.padding(
+//                        top = dimensionResource(id = R.dimen.profile_top_padding),
+//                        start = 16.dp
+//                    )
+//                ) {
+//                    IconButton({
+//                        goto_userProfile()
+//                    }) {
+//                        Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "Back Button", tint = Color.White)
+//                    }
+//                    Text("About Us", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
+//                }
+//            }
 
             // Content
             Box(
@@ -85,7 +85,7 @@ fun AboutUs(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(top = 16.dp)
+                        .padding(top = 36.dp)
                         .background(primaryRed)
                         .verticalScroll(rememberScrollState())
                         .padding(horizontal = dimensionResource(id = R.dimen.profile_horizontal_padding)),
