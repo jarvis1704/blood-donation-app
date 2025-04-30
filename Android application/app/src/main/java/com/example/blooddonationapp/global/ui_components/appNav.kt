@@ -342,7 +342,7 @@ fun appNav(navController: NavHostController, googleAuthClient: GoogleAuthClient)
                         goto_aboutus = { navController.navigate("aboutus") },
                         goto_ageverification = {navController.navigate("ageverification")}
                     )
-                    "emergencypage" -> EmergencyContacts()
+                    "emergencypage" -> EmergencyContacts(navController = navController)
                     "bloodrequests" -> bloodRequests(
                         goto_homepage = { navController.navigate("homepage") },
                         goto_bloodreqdetails = {navController.navigate("bloodreqdetails")}
