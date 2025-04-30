@@ -23,9 +23,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
@@ -213,30 +220,108 @@ fun homepage(
                         item {
                             when {
                                 currentUser.registrationType != "registered" -> {
-                                    //registration reminder
-                                    FilledTonalButton(
-                                        onClick = { goto_registration() }
+                                    // Registration reminder
+                                    Card(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding( vertical = 8.dp),
+                                        shape = RoundedCornerShape(12.dp),
+                                        colors = CardDefaults.cardColors(
+                                            containerColor = Color(0xFFFFF4F3)
+                                        ),
+                                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                                     ) {
-                                        Text(
-                                            text = "Complete your registration details ->",
-                                            fontSize = 16.sp,
-                                            fontFamily = FontFamily.SansSerif,
-                                        )
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(16.dp),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.SpaceBetween
+                                        ) {
+                                            Row(
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Icon(
+                                                    imageVector = Icons.Default.Info,
+                                                    contentDescription = "Registration Info",
+                                                    tint = Color(0xFFEB4335),
+                                                    modifier = Modifier.padding(end = 8.dp)
+                                                )
+                                                Text(
+                                                    text = "Complete your registration",
+                                                    fontSize = 16.sp,
+                                                    fontWeight = FontWeight.Medium,
+                                                    color = Color(0xFF333333)
+                                                )
+                                            }
+                                            Spacer(Modifier.width(8.dp))
+                                            FilledTonalButton(
+                                                onClick = { goto_registration() },
+                                                colors = ButtonDefaults.filledTonalButtonColors(
+                                                    containerColor = Color(0xFFEB4335),
+                                                    contentColor = Color.White
+                                                ),
+                                                shape = RoundedCornerShape(8.dp)
+                                            ) {
+                                                Text(
+                                                    text = "Register",
+                                                    fontSize = 14.sp,
+                                                    fontWeight = FontWeight.SemiBold
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Default.KeyboardArrowRight,
+                                                    contentDescription = "Go to registration",
+                                                )
+                                            }
+                                        }
                                     }
                                 }
 
                                 (!(currentUser.aadharStatus == "submitted" || currentUser.aadharStatus == "verified" || currentUser.aadharStatus == "rejected"))
                                         && (currentUser.registrationType == "registered")
                                         && !isDataUpdating -> {
-                                    //aadhar reminder
+                                    // Aadhar reminder
                                     Card(
                                         modifier = Modifier
-                                            .height(50.dp)
-                                            .clickable(
-                                                onClick = { goto_aadharregistration() }
-                                            )
+                                            .fillMaxWidth()
+                                            .padding(vertical = 8.dp)
+                                            .clickable(onClick = { goto_aadharregistration() }),
+                                        shape = RoundedCornerShape(12.dp),
+                                        colors = CardDefaults.cardColors(
+                                            containerColor = Color(0xFFF0F8FF)
+                                        ),
+                                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                                     ) {
-                                        Text("Complete your aadhar details ->")
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(16.dp),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.SpaceBetween
+                                        ) {
+                                            Row(
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Icon(
+                                                    imageVector = Icons.Default.Info,
+                                                    contentDescription = "Aadhar Verification",
+                                                    tint = Color(0xFF2196F3),
+                                                    modifier = Modifier.padding(end = 12.dp)
+                                                )
+                                                Text(
+                                                    text = "Complete Aadhar verification",
+                                                    fontSize = 16.sp,
+                                                    fontWeight = FontWeight.Medium,
+                                                    color = Color(0xFF333333)
+                                                )
+                                            }
+
+                                            Icon(
+                                                imageVector = Icons.Default.KeyboardArrowRight,
+                                                contentDescription = "Go to Aadhar registration",
+                                                tint = Color(0xFF2196F3)
+                                            )
+                                        }
                                     }
                                 }
 
