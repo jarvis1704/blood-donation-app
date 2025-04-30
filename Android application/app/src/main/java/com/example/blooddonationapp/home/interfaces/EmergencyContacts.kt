@@ -1,14 +1,18 @@
 package com.example.blooddonationapp.home.interfaces
 
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,13 +37,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.navigation.NavController
 import com.example.blooddonationapp.global.data.PhoneNoList
 import com.example.blooddonationapp.global.data.updateCurrentUser
+
 
 // Define color constants for consistency
 private val primaryRed = Color(0xFFEB4335)
@@ -52,6 +59,7 @@ private val backgroundColor = Color.White
 fun EmergencyContacts(
     navController: NavController
 ) {
+    val context = LocalContext.current
     updateCurrentUser()
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -131,39 +139,40 @@ fun EmergencyContacts(
 
                     // Emergency contacts section
                     if (PhoneNoList.isNotEmpty()) {
-                        EmergencyContactsSection("Blood Bank Contacts")
+//                        EmergencyContactsSection("Blood Bank Contacts")
                         PhoneNoList.forEach { contact ->
                             EmergencyContactCard(
                                 name = contact.name,
-                                phoneNumber = contact.number
+                                phoneNumber = contact.number,
+                                context = context
                             )
                         }
                     } else {
                         NoContactsAvailable()
                     }
 
-                    // Hospital contacts section
-                    EmergencyContactsSection("Hospital Emergency Contacts")
-                    EmergencyContactCard(
-                        name = "Tezpur Medical College",
-                        phoneNumber = "+91 3712 267888"
-                    )
-                    EmergencyContactCard(
-                        name = "Tezpur Civil Hospital",
-                        phoneNumber = "+91 3712 220101"
-                    )
-
-                    // Red Cross Society contacts section
-                    EmergencyContactsSection("Red Cross Society")
-                    EmergencyContactCard(
-                        name = "Tezpur Red Cross Office",
-                        phoneNumber = "+91 3712 220022"
-                    )
-                    EmergencyContactCard(
-                        name = "Blood Donation Coordinator",
-                        phoneNumber = "+91 9876543210"
-                    )
-
+//                    // Hospital contacts section
+//                    EmergencyContactsSection("Hospital Emergency Contacts")
+//                    EmergencyContactCard(
+//                        name = "Tezpur Medical College",
+//                        phoneNumber = "+91 3712 267888"
+//                    )
+//                    EmergencyContactCard(
+//                        name = "Tezpur Civil Hospital",
+//                        phoneNumber = "+91 3712 220101"
+//                    )
+//
+//                    // Red Cross Society contacts section
+//                    EmergencyContactsSection("Red Cross Society")
+//                    EmergencyContactCard(
+//                        name = "Tezpur Red Cross Office",
+//                        phoneNumber = "+91 3712 220022"
+//                    )
+//                    EmergencyContactCard(
+//                        name = "Blood Donation Coordinator",
+//                        phoneNumber = "+91 9876543210"
+//                    )
+//
                     // Help text at bottom
                     Text(
                         "In case of emergency, please call the nearest blood bank or hospital first",
@@ -174,6 +183,8 @@ fun EmergencyContacts(
                             .fillMaxWidth()
                             .padding(vertical = 24.dp)
                     )
+
+                    Spacer(Modifier.height(100.dp))
                 }
             }
         }
@@ -201,7 +212,7 @@ fun EmergencyContactsSection(title: String) {
 }
 
 @Composable
-fun EmergencyContactCard(name: String, phoneNumber: String) {
+fun EmergencyContactCard(name: String, phoneNumber: String, context: Context) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -257,7 +268,14 @@ fun EmergencyContactCard(name: String, phoneNumber: String) {
                 modifier = Modifier
                     .size(40.dp)
                     .clip(CircleShape)
-                    .background(primaryRed),
+                    .background(primaryRed)
+                    .clickable(
+                        onClick = {
+                            val launchPhone = Intent(Intent.ACTION_DIAL)
+                            launchPhone.data = "tel:$phoneNumber".toUri()
+                            context.startActivity(launchPhone)
+                        }
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
