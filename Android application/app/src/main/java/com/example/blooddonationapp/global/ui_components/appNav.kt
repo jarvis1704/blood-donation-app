@@ -340,7 +340,8 @@ fun appNav(navController: NavHostController, googleAuthClient: GoogleAuthClient)
                         } },
                         goto_settings = { navController.navigate("settingsandpreferences") },
                         goto_aboutus = { navController.navigate("aboutus") },
-                        goto_ageverification = {navController.navigate("ageverification")}
+                        goto_ageverification = {navController.navigate("ageverification")},
+                        goto_aadharverification = {navController.navigate("verifyaadhar")}
                     )
                     "emergencypage" -> EmergencyContacts(navController = navController)
                     "bloodrequests" -> bloodRequests(
