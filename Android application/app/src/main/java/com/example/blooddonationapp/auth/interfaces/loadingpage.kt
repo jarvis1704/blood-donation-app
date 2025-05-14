@@ -1,7 +1,9 @@
 package com.example.blooddonationapp.auth.interfaces
 
 import android.content.Context
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +33,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
 import kotlinx.coroutines.delay
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun loadingpage(
     goto_welcomepage: () -> Unit,
@@ -41,9 +44,6 @@ fun loadingpage(
     /*this page will check whether the user is logged in or not
     * and based on that, we will navigate to homepage or loginpage */
 
-//    var emailLoginViewmodel:EmailLoginViewModel = viewModel()
-//    var registrationViewmodel: RegistrationViewModel = viewModel()
-
     subscribeToGlobalTopic(context = LocalContext.current)
 
     LaunchedEffect(currentUser.isSearching) {
@@ -53,15 +53,8 @@ fun loadingpage(
         }
         if (currentUser.isLoggedIn){
             currentUser.registrationType = registrationViewmodel.getRegistrationType()
-//            Log.d("checkLogin", "returned from getRegis, registrationtype="+currentUser.registrationType)
             delay(300)
             goto_homepage()
-//            if (currentUser.registrationType == "registered"){
-//                delay(300)
-//                goto_homepage()
-//            }else{
-//                goto_ageverification()
-//            }
         }else{
             delay(1000)
             goto_welcomepage()
@@ -81,7 +74,7 @@ fun loadingpage(
                 .height(120.dp)
                 .width(120.dp))
             Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "Red Cross Society", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold, color = Color.Black)
+            Text(text = "Blood Connect", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold, color = Color.Black)
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = "Tezpur", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.SemiBold, color = Color.Black)
         }
@@ -112,9 +105,3 @@ fun subscribeToGlobalTopic(context: Context) {
         Log.d("firebase", "Already subscribed to global topic")
     }
 }
-//
-//@Preview
-//@Composable
-//private fun LoadingPagePreview() {
-//    loadingpage({}) { }
-//}

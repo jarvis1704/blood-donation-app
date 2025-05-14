@@ -52,29 +52,6 @@ fun AboutUs(
         Column(
             Modifier.fillMaxSize()
         ) {
-            // Header
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .weight(0.15f)
-//                    .background(primaryRed)
-//            ) {
-//                Row(
-//                    verticalAlignment = Alignment.CenterVertically,
-//                    modifier = Modifier.padding(
-//                        top = dimensionResource(id = R.dimen.profile_top_padding),
-//                        start = 16.dp
-//                    )
-//                ) {
-//                    IconButton({
-//                        goto_userProfile()
-//                    }) {
-//                        Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "Back Button", tint = Color.White)
-//                    }
-//                    Text("About Us", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
-//                }
-//            }
-
             // Content
             Box(
                 modifier = Modifier
@@ -106,7 +83,7 @@ fun AboutUs(
                             // Who We Are
                             SectionTitle("Who We Are")
                             Text(
-                                text = "Tezpur Red Cross Society is a dedicated non-profit organization working tirelessly to ensure that no one has to wait for life-saving blood.",
+                                text = "A bold idea is taking shape-one that dares to imagine a world where no one waits for life saving blood.",
                                 fontSize = 16.sp,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.padding(bottom = 8.dp)
@@ -118,7 +95,7 @@ fun AboutUs(
                                 modifier = Modifier.padding(bottom = 8.dp)
                             )
                             Text(
-                                text = "Our mission is simple but powerful — to make blood donation accessible, organized, and immediate for everyone who needs it.",
+                                text = "Our mission is simple but meaningful — we’re working to make blood donation easy, organized, and available right when it’s needed. It’s still a growing idea, and we’re shaping it as we go.",
                                 fontSize = 16.sp,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.padding(bottom = 16.dp)
@@ -129,7 +106,7 @@ fun AboutUs(
                             // Our App
                             SectionTitle("Our App")
                             Text(
-                                text = "In an effort to modernize and expand our reach, we developed the [App Name] — a smart, easy-to-use platform where donors and patients can connect seamlessly.",
+                                text = "In an effort to modernize and expand our reach, we developed Blood Connect — a smart, easy-to-use platform where donors and patients can connect seamlessly.",
                                 fontSize = 16.sp,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.padding(bottom = 12.dp)
@@ -145,7 +122,8 @@ fun AboutUs(
 
                             BulletPoint("Find nearby blood donors or donation camps")
                             BulletPoint("Request urgent blood donations")
-                            BulletPoint("Stay updated with donation drives organized by the Tezpur Red Cross Society")
+                            BulletPoint("Stay updated with donation drives organized nearby")
+                            BulletPoint("Get the latest emergency numbers in case of an emergency")
 
                             Text(
                                 text = "Our goal is to make blood donation faster, safer, and part of everyday life.",
@@ -159,7 +137,7 @@ fun AboutUs(
                             // Development Team
                             SectionTitle("Development Team")
                             Text(
-                                text = "The [App Name] was lovingly built by a group of passionate developers from Tezpur:",
+                                text = "The Blood Connect was lovingly built by a group of passionate developers from Tezpur University:",
                                 fontSize = 16.sp,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.padding(bottom = 12.dp)
@@ -171,7 +149,7 @@ fun AboutUs(
                             TeamMember("Sujal Kumar", "Guidance and Supervision")
 
                             Text(
-                                text = "We worked closely with the Tezpur Red Cross Society to ensure the app truly meets the real-world needs of patients, hospitals, and donors.",
+                                text = "We worked effortlessly to ensure the app truly meets the real-world needs of patients, hospitals, and donors.",
                                 fontSize = 16.sp,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.padding(vertical = 12.dp)
@@ -182,7 +160,7 @@ fun AboutUs(
                             // Special Thanks
                             SectionTitle("Special Thanks")
                             Text(
-                                text = "We are deeply grateful to Dr. Rupam Goswami for his mentorship, guidance, and for connecting us with the Tezpur Red Cross Society.",
+                                text = "We are deeply grateful to Dr. Rupam Goswami for his invaluable mentorship, unwavering guidance, and for initially pitching the idea that sparked this journey. His constant support, insightful advice, and belief in our vision have played a crucial role in shaping our efforts. We truly appreciate the time and energy he has invested in helping us bring this concept to life.",
                                 fontSize = 16.sp,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.padding(bottom = 8.dp)
@@ -201,7 +179,7 @@ fun AboutUs(
 
                             HelpPoint("Spread the Word", "Share the app with friends, family, and your community.")
                             HelpPoint("Follow Us", "Stay updated through our social media channels.\n(Links coming soon!)")
-                            HelpPoint("Send Us Feedback", "We're always looking to improve.\nFeel free to email us at [yourfeedbackemail@example.com] with your suggestions or ideas!")
+                            HelpPoint("Send Us Feedback", "We're always looking to improve.\nFeel free to email us at prudompdutta2017@gmail.com with your suggestions or ideas!")
 
                             Text(
                                 text = "Together, every small step brings us closer to saving more lives.",
