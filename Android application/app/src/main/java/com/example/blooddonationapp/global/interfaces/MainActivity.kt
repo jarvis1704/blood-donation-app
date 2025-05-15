@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
 import com.example.blooddonationapp.auth.data.GoogleAuthClient
+import com.example.blooddonationapp.global.data.infoMessage
 import com.example.blooddonationapp.global.ui_components.appNav
 import com.example.blooddonationapp.global.ui_components.errorAlert
 import com.example.blooddonationapp.global.ui_components.globalAlert
@@ -70,15 +71,13 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        infoMessage="This application is still under development. Any features/ functionalities are just for showcase purposes.\n\nAny user data may be deleted in the future."
         enableEdgeToEdge()
 
         setContent {
             BloodDonationAppTheme {
                 val navCtrl = rememberNavController()
                 Scaffold(
-//                    floatingActionButton = { notifButton(
-//                        goto_notifications = {navCtrl.navigate("notificationspage")}
-//                    )},
                     modifier = Modifier.Companion.fillMaxSize(),
                     bottomBar = {
                         bottomBar(
