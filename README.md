@@ -62,6 +62,7 @@ We're in the ideation and prototyping phase. If you're interested in helping:
 
 For feedback, suggestions, or collaborations:
 - Email: [psydriteofficial@gmail.com](mailto:psydriteofficial@gmail.com)
+         [dasbiprangshu@gmail.com](mailto:dasbiprangshu@gmail.com)
 
 ---
 
